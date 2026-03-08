@@ -1,0 +1,13 @@
+
+> prototipo-oar-v2@0.0.0 lint
+> eslint .
+
+
+C:\web_antigravity\prototipo_OAR_v2\src\components\layout\Navbar.jsx
+  4:10  error  'cn' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\web_antigravity\prototipo_OAR_v2\src\components\map\LayerControl.jsx
+  4:10  error  'cn' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+Ô£û 2 problems (2 errors, 0 warnings)
+
