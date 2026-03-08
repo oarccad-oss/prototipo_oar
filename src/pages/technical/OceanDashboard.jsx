@@ -6,17 +6,7 @@ import { MiniMap } from '../../components/map/MiniMap';
 import { SICA_COORDINATES } from '../../api/constants';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, AreaChart, Area } from 'recharts';
 
-const OCEAN_DATA = {
-    'BZ': { sst: 29.5, anomaly: 1.2, coralRisk: 'Alto', riskLevel: 'Alerta 1', healthIndex: 72, trend: [{ m: 'Ene', v: 27.5 }, { m: 'Feb', v: 27.8 }, { m: 'Mar', v: 28.1 }, { m: 'Abr', v: 28.5 }, { m: 'May', v: 29.0 }, { m: 'Jun', v: 29.5 }] },
-    'HN': { sst: 28.8, anomaly: 0.8, coralRisk: 'Medio', riskLevel: 'Vigilancia', healthIndex: 68, trend: [{ m: 'Ene', v: 27.0 }, { m: 'Feb', v: 27.2 }, { m: 'Mar', v: 27.5 }, { m: 'Abr', v: 28.0 }, { m: 'May', v: 28.5 }, { m: 'Jun', v: 28.8 }] },
-    'PA': { sst: 27.4, anomaly: 0.4, coralRisk: 'Bajo', riskLevel: 'Normal', healthIndex: 75, trend: [{ m: 'Ene', v: 26.5 }, { m: 'Feb', v: 26.8 }, { m: 'Mar', v: 27.0 }, { m: 'Abr', v: 27.2 }, { m: 'May', v: 27.3 }, { m: 'Jun', v: 27.4 }] },
-    'CR': { sst: 28.0, anomaly: 0.6, coralRisk: 'Medio', riskLevel: 'Vigilancia', healthIndex: 78, trend: [{ m: 'Ene', v: 27.0 }, { m: 'Feb', v: 27.3 }, { m: 'Mar', v: 27.6 }, { m: 'Abr', v: 27.8 }, { m: 'May', v: 27.9 }, { m: 'Jun', v: 28.0 }] },
-    'GT': { sst: 29.1, anomaly: 1.0, coralRisk: 'Alto', riskLevel: 'Vigilancia', healthIndex: 65, trend: [{ m: 'Ene', v: 27.8 }, { m: 'Feb', v: 28.0 }, { m: 'Mar', v: 28.3 }, { m: 'Abr', v: 28.8 }, { m: 'May', v: 29.0 }, { m: 'Jun', v: 29.1 }] },
-    'SV': { sst: 29.8, anomaly: 1.5, coralRisk: 'Critico', riskLevel: 'Alerta 2', healthIndex: 62, trend: [{ m: 'Ene', v: 28.0 }, { m: 'Feb', v: 28.5 }, { m: 'Mar', v: 28.9 }, { m: 'Abr', v: 29.2 }, { m: 'May', v: 29.5 }, { m: 'Jun', v: 29.8 }] },
-    'NI': { sst: 28.5, anomaly: 0.7, coralRisk: 'Medio', riskLevel: 'Vigilancia', healthIndex: 70, trend: [{ m: 'Ene', v: 27.2 }, { m: 'Feb', v: 27.5 }, { m: 'Mar', v: 27.8 }, { m: 'Abr', v: 28.1 }, { m: 'May', v: 28.3 }, { m: 'Jun', v: 28.5 }] },
-    'DO': { sst: 28.9, anomaly: 0.9, coralRisk: 'Alto', riskLevel: 'Alerta 1', healthIndex: 69, trend: [{ m: 'Ene', v: 27.4 }, { m: 'Feb', v: 27.7 }, { m: 'Mar', v: 28.0 }, { m: 'Abr', v: 28.4 }, { m: 'May', v: 28.7 }, { m: 'Jun', v: 28.9 }] },
-    'regional': { sst: 28.5, anomaly: 0.88, coralRisk: 'Medio', riskLevel: 'Vigilancia', healthIndex: 71, trend: [{ m: 'Ene', v: 27.3 }, { m: 'Feb', v: 27.6 }, { m: 'Mar', v: 27.9 }, { m: 'Abr', v: 28.3 }, { m: 'May', v: 28.6 }, { m: 'Jun', v: 28.8 }] }
-};
+// Eliminadas constantes locales para usar fetch remoto
 
 
 
@@ -40,16 +30,26 @@ export const OceanDashboard = () => {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
     const selectedIso = searchParams.get('country') || 'regional';
-    const [loading, setLoading] = useState(false);
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [showHelp, setShowHelp] = useState(false);
 
-    const dataSources = [
-        { name: "SST (Temperatura Superficial)", description: "Temperatura superficial del mar en tiempo real.", provider: "NOAA Coral Reef Watch", updateFrequency: "Diaria" },
-        { name: "Anomalía Térmica", description: "Desviación de la temperatura respecto a la media histórica.", provider: "NOAA Coral Reef Watch", updateFrequency: "Diaria" },
-        { name: "Alerta de Blanqueamiento", description: "Nivel de estrés térmico acumulado en arrecifes de coral.", provider: "NOAA CRW", updateFrequency: "Semanal" }
-    ];
+    useEffect(() => {
+        setLoading(true);
+        const remoteUrl = `https://raw.githubusercontent.com/mapgisdev/prototipo_oar/main/public/api/ocean_data.json`;
+        
+        fetch(remoteUrl)
+            .then(res => res.json())
+            .then(allData => {
+                setData(allData[selectedIso] || allData['regional']);
+                setLoading(false);
+            })
+            .catch(err => {
+                console.error("Error fetching remote ocean data:", err);
+                setLoading(false);
+            });
+    }, [selectedIso]);
 
-    const data = OCEAN_DATA[selectedIso] || OCEAN_DATA['regional'];
     const countryName = SICA_COORDINATES[selectedIso]?.name || (selectedIso === 'regional' ? "Región SICA" : "Belize");
     const mapView = SICA_COORDINATES[selectedIso] || SICA_COORDINATES['regional'];
 
@@ -126,34 +126,38 @@ export const OceanDashboard = () => {
                         <TrendingUp className="h-5 w-5 text-cyan-500" />
                         Salud Oceánica: Situación en {countryName}
                     </h3>
-                    <p className="text-slate-600 leading-relaxed text-lg">
-                        Las aguas costeras de <strong>{countryName}</strong> registran una temperatura superficial de <span className="font-bold text-slate-900">{data.sst}°C</span>,
-                        con una anomalía térmica de <span className="bg-red-50 text-red-600 px-1 rounded font-bold">+{data.anomaly}°C</span> respecto a la media histórica.
-                        El sistema de alerta temprana de arrecifes de coral indica un nivel de <strong className={getAlertColor(data.riskLevel)}>{data.riskLevel.toUpperCase()}</strong>.
-                    </p>
+                    {data ? (
+                        <p className="text-slate-600 leading-relaxed text-lg">
+                            Las aguas costeras de <strong>{countryName}</strong> registran una temperatura superficial de <span className="font-bold text-slate-900">{data.sst}°C</span>,
+                            con una anomalía térmica de <span className="bg-red-50 text-red-600 px-1 rounded font-bold">+{data.anomaly}°C</span> respecto a la media histórica.
+                            El sistema de alerta temprana de arrecifes de coral indica un nivel de <strong className={getAlertColor(data.riskLevel)}>{data.riskLevel.toUpperCase()}</strong>.
+                        </p>
+                    ) : (
+                        <div className="h-20 animate-pulse bg-slate-100 rounded"></div>
+                    )}
                 </Card>
 
                 {/* KPI CARDS */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <StatCard
                         title="Temp. Superficial (SST)"
-                        value={data.sst}
+                        value={data?.sst || 0}
                         unit="°C"
-                        subtitle={`Anomalía de +${data.anomaly}°C detectada por satélite.`}
+                        subtitle={`Anomalía de +${data?.anomaly || 0}°C detectada por satélite.`}
                         colorClass="border-t-cyan-500"
                         icon={Waves}
                     />
                     <StatCard
                         title="Riesgo de Blanqueamiento"
-                        value={data.riskLevel}
+                        value={data?.riskLevel || '...'}
                         unit="Nivel"
                         subtitle="Índice de estrés térmico acumulado (DHW)."
-                        colorClass={data.riskLevel.includes('Alerta') ? 'border-t-red-500' : 'border-t-yellow-500'}
+                        colorClass={data?.riskLevel?.includes('Alerta') ? 'border-t-red-500' : 'border-t-yellow-500'}
                         icon={ThermometerSun}
                     />
                     <StatCard
                         title="Índice de Salud Oceánica"
-                        value={data.healthIndex}
+                        value={data?.healthIndex || 0}
                         unit="/ 100"
                         subtitle="Puntuación global de biodiversidad y servicios."
                         colorClass="border-t-slate-800"
@@ -171,7 +175,7 @@ export const OceanDashboard = () => {
                             </div>
                             <div className="flex-1 w-full min-h-0">
                                 <ResponsiveContainer width="100%" height="100%">
-                                    <AreaChart data={data.trend}>
+                                    <AreaChart data={data?.trend || []}>
                                         <defs>
                                             <linearGradient id="colorTemp" x1="0" y1="0" x2="0" y2="1">
                                                 <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.1} />

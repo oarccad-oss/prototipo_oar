@@ -8,8 +8,7 @@ import { Card, Button, Badge, DataSourceModal, ShareButton } from '../../compone
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { MiniMap } from '../../components/map/MiniMap';
 import { SICA_COORDINATES } from '../../api/constants';
-// Importación de los datos procesados (asegúrate que el archivo esté en esta ruta)
-import { SICA_GFW_DATA } from '../../api/sicaDataProcessed';
+// La carga de datos se realiza ahora vía fetch desde el repositorio remoto
 
 // Mapeo de códigos ISO para el selector
 
@@ -44,14 +43,34 @@ export const GFWReport = () => {
         { name: "Alertas GLAD", description: "Sistema de alerta temprana de deforestación basado en imágenes satelitales.", provider: "GLAD Lab (UMD)", updateFrequency: "Semanal" }
     ];
 
-    // 1. Extracción de Datos
-    // Intentamos obtener datos del país seleccionado, si no existen, fallback a regional
-    const data = SICA_GFW_DATA[selectedIso] || SICA_GFW_DATA['regional'];
+    // 1. Carga de Datos Remotos
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+
     const countryName = SICA_COORDINATES[selectedIso]?.name || "Región SICA";
     const mapView = SICA_COORDINATES[selectedIso] || SICA_COORDINATES['regional'];
 
+    useEffect(() => {
+        setLoading(true);
+        // URL del repositorio remoto (GitHub Raw)
+        const remoteUrl = `https://raw.githubusercontent.com/mapgisdev/prototipo_oar/main/public/api/forest_data.json`;
+        
+        fetch(remoteUrl)
+            .then(res => res.json())
+            .then(allData => {
+                // Selecciona el país o regional
+                setData(allData[selectedIso] || allData['regional']);
+                setLoading(false);
+            })
+            .catch(err => {
+                console.error("Error fetching remote data:", err);
+                setLoading(false);
+            });
+    }, [selectedIso]);
+
     // 2. Cálculos para Narrativa Dinámica (Data Storytelling)
     const stats = useMemo(() => {
+        if (!data) return { topRegion: { name: '...', percent: 0 }, totalLoss: 0, percentLoss: 0 };
         const topRegion = data.topRegions?.[0] || { name: 'Múltiples zonas', percent: 0, value: 0 };
         const totalLoss = data.lossTotal || 0;
         const treeCoverRef = data.treeCover || 1; // Evitar división por cero
@@ -130,11 +149,15 @@ export const GFWReport = () => {
                         <TrendingUp className="h-5 w-5 text-brand-primary" />
                         Resumen Ejecutivo: Situación en {countryName}
                     </h3>
-                    <p className="text-slate-600 leading-relaxed text-lg">
-                        Desde 2010 hasta 2023, <strong>{countryName}</strong> perdió <span className="bg-[#FE6598]/20 px-1 rounded font-bold text-[#C72E66]">{fmt(stats.totalLoss)} ha</span> de cobertura arbórea,
-                        lo que equivale a una disminución del <strong>{stats.percentLoss}%</strong> de la cobertura arbórea desde el año 2010.
-                        Esta pérdida ha generado aproximadamente <span className="font-bold text-slate-800">{fmt(data.co2Emissions)} Mt</span> de emisiones de CO₂e a la atmósfera.
-                    </p>
+                    {data ? (
+                        <p className="text-slate-600 leading-relaxed text-lg">
+                            Desde 2010 hasta 2023, <strong>{countryName}</strong> perdió <span className="bg-[#FE6598]/20 px-1 rounded font-bold text-[#C72E66]">{fmt(stats.totalLoss)} ha</span> de cobertura arbórea,
+                            lo que equivale a una disminución del <strong>{stats.percentLoss}%</strong> de la cobertura arbórea desde el año 2010.
+                            Esta pérdida ha generado aproximadamente <span className="font-bold text-slate-800">{fmt(data.co2Emissions)} Mt</span> de emisiones de CO₂e a la atmósfera.
+                        </p>
+                    ) : (
+                        <div className="h-20 animate-pulse bg-slate-100 rounded"></div>
+                    )}
                 </Card>
             </div>
 
@@ -145,21 +168,21 @@ export const GFWReport = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <StatCard
                         title="Pérdida Total (2010-2023)"
-                        value={data.lossTotal}
+                        value={data?.lossTotal || 0}
                         unit="ha"
                         subtitle="Pérdida bruta total de dosel arbóreo (>30% densidad)."
                         colorClass="border-t-[#FE6598]"
                     />
                     <StatCard
                         title="Pérdida Bosque Primario"
-                        value={data.primaryLoss}
+                        value={data?.primaryLoss || 0}
                         unit="ha"
                         subtitle="Bosque tropical húmedo maduro irreemplazable."
                         colorClass="border-t-[#97BD3D]"
                     />
                     <StatCard
                         title="Emisiones Totales"
-                        value={data.co2Emissions}
+                        value={data?.co2Emissions || 0}
                         unit="Mt"
                         subtitle="Megatoneladas de CO₂ liberadas por pérdida de biomasa."
                         colorClass="border-t-[#EAB839]"
@@ -186,7 +209,7 @@ export const GFWReport = () => {
 
                             <div className="h-[400px] w-full">
                                 <ResponsiveContainer width="100%" height="100%">
-                                    <BarChart data={data.years} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                                    <BarChart data={data?.years || []} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
                                         <XAxis
                                             dataKey="year"
@@ -219,7 +242,7 @@ export const GFWReport = () => {
                                 </h4>
                                 <div className="h-[150px] w-full">
                                     <ResponsiveContainer width="100%" height="100%">
-                                        <LineChart data={data.years}>
+                                        <LineChart data={data?.years || []}>
                                             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                                             <XAxis dataKey="year" hide />
                                             <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10 }} width={30} />

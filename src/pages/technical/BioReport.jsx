@@ -7,17 +7,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { MiniMap } from '../../components/map/MiniMap';
 import { SICA_COORDINATES } from '../../api/constants';
 
-const BIO_DATA = {
-    'GT': { progress: { protected: 21.3, oecm: 5.1, gap: 3.6 }, integrity: [{ name: 'Alta', value: 38, color: '#15803D' }, { name: 'Media', value: 42, color: '#EAB308' }, { name: 'Baja', value: 20, color: '#EF4444' }], species: [{ group: 'Anfibios', total: 140, threatened: 85 }, { group: 'Aves', total: 320, threatened: 45 }, { group: 'Mamíferos', total: 180, threatened: 32 }] },
-    'HN': { progress: { protected: 15.8, oecm: 2.0, gap: 12.2 }, integrity: [{ name: 'Alta', value: 30, color: '#15803D' }, { name: 'Media', value: 50, color: '#EAB308' }, { name: 'Baja', value: 20, color: '#EF4444' }], species: [{ group: 'Anfibios', total: 90, threatened: 50 }, { group: 'Aves', total: 400, threatened: 60 }, { group: 'Mamíferos', total: 160, threatened: 25 }] },
-    'CR': { progress: { protected: 25.4, oecm: 6.5, gap: 0 }, integrity: [{ name: 'Alta', value: 50, color: '#15803D' }, { name: 'Media', value: 40, color: '#EAB308' }, { name: 'Baja', value: 10, color: '#EF4444' }], species: [{ group: 'Anfibios', total: 180, threatened: 30 }, { group: 'Aves', total: 500, threatened: 20 }, { group: 'Mamíferos', total: 200, threatened: 15 }] },
-    'PA': { progress: { protected: 22.1, oecm: 4.8, gap: 3.1 }, integrity: [{ name: 'Alta', value: 45, color: '#15803D' }, { name: 'Media', value: 35, color: '#EAB308' }, { name: 'Baja', value: 20, color: '#EF4444' }], species: [{ group: 'Anfibios', total: 120, threatened: 40 }, { group: 'Aves', total: 450, threatened: 35 }, { group: 'Mamíferos', total: 190, threatened: 22 }] },
-    'NI': { progress: { protected: 20.0, oecm: 3.0, gap: 7.0 }, integrity: [{ name: 'Alta', value: 35, color: '#15803D' }, { name: 'Media', value: 45, color: '#EAB308' }, { name: 'Baja', value: 20, color: '#EF4444' }], species: [{ group: 'Anfibios', total: 100, threatened: 45 }, { group: 'Aves', total: 380, threatened: 50 }, { group: 'Mamíferos', total: 150, threatened: 28 }] },
-    'SV': { progress: { protected: 10.5, oecm: 1.2, gap: 18.3 }, integrity: [{ name: 'Alta', value: 10, color: '#15803D' }, { name: 'Media', value: 30, color: '#EAB308' }, { name: 'Baja', value: 60, color: '#EF4444' }], species: [{ group: 'Anfibios', total: 60, threatened: 40 }, { group: 'Aves', total: 250, threatened: 80 }, { group: 'Mamíferos', total: 100, threatened: 50 }] },
-    'BZ': { progress: { protected: 28.6, oecm: 5.5, gap: 0 }, integrity: [{ name: 'Alta', value: 60, color: '#15803D' }, { name: 'Media', value: 30, color: '#EAB308' }, { name: 'Baja', value: 10, color: '#EF4444' }], species: [{ group: 'Anfibios', total: 80, threatened: 20 }, { group: 'Aves', total: 300, threatened: 30 }, { group: 'Mamíferos', total: 140, threatened: 18 }] },
-    'DO': { progress: { protected: 19.2, oecm: 3.8, gap: 7.0 }, integrity: [{ name: 'Alta', value: 25, color: '#15803D' }, { name: 'Media', value: 50, color: '#EAB308' }, { name: 'Baja', value: 25, color: '#EF4444' }], species: [{ group: 'Anfibios', total: 110, threatened: 60 }, { group: 'Aves', total: 350, threatened: 70 }, { group: 'Mamíferos', total: 130, threatened: 40 }] },
-    'regional': { progress: { protected: 20.4, oecm: 4.1, gap: 5.5 }, integrity: [{ name: 'Alta', value: 38, color: '#15803D' }, { name: 'Media', value: 41, color: '#EAB308' }, { name: 'Baja', value: 21, color: '#EF4444' }], species: [{ group: 'Anfibios', total: 880, threatened: 370 }, { group: 'Aves', total: 2950, threatened: 390 }, { group: 'Mamíferos', total: 1250, threatened: 240 }] },
-};
+// Eliminadas constantes locales para usar fetch remoto
 
 
 
@@ -41,16 +31,25 @@ export const BioReport = () => {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
     const selectedIso = searchParams.get('country') || 'regional';
-    const [loading, setLoading] = useState(false);
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [showHelp, setShowHelp] = useState(false);
 
-    const dataSources = [
-        { name: "Cobertura 30x30", description: "Progreso hacia la Meta 3 del Marco Mundial de Biodiversidad.", provider: "UN Biodiversity Lab", updateFrequency: "Anual" },
-        { name: "Integridad Ecológica", description: "Índice de integridad del ecosistema basado en presión humana.", provider: "Biodiversity Intactness Index", updateFrequency: "Anual" },
-        { name: "Listas Rojas", description: "Especies amenazadas y en peligro de extinción.", provider: "UICN", updateFrequency: "Semestral" }
-    ];
-
-    const data = BIO_DATA[selectedIso] || BIO_DATA['regional'];
+    useEffect(() => {
+        setLoading(true);
+        const remoteUrl = `https://raw.githubusercontent.com/mapgisdev/prototipo_oar/main/public/api/bio_data.json`;
+        
+        fetch(remoteUrl)
+            .then(res => res.json())
+            .then(allData => {
+                setData(allData[selectedIso] || allData['regional']);
+                setLoading(false);
+            })
+            .catch(err => {
+                console.error("Error fetching remote bio data:", err);
+                setLoading(false);
+            });
+    }, [selectedIso]);
 
     const countryName = SICA_COORDINATES[selectedIso]?.name || (selectedIso === 'regional' ? 'Región SICA' : 'Guatemala');
     const mapView = SICA_COORDINATES[selectedIso] || SICA_COORDINATES['regional'];
@@ -121,17 +120,21 @@ export const BioReport = () => {
                         <TrendingUp className="h-5 w-5 text-red-500" />
                         Progreso hacia la Meta 30x30: {countryName}
                     </h3>
-                    <p className="text-slate-600 leading-relaxed text-lg">
-                        <strong>{countryName}</strong> ha alcanzado una protección del <span className="text-[#15803D] font-bold">{(data.progress.protected + data.progress.oecm).toFixed(1)}%</span> de su territorio
-                        (Áreas Protegidas + OECMs). Para cumplir la meta del 30% al 2030, se requiere conservar un <span className="bg-red-50 text-red-600 px-1 rounded font-bold">{data.progress.gap > 0 ? `${data.progress.gap}% adicional` : '0% (Meta Alcanzada)'}</span>.
-                    </p>
+                    {data ? (
+                        <p className="text-slate-600 leading-relaxed text-lg">
+                            <strong>{countryName}</strong> ha alcanzado una protección del <span className="text-[#15803D] font-bold">{(data.progress.protected + data.progress.oecm).toFixed(1)}%</span> de su territorio
+                            (Áreas Protegidas + OECMs). Para cumplir la meta del 30% al 2030, se requiere conservar un <span className="bg-red-50 text-red-600 px-1 rounded font-bold">{data.progress.gap > 0 ? `${data.progress.gap}% adicional` : '0% (Meta Alcanzada)'}</span>.
+                        </p>
+                    ) : (
+                        <div className="h-20 animate-pulse bg-slate-100 rounded"></div>
+                    )}
                 </Card>
 
                 {/* KPI CARDS */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <StatCard
                         title="Cobertura Efectiva (AP + OECM)"
-                        value={(data.progress.protected + data.progress.oecm).toFixed(1)}
+                        value={(data?.progress.protected || 0 + data?.progress.oecm || 0).toFixed(1)}
                         unit="%"
                         subtitle="Porcentaje total del territorio bajo conservación."
                         colorClass="border-t-[#15803D]"
@@ -139,7 +142,7 @@ export const BioReport = () => {
                     />
                     <StatCard
                         title="Brecha de Integridad"
-                        value={data.integrity.find(i => i.name === 'Baja').value}
+                        value={data?.integrity.find(i => i.name === 'Baja')?.value || 0}
                         unit="%"
                         subtitle="Ecosistemas con integridad ecológica baja."
                         colorClass="border-t-red-500"
@@ -147,7 +150,7 @@ export const BioReport = () => {
                     />
                     <StatCard
                         title="Especies Amenazadas"
-                        value={data.species.reduce((acc, curr) => acc + curr.threatened, 0)}
+                        value={data?.species.reduce((acc, curr) => acc + curr.threatened, 0) || 0}
                         unit="spp."
                         subtitle="Total de especies en listas rojas (UICN)."
                         colorClass="border-t-orange-500"

@@ -6,18 +6,8 @@ import { Flame, AlertTriangle, RefreshCw, ArrowLeft, ArrowDown, Share2, Download
 import { Card, Button, Badge, DataSourceModal, ShareButton } from '../../components/ui/Shared';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-// Datos Simulados por País para Enriquecer (Mock API)
-const FIRE_DATA = {
-    "GT": { alerts: 1240, highConfidence: 850, area: 15400, trend: [{ d: 'L', v: 120 }, { d: 'M', v: 145 }, { d: 'X', v: 130 }, { d: 'J', v: 180 }, { d: 'V', v: 210 }, { d: 'S', v: 195 }, { d: 'D', v: 222 }] },
-    "HN": { alerts: 2100, highConfidence: 1600, area: 28900, trend: [{ d: 'L', v: 220 }, { d: 'M', v: 240 }, { d: 'X', v: 230 }, { d: 'J', v: 280 }, { d: 'V', v: 350 }, { d: 'S', v: 320 }, { d: 'D', v: 400 }] },
-    "NI": { alerts: 1800, highConfidence: 1200, area: 22000, trend: [{ d: 'L', v: 180 }, { d: 'M', v: 200 }, { d: 'X', v: 190 }, { d: 'J', v: 250 }, { d: 'V', v: 300 }, { d: 'S', v: 280 }, { d: 'D', v: 350 }] },
-    "CR": { alerts: 450, highConfidence: 300, area: 5600, trend: [{ d: 'L', v: 50 }, { d: 'M', v: 65 }, { d: 'X', v: 55 }, { d: 'J', v: 80 }, { d: 'V', v: 95 }, { d: 'S', v: 90 }, { d: 'D', v: 100 }] },
-    "PA": { alerts: 520, highConfidence: 380, area: 6200, trend: [{ d: 'L', v: 60 }, { d: 'M', v: 75 }, { d: 'X', v: 65 }, { d: 'J', v: 90 }, { d: 'V', v: 110 }, { d: 'S', v: 100 }, { d: 'D', v: 120 }] },
-    "SV": { alerts: 320, highConfidence: 180, area: 3400, trend: [{ d: 'L', v: 40 }, { d: 'M', v: 50 }, { d: 'X', v: 45 }, { d: 'J', v: 60 }, { d: 'V', v: 80 }, { d: 'S', v: 70 }, { d: 'D', v: 90 }] },
-    "BZ": { alerts: 180, highConfidence: 95, area: 2100, trend: [{ d: 'L', v: 20 }, { d: 'M', v: 30 }, { d: 'X', v: 25 }, { d: 'J', v: 40 }, { d: 'V', v: 50 }, { d: 'S', v: 45 }, { d: 'D', v: 60 }] },
-    "DO": { alerts: 670, highConfidence: 420, area: 8900, trend: [{ d: 'L', v: 80 }, { d: 'M', v: 95 }, { d: 'X', v: 85 }, { d: 'J', v: 110 }, { d: 'V', v: 130 }, { d: 'S', v: 120 }, { d: 'D', v: 150 }] },
-    "regional": { alerts: 7280, highConfidence: 4945, area: 86900, trend: [{ d: 'L', v: 750 }, { d: 'M', v: 855 }, { d: 'X', v: 835 }, { d: 'J', v: 1040 }, { d: 'V', v: 1225 }, { d: 'S', v: 1120 }, { d: 'D', v: 1402 }] }
-};
+// Eliminadas constantes locales para usar fetch remoto
+
 
 import { MiniMap } from '../../components/map/MiniMap';
 import { SICA_COORDINATES } from '../../api/constants';
@@ -51,7 +41,8 @@ export const FiresDashboard = () => {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
     const selectedIso = searchParams.get("country") || "regional";
-    const [loading, setLoading] = useState(false);
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [showHelp, setShowHelp] = useState(false);
 
     const dataSources = [
@@ -59,7 +50,21 @@ export const FiresDashboard = () => {
         { name: "Área Quemada", description: "Estimación de superficie afectada por incendios.", provider: "GWIS (Global Wildfire Info System)", updateFrequency: "Mensual" }
     ];
 
-    const data = FIRE_DATA[selectedIso] || FIRE_DATA['regional'];
+    useEffect(() => {
+        setLoading(true);
+        const remoteUrl = `https://raw.githubusercontent.com/mapgisdev/prototipo_oar/main/public/api/fires_data.json`;
+        
+        fetch(remoteUrl)
+            .then(res => res.json())
+            .then(allData => {
+                setData(allData[selectedIso] || allData['regional']);
+                setLoading(false);
+            })
+            .catch(err => {
+                console.error("Error fetching remote fires data:", err);
+                setLoading(false);
+            });
+    }, [selectedIso]);
 
     const countryName = SICA_COORDINATES[selectedIso]?.name || (selectedIso === 'regional' ? "Región SICA" : "Guatemala");
     const mapView = SICA_COORDINATES[selectedIso] || SICA_COORDINATES['regional'];
@@ -139,32 +144,36 @@ export const FiresDashboard = () => {
                         <AlertTriangle className="h-5 w-5 text-orange-500" />
                         Situación Actual: {countryName}
                     </h3>
-                    <p className="text-slate-600 leading-relaxed text-lg">
-                        En las últimas 24 horas, se han detectado <span className="font-bold text-slate-900">{data.alerts} focos de calor</span> en <strong>{countryName}</strong>.
-                        De estos, <span className="bg-red-100 text-red-800 px-1 rounded font-bold">{data.highConfidence}</span> son de alta confianza,
-                        lo que representa un riesgo significativo para la calidad del aire y la cobertura forestal.
-                    </p>
+                    {data ? (
+                        <p className="text-slate-600 leading-relaxed text-lg">
+                            En las últimas 24 horas, se han detectado <span className="font-bold text-slate-900">{data.alerts} focos de calor</span> en <strong>{countryName}</strong>.
+                            De estos, <span className="bg-red-100 text-red-800 px-1 rounded font-bold">{data.highConfidence}</span> son de alta confianza,
+                            lo que representa un riesgo significativo para la calidad del aire y la cobertura forestal.
+                        </p>
+                    ) : (
+                        <div className="h-20 animate-pulse bg-slate-100 rounded"></div>
+                    )}
                 </Card>
 
                 {/* KPI CARDS */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <StatCard
                         title="Alertas (24h)"
-                        value={data.alerts}
+                        value={data?.alerts || 0}
                         unit="focos"
                         subtitle="Puntos de calor detectados por satélite VIIRS."
                         colorClass="border-t-orange-500"
                     />
                     <StatCard
                         title="Alta Confianza"
-                        value={data.highConfidence}
+                        value={data?.highConfidence || 0}
                         unit="alertas"
                         subtitle="Probabilidad >80% de ser un incendio activo."
                         colorClass="border-t-red-600"
                     />
                     <StatCard
                         title="Superficie Afectada"
-                        value={data.area}
+                        value={data?.area || 0}
                         unit="ha"
                         subtitle="Estimación basada en el radio de detección."
                         colorClass="border-t-slate-800"
@@ -181,7 +190,7 @@ export const FiresDashboard = () => {
                             </div>
                             <div className="flex-1 w-full min-h-0">
                                 <ResponsiveContainer width="100%" height="100%">
-                                    <AreaChart data={data.trend}>
+                                    <AreaChart data={data?.trend || []}>
                                         <defs>
                                             <linearGradient id="colorFire" x1="0" y1="0" x2="0" y2="1">
                                                 <stop offset="5%" stopColor="#F97316" stopOpacity={0.1} />
