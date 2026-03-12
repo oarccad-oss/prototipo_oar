@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Button, Badge, DataSourceModal, ShareButton } from '../../components/ui/Shared';
 import { Anchor, ThermometerSun, ArrowLeft, ArrowDown, Share2, Download, TrendingUp, Fish, Waves, HelpCircle } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -37,7 +37,7 @@ export const OceanDashboard = () => {
     useEffect(() => {
         setLoading(true);
         const remoteUrl = `https://raw.githubusercontent.com/mapgisdev/prototipo_oar/main/public/api/ocean_data.json`;
-        
+
         fetch(remoteUrl)
             .then(res => res.json())
             .then(allData => {

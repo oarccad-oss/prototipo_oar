@@ -28,3 +28,6 @@ EXPOSE $PORT
 
 # Ejecutar el servicio. El flag '-s' gestiona el enrutamiento en Single Page Applications (SPA)
 CMD serve -s dist -l tcp://0.0.0.0:${PORT}
+
+#npm run dev
+

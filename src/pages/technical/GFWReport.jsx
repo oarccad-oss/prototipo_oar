@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
     BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
     LineChart, Line
@@ -54,7 +54,7 @@ export const GFWReport = () => {
         setLoading(true);
         // URL del repositorio remoto (GitHub Raw)
         const remoteUrl = `https://raw.githubusercontent.com/mapgisdev/prototipo_oar/main/public/api/forest_data.json`;
-        
+
         fetch(remoteUrl)
             .then(res => res.json())
             .then(allData => {
@@ -275,7 +275,7 @@ export const GFWReport = () => {
                             </div>
 
                             <div className="flex-1 overflow-y-auto max-h-[600px]">
-                                {data.topRegions && data.topRegions.length > 0 ? (
+                                {data?.topRegions && data.topRegions.length > 0 ? (
                                     data.topRegions.map((region, index) => (
                                         <div key={index} className="flex items-center p-4 border-b border-slate-100 hover:bg-slate-50 transition-colors relative group">
                                             {/* Barra de fondo porcentual */}

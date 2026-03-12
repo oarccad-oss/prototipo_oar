@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend } from 'recharts';
-import { Shield, Leaf, AlertCircle, Info, ArrowLeft, ArrowDown, Share2, Download, TrendingUp, Target, HelpCircle } from 'lucide-react';
+import { Shield, Leaf, AlertCircle, Info, ArrowLeft, ArrowDown, Share2, Download, TrendingUp, Target, HelpCircle, Loader2 } from 'lucide-react';
 import { Card, Badge, Button, DataSourceModal, ShareButton } from '../../components/ui/Shared';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { MiniMap } from '../../components/map/MiniMap';
@@ -38,7 +38,7 @@ export const BioReport = () => {
     useEffect(() => {
         setLoading(true);
         const remoteUrl = `https://raw.githubusercontent.com/mapgisdev/prototipo_oar/main/public/api/bio_data.json`;
-        
+
         fetch(remoteUrl)
             .then(res => res.json())
             .then(allData => {
@@ -134,7 +134,7 @@ export const BioReport = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <StatCard
                         title="Cobertura Efectiva (AP + OECM)"
-                        value={(data?.progress.protected || 0 + data?.progress.oecm || 0).toFixed(1)}
+                        value={data?.progress ? (data.progress.protected + data.progress.oecm).toFixed(1) : "0.0"}
                         unit="%"
                         subtitle="Porcentaje total del territorio bajo conservación."
                         colorClass="border-t-[#15803D]"
@@ -142,7 +142,7 @@ export const BioReport = () => {
                     />
                     <StatCard
                         title="Brecha de Integridad"
-                        value={data?.integrity.find(i => i.name === 'Baja')?.value || 0}
+                        value={data?.integrity ? (data.integrity.find(i => i.name === 'Baja')?.value || 0) : 0}
                         unit="%"
                         subtitle="Ecosistemas con integridad ecológica baja."
                         colorClass="border-t-red-500"
@@ -150,7 +150,7 @@ export const BioReport = () => {
                     />
                     <StatCard
                         title="Especies Amenazadas"
-                        value={data?.species.reduce((acc, curr) => acc + curr.threatened, 0) || 0}
+                        value={data?.species ? data.species.reduce((acc, curr) => acc + curr.threatened, 0) : 0}
                         unit="spp."
                         subtitle="Total de especies en listas rojas (UICN)."
                         colorClass="border-t-orange-500"
@@ -163,29 +163,44 @@ export const BioReport = () => {
                     <Card className="p-8 flex flex-col items-center border-t-4 border-brand-secondary">
                         <h3 className="font-bold text-slate-700 mb-6 uppercase tracking-widest text-sm">Cobertura Territorial</h3>
                         <div className="relative w-48 h-48 flex items-center justify-center">
-                            <svg className="transform -rotate-90 w-full h-full">
-                                <circle cx="96" cy="96" r="80" stroke="#e2e8f0" strokeWidth="16" fill="transparent" />
-                                <circle
-                                    cx="96"
-                                    cy="96"
-                                    r="80"
-                                    stroke="#15803D"
-                                    strokeWidth="16"
-                                    fill="transparent"
-                                    strokeDasharray={502}
-                                    strokeDashoffset={502 - ((data.progress.protected + data.progress.oecm) / 100) * 502}
-                                    className="transition-all duration-1000 ease-out"
-                                />
-                            </svg>
-                            <span className="absolute text-3xl font-bold text-slate-800">{(data.progress.protected + data.progress.oecm).toFixed(1)}%</span>
+                            {data?.progress ? (
+                                <>
+                                    <svg className="transform -rotate-90 w-full h-full">
+                                        <circle cx="96" cy="96" r="80" stroke="#e2e8f0" strokeWidth="16" fill="transparent" />
+                                        <circle
+                                            cx="96"
+                                            cy="96"
+                                            r="80"
+                                            stroke="#15803D"
+                                            strokeWidth="16"
+                                            fill="transparent"
+                                            strokeDasharray={502}
+                                            strokeDashoffset={502 - ((data.progress.protected + data.progress.oecm) / 100) * 502}
+                                            className="transition-all duration-1000 ease-out"
+                                        />
+                                    </svg>
+                                    <span className="absolute text-3xl font-bold text-slate-800">{(data.progress.protected + data.progress.oecm).toFixed(1)}%</span>
+                                </>
+                            ) : (
+                                <div className="h-full w-full animate-pulse bg-slate-100 rounded-full" />
+                            )}
                         </div>
                         <div className="w-full mt-8 space-y-2">
-                            <div className="flex justify-between text-sm"><span className="text-slate-600">Áreas Protegidas</span><span className="font-bold">{data.progress.protected}%</span></div>
-                            <div className="flex justify-between text-sm"><span className="text-slate-600">OECMs</span><span className="font-bold">{data.progress.oecm}%</span></div>
-                            <div className="flex justify-between text-sm pt-2 border-t mt-2">
-                                <span className={`${data.progress.gap > 0 ? 'text-red-500' : 'text-green-500'} font-bold`}>Brecha al 2030</span>
-                                <span className={`${data.progress.gap > 0 ? 'text-red-500' : 'text-green-500'} font-bold`}>{data.progress.gap > 0 ? `${data.progress.gap}%` : 'Meta Cumplida'}</span>
-                            </div>
+                            {data?.progress ? (
+                                <>
+                                    <div className="flex justify-between text-sm"><span className="text-slate-600">Áreas Protegidas</span><span className="font-bold">{data.progress.protected}%</span></div>
+                                    <div className="flex justify-between text-sm"><span className="text-slate-600">OECMs</span><span className="font-bold">{data.progress.oecm}%</span></div>
+                                    <div className="flex justify-between text-sm pt-2 border-t mt-2">
+                                        <span className={`${data.progress.gap > 0 ? 'text-red-500' : 'text-green-500'} font-bold`}>Brecha al 2030</span>
+                                        <span className={`${data.progress.gap > 0 ? 'text-red-500' : 'text-green-500'} font-bold`}>{data.progress.gap > 0 ? `${data.progress.gap}%` : 'Meta Cumplida'}</span>
+                                    </div>
+                                </>
+                            ) : (
+                                <div className="space-y-2">
+                                    <div className="h-4 bg-slate-100 animate-pulse rounded w-full" />
+                                    <div className="h-4 bg-slate-100 animate-pulse rounded w-full" />
+                                </div>
+                            )}
                         </div>
                     </Card>
 
@@ -193,32 +208,40 @@ export const BioReport = () => {
                         <Card className="p-6 h-[350px]">
                             <h3 className="font-bold text-slate-800 mb-4 flex items-center gap-2 text-sm uppercase tracking-wide"><Leaf className="h-4 w-4 text-green-600" /> Integridad Ecológica</h3>
                             <div className="h-full w-full min-h-0 relative">
-                                <ResponsiveContainer width="99%" height="90%">
-                                    <PieChart>
-                                        <Pie data={data.integrity} innerRadius={60} outerRadius={80} dataKey="value" paddingAngle={5}>
-                                            {data.integrity.map((entry, index) => (
-                                                <Cell key={`cell-${index}`} fill={entry.color} />
-                                            ))}
-                                        </Pie>
-                                        <Tooltip contentStyle={{ borderRadius: '8px', border: 'none' }} />
-                                        <Legend verticalAlign="bottom" height={36} />
-                                    </PieChart>
-                                </ResponsiveContainer>
+                                {data?.integrity ? (
+                                    <ResponsiveContainer width="99%" height="90%">
+                                        <PieChart>
+                                            <Pie data={data.integrity} innerRadius={60} outerRadius={80} dataKey="value" paddingAngle={5}>
+                                                {data.integrity.map((entry, index) => (
+                                                    <Cell key={`cell-${index}`} fill={entry.color} />
+                                                ))}
+                                            </Pie>
+                                            <Tooltip contentStyle={{ borderRadius: '8px', border: 'none' }} />
+                                            <Legend verticalAlign="bottom" height={36} />
+                                        </PieChart>
+                                    </ResponsiveContainer>
+                                ) : (
+                                    <div className="h-full w-full flex items-center justify-center"><Loader2 className="animate-spin text-slate-300" /></div>
+                                )}
                             </div>
                         </Card>
                         <Card className="p-6 h-[350px]">
                             <h3 className="font-bold text-slate-800 mb-4 flex items-center gap-2 text-sm uppercase tracking-wide"><AlertCircle className="h-4 w-4 text-red-500" /> Riesgo de Extinción</h3>
                             <div className="h-full w-full min-h-0 relative">
-                                <ResponsiveContainer width="99%" height="90%">
-                                    <BarChart layout="vertical" data={data.species} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                                        <XAxis type="number" hide />
-                                        <YAxis dataKey="group" type="category" width={70} tick={{ fontSize: 12 }} />
-                                        <Tooltip contentStyle={{ borderRadius: '8px', border: 'none' }} cursor={{ fill: 'transparent' }} />
-                                        <Bar dataKey="total" name="Total Especies" stackId="a" fill="#e2e8f0" radius={[0, 4, 4, 0]} />
-                                        <Bar dataKey="threatened" name="Amenazadas" stackId="a" fill="#EF4444" radius={[0, 4, 4, 0]} />
-                                        <Legend verticalAlign="bottom" height={36} />
-                                    </BarChart>
-                                </ResponsiveContainer>
+                                {data?.species ? (
+                                    <ResponsiveContainer width="99%" height="90%">
+                                        <BarChart layout="vertical" data={data.species} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                                            <XAxis type="number" hide />
+                                            <YAxis dataKey="group" type="category" width={70} tick={{ fontSize: 12 }} />
+                                            <Tooltip contentStyle={{ borderRadius: '8px', border: 'none' }} cursor={{ fill: 'transparent' }} />
+                                            <Bar dataKey="total" name="Total Especies" stackId="a" fill="#e2e8f0" radius={[0, 4, 4, 0]} />
+                                            <Bar dataKey="threatened" name="Amenazadas" stackId="a" fill="#EF4444" radius={[0, 4, 4, 0]} />
+                                            <Legend verticalAlign="bottom" height={36} />
+                                        </BarChart>
+                                    </ResponsiveContainer>
+                                ) : (
+                                    <div className="h-full w-full flex items-center justify-center"><Loader2 className="animate-spin text-slate-300" /></div>
+                                )}
                             </div>
                         </Card>
                     </div>

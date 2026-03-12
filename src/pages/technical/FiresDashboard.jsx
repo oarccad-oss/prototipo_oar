@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, AreaChart, Area
 } from 'recharts';
@@ -25,7 +25,7 @@ const FIRE_POINTS = [
 ];
 
 const StatCard = ({ title, value, unit, colorClass, subtitle }) => (
-    <div className={`bg-white p-6 border-t-4 ${colorClass} shadow-sm hover:shadow-md transition-shadow`}>
+    <div className={`bg - white p - 6 border - t - 4 ${colorClass} shadow - sm hover: shadow - md transition - shadow`}>
         <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">{title}</h4>
         <div className="flex items-baseline gap-2 mb-2">
             <span className="text-3xl font-extrabold text-slate-800">
@@ -53,7 +53,7 @@ export const FiresDashboard = () => {
     useEffect(() => {
         setLoading(true);
         const remoteUrl = `https://raw.githubusercontent.com/mapgisdev/prototipo_oar/main/public/api/fires_data.json`;
-        
+
         fetch(remoteUrl)
             .then(res => res.json())
             .then(allData => {

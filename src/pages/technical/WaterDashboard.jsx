@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
 import { Droplets, AlertTriangle, ArrowLeft, ArrowDown, Share2, Download, TrendingUp, CloudRain, HelpCircle } from 'lucide-react';
 import { Card, Badge, Button, DataSourceModal, ShareButton } from '../../components/ui/Shared';
