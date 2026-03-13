@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Badge, DataSourceModal, ShareButton } from '../../components/ui/Shared';
+import { Card, Button, Badge, DataSourceModal, ShareButton } from '../../../components/ui/Shared';
 import { Anchor, ThermometerSun, ArrowLeft, ArrowDown, Share2, Download, TrendingUp, Fish, Waves, HelpCircle } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { MiniMap } from '../../components/map/MiniMap';
-import { SICA_COORDINATES } from '../../api/constants';
+import { MiniMap } from '../../../components/map/MiniMap';
+import { SICA_COORDINATES } from '../../../api/constants';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, AreaChart, Area } from 'recharts';
 
 // Eliminadas constantes locales para usar fetch remoto
@@ -26,7 +26,7 @@ const StatCard = ({ title, value, unit, colorClass, subtitle, icon: Icon }) => (
     </div>
 );
 
-export const OceanDashboard = () => {
+export const AnswerOceanHealth = () => {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
     const selectedIso = searchParams.get('country') || 'regional';

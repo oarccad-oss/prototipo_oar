@@ -40,15 +40,16 @@ export const Chatbot = () => {
 
             if (lower.includes('incendio') || lower.includes('fuego') || lower.includes('calor')) {
                 responseText = AI_RESPONSES.incendios;
-                actionLink = { text: 'Ver Mapa de Calor', path: '/technical/map?layer=fires' };
+                actionLink = { text: 'Ver Análisis de Incendios', path: '/preguntas/incendios-activos' };
             } else if (lower.includes('cobertura') || lower.includes('bosque')) {
                 responseText = AI_RESPONSES.cobertura;
-                actionLink = { text: 'Ver Gráfico Histórico', path: '/technical/dashboard' };
+                actionLink = { text: 'Ver Estado de Bosques', path: '/preguntas/estado-bosques' };
             } else if (lower.includes('reporte') || lower.includes('documento')) {
                 responseText = AI_RESPONSES.reporte;
                 actionLink = { text: 'Ir a Documentación', path: '/technical/docs' };
             } else if (lower.includes('restaur') || lower.includes('meta')) {
                 responseText = AI_RESPONSES.restauracion;
+                actionLink = { text: 'Ver Meta 30x30', path: '/preguntas/meta-30x30' };
             }
 
             setMessages(prev => [...prev, {

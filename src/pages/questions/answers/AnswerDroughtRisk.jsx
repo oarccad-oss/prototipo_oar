@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { ComposedChart, Line, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Sun, CloudRain, Loader2, AlertOctagon, ArrowLeft, ArrowDown, Share2, Download, Thermometer, Wind, HelpCircle } from 'lucide-react';
-import { Card, Button, Badge, DataSourceModal, ShareButton } from '../../components/ui/Shared';
+import { Card, Button, Badge, DataSourceModal, ShareButton } from '../../../components/ui/Shared';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { MiniMap } from '../../components/map/MiniMap';
+import { MiniMap } from '../../../components/map/MiniMap';
 
 const POINTS = [
     { name: 'Guatemala City (GT)', lat: 14.63, lon: -90.50, country: 'Guatemala' },
@@ -34,7 +34,7 @@ const StatCard = ({ title, value, unit, colorClass, subtitle, icon: Icon }) => (
     </div>
 );
 
-export const ClimateDashboard = () => {
+export const AnswerDroughtRisk = () => {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
     const locationParam = searchParams.get('location');

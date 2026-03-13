@@ -3,14 +3,14 @@ import {
     LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, AreaChart, Area
 } from 'recharts';
 import { Flame, AlertTriangle, RefreshCw, ArrowLeft, ArrowDown, Share2, Download, TrendingUp, MapPin, HelpCircle } from 'lucide-react';
-import { Card, Button, Badge, DataSourceModal, ShareButton } from '../../components/ui/Shared';
+import { Card, Button, Badge, DataSourceModal, ShareButton } from '../../../components/ui/Shared';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 // Eliminadas constantes locales para usar fetch remoto
 
 
-import { MiniMap } from '../../components/map/MiniMap';
-import { SICA_COORDINATES } from '../../api/constants';
+import { MiniMap } from '../../../components/map/MiniMap';
+import { SICA_COORDINATES } from '../../../api/constants';
 
 // Datos Simulados de Incendios (Ubicación aprox.)
 const FIRE_POINTS = [
@@ -37,7 +37,7 @@ const StatCard = ({ title, value, unit, colorClass, subtitle }) => (
     </div>
 );
 
-export const FiresDashboard = () => {
+export const AnswerActiveFires = () => {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
     const selectedIso = searchParams.get("country") || "regional";

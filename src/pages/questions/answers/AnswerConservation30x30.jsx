@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend } from 'recharts';
 import { Shield, Leaf, AlertCircle, Info, ArrowLeft, ArrowDown, Share2, Download, TrendingUp, Target, HelpCircle, Loader2 } from 'lucide-react';
-import { Card, Badge, Button, DataSourceModal, ShareButton } from '../../components/ui/Shared';
+import { Card, Badge, Button, DataSourceModal, ShareButton } from '../../../components/ui/Shared';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { MiniMap } from '../../components/map/MiniMap';
-import { SICA_COORDINATES } from '../../api/constants';
+import { MiniMap } from '../../../components/map/MiniMap';
+import { SICA_COORDINATES } from '../../../api/constants';
 
 // Eliminadas constantes locales para usar fetch remoto
 
@@ -27,7 +27,7 @@ const StatCard = ({ title, value, unit, colorClass, subtitle, icon: Icon }) => (
     </div>
 );
 
-export const BioReport = () => {
+export const AnswerConservation30x30 = () => {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
     const selectedIso = searchParams.get('country') || 'regional';

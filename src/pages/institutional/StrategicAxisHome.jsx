@@ -158,7 +158,7 @@ export const StrategicAxisHome = () => {
                         icon={HelpCircle}
                         title="Preguntas Estratégicas"
                         description="Consulte la evidencia científica para responder a las interrogantes críticas de gestión ambiental regional."
-                        path="/strategic-questions"
+                        path="/preguntas"
                         colorClass="bg-blue-500 shadow-lg shadow-blue-500/30"
                         delay={200}
                     />
@@ -174,7 +174,7 @@ export const StrategicAxisHome = () => {
                         icon={FileText}
                         title="Reporte Técnico"
                         description="Acceda al reporte completo del Estado de los Bosques y Paisajes Sostenibles (FRA-2024)."
-                        path="/technical/reports/fra-2024"
+                        path="/preguntas/estado-bosques"
                         colorClass="bg-emerald-700 shadow-lg shadow-emerald-700/30"
                         delay={350}
                     />

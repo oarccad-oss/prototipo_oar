@@ -4,10 +4,10 @@ import {
     LineChart, Line
 } from 'recharts';
 import { ArrowDown, Share2, Download, Leaf, AlertTriangle, TrendingUp, MapPin, ArrowLeft, HelpCircle } from 'lucide-react';
-import { Card, Button, Badge, DataSourceModal, ShareButton } from '../../components/ui/Shared';
+import { Card, Button, Badge, DataSourceModal, ShareButton } from '../../../components/ui/Shared';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { MiniMap } from '../../components/map/MiniMap';
-import { SICA_COORDINATES } from '../../api/constants';
+import { MiniMap } from '../../../components/map/MiniMap';
+import { SICA_COORDINATES } from '../../../api/constants';
 // La carga de datos se realiza ahora vía fetch desde el repositorio remoto
 
 // Mapeo de códigos ISO para el selector
@@ -30,7 +30,7 @@ const StatCard = ({ title, value, unit, colorClass, subtitle }) => (
 
 // --- COMPONENTE PRINCIPAL ---
 
-export const GFWReport = () => {
+export const AnswerForestLoss = () => {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
     // Estado para el filtro de país

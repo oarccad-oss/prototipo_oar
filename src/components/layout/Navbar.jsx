@@ -56,6 +56,7 @@ export const Navbar = ({ user, onLogout, toggleSidebar, isSidebarVisible }) => {
                                 <div className="hidden lg:flex items-center gap-6 text-sm font-medium text-slate-600">
                                     <Link to="/" className="hover:text-brand-primary transition-colors">Inicio</Link>
                                     <Link to="/grandes-bosques" className="hover:text-brand-primary transition-colors">Grandes Bosques</Link>
+                                    <Link to="/analisis-multidimensional" className="hover:text-brand-primary transition-colors">Análisis BI</Link>
                                 </div>
                                 <Button onClick={() => navigate('/auth/login')} size="sm">
                                     Acceso Funcionarios

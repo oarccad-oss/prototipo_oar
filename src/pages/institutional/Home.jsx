@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
 import { Button, Card, Badge } from '../../components/ui/Shared';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Globe, Trees, Users, ChevronRight, BarChart3, Map, FileText, ExternalLink, HelpCircle, Flame, CloudRain, Wind, Waves, Droplets, Shield, Activity, ShieldAlert, Layers, Briefcase } from 'lucide-react';
+import { ArrowRight, Globe, Trees, Users, ChevronRight, BarChart3, Map, FileText, ExternalLink, HelpCircle, Flame, CloudRain, Wind, Waves, Droplets, Shield, Activity, ShieldAlert, Layers, Briefcase, Database, PieChart as PieIcon } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { MapViewer } from '../../components/map/MapViewer';
+
+import { QUESTIONS_DATA } from '../questions/questions';
 
 export const Home = () => {
     const navigate = useNavigate();
     const [activeRole, setActiveRole] = useState('decision'); // 'decision', 'tech', 'citizen'
     const [isActiveMap, setIsActiveMap] = useState(false);
 
-
+    // Filter questions for the home page cards
+    const homeQuestions = QUESTIONS_DATA.filter(q => 
+        ['forest-loss', 'active-fires', 'drought-risk', 'conservation-30x30', 'water-security', 'ocean-health'].includes(q.id)
+    );
 
     return (
         <div className="flex flex-col min-h-screen bg-white">
@@ -25,6 +30,10 @@ export const Home = () => {
                     <span className="inline-block px-6 py-2 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-400/30 text-emerald-300 text-lg md:text-xl font-bold tracking-wider uppercase">
                         Observatorio Ambiental Regional (OAR)
                     </span>
+                    <h1 className="text-5xl md:text-7xl font-serif font-black leading-tight drop-shadow-xl">
+                        Decisiones basadas en <br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-cyan-300">Evidencia Ambiental</span>
+                    </h1>
                 </div>
             </section>
 
@@ -32,83 +41,122 @@ export const Home = () => {
             {/* Quick Access - Strategic Questions */}
             <section className="relative z-40 -mt-16 container mx-auto px-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {/* Q1: Forests */}
-                    <Card className="p-6 bg-white/95 backdrop-blur shadow-xl border-t-4 border-t-[#97BD3D] hover:-translate-y-1 transition-transform cursor-pointer group" onClick={() => navigate('/technical/reports/gfw')}>
-                        <div className="flex justify-between items-start mb-4">
-                            <div className="bg-[#97BD3D]/10 p-3 rounded-full">
-                                <Trees className="h-6 w-6 text-[#97BD3D]" />
+                    {homeQuestions.map((q) => (
+                        <Card 
+                            key={q.id} 
+                            className="p-6 bg-white/95 backdrop-blur shadow-xl border-t-4 hover:-translate-y-1 transition-transform cursor-pointer group" 
+                            style={{ borderTopColor: q.color }}
+                            onClick={() => navigate(q.path)}
+                        >
+                            <div className="flex justify-between items-start mb-4">
+                                <div className="p-3 rounded-full" style={{ backgroundColor: `${q.color}15` }}>
+                                    <q.icon className="h-6 w-6" style={{ color: q.color }} />
+                                </div>
+                                <ArrowRight className="h-5 w-5 text-slate-300 group-hover:text-slate-500 transition-colors" />
                             </div>
-                            <ArrowRight className="h-5 w-5 text-slate-300 group-hover:text-[#97BD3D] transition-colors" />
-                        </div>
-                        <h3 className="text-lg font-bold text-slate-800 mb-2 leading-tight">¿Dónde y cuánto bosque estamos perdiendo?</h3>
-                        <p className="text-sm text-slate-600">Más de <span className="font-bold text-[#97BD3D]">7 millones de hectáreas</span> de cobertura arbórea perdidas en el SICA desde 2010.</p>
-                    </Card>
-
-                    {/* Q2: Fires */}
-                    <Card className="p-6 bg-white/95 backdrop-blur shadow-xl border-t-4 border-t-[#EF4444] hover:-translate-y-1 transition-transform cursor-pointer group" onClick={() => navigate('/technical/reports/fires')}>
-                        <div className="flex justify-between items-start mb-4">
-                            <div className="bg-[#EF4444]/10 p-3 rounded-full">
-                                <Flame className="h-6 w-6 text-[#EF4444]" />
-                            </div>
-                            <ArrowRight className="h-5 w-5 text-slate-300 group-hover:text-[#EF4444] transition-colors" />
-                        </div>
-                        <h3 className="text-lg font-bold text-slate-800 mb-2 leading-tight">¿Dónde hay incendios activos ahora?</h3>
-                        <p className="text-sm text-slate-600">Detectados <span className="font-bold text-[#EF4444]">7,280 focos de calor</span> en las últimas 24h, con alta incidencia en el Petén y Olancho.</p>
-                    </Card>
-
-                    {/* Q3: Climate */}
-                    <Card className="p-6 bg-white/95 backdrop-blur shadow-xl border-t-4 border-t-[#8B5CF6] hover:-translate-y-1 transition-transform cursor-pointer group" onClick={() => navigate('/technical/reports/climate')}>
-                        <div className="flex justify-between items-start mb-4">
-                            <div className="bg-[#8B5CF6]/10 p-3 rounded-full">
-                                <CloudRain className="h-6 w-6 text-[#8B5CF6]" />
-                            </div>
-                            <ArrowRight className="h-5 w-5 text-slate-300 group-hover:text-[#8B5CF6] transition-colors" />
-                        </div>
-                        <h3 className="text-lg font-bold text-slate-800 mb-2 leading-tight">¿Riesgo de sequía en Corredor Seco?</h3>
-                        <p className="text-sm text-slate-600">Riesgo <span className="font-bold text-[#8B5CF6]">Moderado a Severo</span> debido a un déficit pluviométrico detectado en los últimos 90 días.</p>
-                    </Card>
-
-                    {/* Q4: Biodiversity */}
-                    <Card className="p-6 bg-white/95 backdrop-blur shadow-xl border-t-4 border-t-[#10B981] hover:-translate-y-1 transition-transform cursor-pointer group" onClick={() => navigate('/technical/reports/biodiversity')}>
-                        <div className="flex justify-between items-start mb-4">
-                            <div className="bg-[#10B981]/10 p-3 rounded-full">
-                                <Shield className="h-6 w-6 text-[#10B981]" />
-                            </div>
-                            <ArrowRight className="h-5 w-5 text-slate-300 group-hover:text-[#10B981] transition-colors" />
-                        </div>
-                        <h3 className="text-lg font-bold text-slate-800 mb-2 leading-tight">¿Cómo vamos con la meta 30x30?</h3>
-                        <p className="text-sm text-slate-600">La región protege el <span className="font-bold text-[#10B981]">20.4%</span> de su territorio. Falta un 9.6% para alcanzar el objetivo global al 2030.</p>
-                    </Card>
-
-                    {/* Q5: Water */}
-                    <Card className="p-6 bg-white/95 backdrop-blur shadow-xl border-t-4 border-t-[#3B82F6] hover:-translate-y-1 transition-transform cursor-pointer group" onClick={() => navigate('/technical/reports/water')}>
-                        <div className="flex justify-between items-start mb-4">
-                            <div className="bg-[#3B82F6]/10 p-3 rounded-full">
-                                <Droplets className="h-6 w-6 text-[#3B82F6]" />
-                            </div>
-                            <ArrowRight className="h-5 w-5 text-slate-300 group-hover:text-[#3B82F6] transition-colors" />
-                        </div>
-                        <h3 className="text-lg font-bold text-slate-800 mb-2 leading-tight">¿Qué tan segura es nuestra agua?</h3>
-                        <p className="text-sm text-slate-600">Estrés hídrico <span className="font-bold text-[#3B82F6]">Medio-Alto (2.8/5)</span> en la región, con una cobertura de agua potable del 89%.</p>
-                    </Card>
-
-                    {/* Q6: Oceans */}
-                    <Card className="p-6 bg-white/95 backdrop-blur shadow-xl border-t-4 border-t-[#06B6D4] hover:-translate-y-1 transition-transform cursor-pointer group" onClick={() => navigate('/technical/reports/ocean')}>
-                        <div className="flex justify-between items-start mb-4">
-                            <div className="bg-[#06B6D4]/10 p-3 rounded-full">
-                                <Waves className="h-6 w-6 text-[#06B6D4]" />
-                            </div>
-                            <ArrowRight className="h-5 w-5 text-slate-300 group-hover:text-[#06B6D4] transition-colors" />
-                        </div>
-                        <h3 className="text-lg font-bold text-slate-800 mb-2 leading-tight">¿Nuestros océanos se calientan?</h3>
-                        <p className="text-sm text-slate-600">Anomalía térmica de <span className="font-bold text-[#06B6D4]">+0.88°C</span> en aguas regionales, elevando el riesgo de blanqueamiento coralino.</p>
-                    </Card>
+                            <h3 className="text-lg font-bold text-slate-800 mb-2 leading-tight">{q.question}</h3>
+                            <p className="text-sm text-slate-600">
+                                {q.highlight.split(/(<span.*?>.*?<\/span>)/g).map((part, i) => {
+                                    // Note: In the data I didn't add span tags, but for aesthetics I can just map the highlight
+                                    return <span key={i} dangerouslySetInnerHTML={{ __html: part }} />;
+                                })}
+                            </p>
+                        </Card>
+                    ))}
                 </div>
 
                 <div className="text-center mt-8">
                     <Button variant="outline" className="bg-white/80 backdrop-blur border-emerald-300 hover:bg-white text-emerald-800 shadow-sm" onClick={() => navigate('/strategic-questions')}>
                         Ver todas las Preguntas Estratégicas
                     </Button>
+                </div>
+            </section>
+
+            {/* --- SECCIÓN AÑADIDA: Análisis Multidimensional --- */}
+            <section className="py-24 bg-slate-950 text-white overflow-hidden relative">
+                {/* Decorative background */}
+                <div className="absolute top-0 right-0 w-1/3 h-full bg-blue-600/10 blur-[120px] rounded-full"></div>
+                <div className="absolute bottom-0 left-0 w-1/4 h-3/4 bg-emerald-600/10 blur-[100px] rounded-full"></div>
+                
+                <div className="container mx-auto px-4 relative z-10">
+                    <div className="flex flex-col lg:flex-row items-center gap-16">
+                        <div className="flex-1 space-y-8 animate-in fade-in slide-in-from-left-8 duration-700">
+                            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 text-blue-400 text-[10px] font-black uppercase tracking-[0.2em] border border-blue-500/20">
+                                <Database className="h-3.5 w-3.5" /> Intelligence Center
+                            </div>
+                            <h2 className="text-4xl md:text-6xl font-serif font-black leading-tight">
+                                Análisis <br />
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 italic">Multidimensional</span>
+                            </h2>
+                            <p className="text-slate-400 text-lg md:text-xl font-light leading-relaxed max-w-xl">
+                                Explore nuestras bases de datos mediante cruces dinámicos de variables. Compare métricas regionales, tipos de bosque y coberturas en una interfaz sandbox con más de 10 tipos de visualización.
+                            </p>
+                            <div className="flex flex-wrap gap-6 pt-4">
+                                <Button 
+                                    className="bg-white text-slate-950 hover:bg-blue-50 rounded-full px-10 py-7 h-auto font-black text-base shadow-xl shadow-white/5 transition-all hover:scale-105 active:scale-95"
+                                    onClick={() => navigate('/analisis-multidimensional')}
+                                >
+                                    Iniciar Sandbox <ArrowRight className="ml-2 h-5 w-5" />
+                                </Button>
+                                <div className="flex items-center gap-4 text-slate-500 border-l border-white/10 pl-6">
+                                    <div className="flex -space-x-2">
+                                        {[1,2,3].map(i => <div key={i} className="w-8 h-8 rounded-full border-2 border-slate-950 bg-slate-800 flex items-center justify-center text-[8px] font-bold">CSV</div>)}
+                                    </div>
+                                    <span className="text-xs font-medium">Bases de datos oficiales</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex-1 relative w-full lg:w-auto h-[400px] md:h-[500px] animate-in fade-in zoom-in duration-1000">
+                            {/* Abstract Visualization Representation */}
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <div className="relative w-full max-w-md aspect-square">
+                                    {/* Circles representing data nodes */}
+                                    <div className="absolute top-0 right-10 w-32 h-32 bg-blue-500/20 rounded-full blur-2xl animate-pulse"></div>
+                                    <div className="absolute bottom-10 left-0 w-40 h-40 bg-emerald-500/20 rounded-full blur-3xl animate-pulse delay-700"></div>
+                                    
+                                    {/* Floating Cards */}
+                                    <div className="absolute top-10 left-0 p-4 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-2xl rotate-[-6deg] hover:rotate-0 transition-transform duration-500">
+                                        <div className="flex gap-2 mb-3">
+                                            <div className="w-3 h-3 rounded-full bg-red-400/50"></div>
+                                            <div className="w-3 h-3 rounded-full bg-yellow-400/50"></div>
+                                            <div className="w-3 h-3 rounded-full bg-green-400/50"></div>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <div className="w-32 h-2 bg-white/20 rounded"></div>
+                                            <div className="w-20 h-2 bg-white/10 rounded"></div>
+                                            <div className="h-20 w-40 flex items-end gap-1 pt-4">
+                                                <div className="flex-1 bg-blue-500/60 rounded-t h-full"></div>
+                                                <div className="flex-1 bg-blue-500/40 rounded-t h-[60%]"></div>
+                                                <div className="flex-1 bg-blue-500/80 rounded-t h-[85%]"></div>
+                                                <div className="flex-1 bg-blue-500/30 rounded-t h-[40%]"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="absolute bottom-10 right-0 p-6 bg-slate-900/80 backdrop-blur-md rounded-3xl border border-white/5 shadow-2xl rotate-[3deg] hover:rotate-0 transition-transform duration-500 z-10">
+                                        <div className="flex items-center gap-3 mb-4">
+                                            <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+                                                <PieIcon className="h-5 w-5 text-emerald-400" />
+                                            </div>
+                                            <div>
+                                                <div className="w-24 h-2 bg-white/30 rounded mb-1"></div>
+                                                <div className="w-16 h-1.5 bg-white/10 rounded"></div>
+                                            </div>
+                                        </div>
+                                        <div className="w-32 h-32 rounded-full border-8 border-emerald-500/20 border-t-emerald-500/80 animate-[spin_10s_linear_infinite]"></div>
+                                    </div>
+                                    
+                                    {/* Central Icon */}
+                                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                        <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-emerald-600 rounded-3xl shadow-2xl flex items-center justify-center rotate-45 animate-bounce">
+                                            <Database className="-rotate-45 h-10 w-10 text-white" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 

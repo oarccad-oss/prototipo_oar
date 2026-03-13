@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, Cell, AreaChart, Area, CartesianGrid } from 'recharts';
 import { Leaf, Camera, Map as MapIcon, Loader2, ExternalLink, ArrowLeft, ArrowDown, Share2, Download, TrendingUp, Search, HelpCircle } from 'lucide-react';
-import { Card, Badge, Button, DataSourceModal, ShareButton } from '../../components/ui/Shared';
+import { Card, Badge, Button, DataSourceModal, ShareButton } from '../../../components/ui/Shared';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { MiniMap } from '../../components/map/MiniMap';
-import { SICA_COORDINATES, SICA_COUNTRIES } from '../../api/constants';
+import { MiniMap } from '../../../components/map/MiniMap';
+import { SICA_COORDINATES, SICA_COUNTRIES } from '../../../api/constants';
 
 const StatCard = ({ title, value, unit, colorClass, subtitle, icon: Icon }) => (
     <div className={`bg-white p-6 border-t-4 ${colorClass} shadow-sm hover:shadow-md transition-shadow relative`}>
@@ -23,7 +23,7 @@ const StatCard = ({ title, value, unit, colorClass, subtitle, icon: Icon }) => (
     </div>
 );
 
-export const GBIFDashboard = () => {
+export const AnswerSpeciesRecords = () => {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
     const country = searchParams.get('country') || 'GT'; // Default to GT for consistency

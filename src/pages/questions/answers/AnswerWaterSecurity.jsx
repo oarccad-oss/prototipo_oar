@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
 import { Droplets, AlertTriangle, ArrowLeft, ArrowDown, Share2, Download, TrendingUp, CloudRain, HelpCircle } from 'lucide-react';
-import { Card, Badge, Button, DataSourceModal, ShareButton } from '../../components/ui/Shared';
+import { Card, Badge, Button, DataSourceModal, ShareButton } from '../../../components/ui/Shared';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { MiniMap } from '../../components/map/MiniMap';
-import { SICA_COORDINATES } from '../../api/constants';
+import { MiniMap } from '../../../components/map/MiniMap';
+import { SICA_COORDINATES } from '../../../api/constants';
 
 const WATER_DATA = {
     'GT': { stress: 3.1, stressLabel: 'Alto', risk: 80, access: 88, source: 'WRI Aqueduct', profile: [{ s: 'Físico', v: 80 }, { s: 'Calidad', v: 65 }, { s: 'Regulatorio', v: 45 }, { s: 'Sequía', v: 90 }, { s: 'Inundación', v: 85 }] },
@@ -36,7 +36,7 @@ const StatCard = ({ title, value, unit, colorClass, subtitle, icon: Icon }) => (
     </div>
 );
 
-export const WaterDashboard = () => {
+export const AnswerWaterSecurity = () => {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
     const selectedIso = searchParams.get('country') || 'regional';

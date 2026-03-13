@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 import { Shield, Mountain, Anchor, ArrowLeft, ArrowDown, Share2, Download, TrendingUp, MapPin, HelpCircle } from 'lucide-react';
-import { Card, Badge, Button, DataSourceModal, ShareButton } from '../../components/ui/Shared';
+import { Card, Badge, Button, DataSourceModal, ShareButton } from '../../../components/ui/Shared';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { MiniMap } from '../../components/map/MiniMap';
-import { SICA_COORDINATES, SICA_COUNTRIES } from '../../api/constants';
+import { MiniMap } from '../../../components/map/MiniMap';
+import { SICA_COORDINATES, SICA_COUNTRIES } from '../../../api/constants';
 
 // Datos Simulados Enriquecidos (Mock WDPA API)
 const WDPA_DATA = {
@@ -37,7 +37,7 @@ const StatCard = ({ title, value, unit, colorClass, subtitle, icon: Icon }) => (
     </div>
 );
 
-export const ProtectedPlanetDashboard = () => {
+export const AnswerProtectedAreas = () => {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
     const selectedIso = searchParams.get('country') || 'GT';

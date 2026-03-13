@@ -13,19 +13,20 @@ import { MapExplorer } from './pages/technical/MapExplorer';
 import { MapComparator } from './pages/technical/MapComparator';
 import { DocCenter } from './pages/technical/DocCenter';
 import { Developers } from './pages/technical/Developers';
-import { ForestReport } from './pages/technical/ForestReport';
-import { StrategicFAQ } from './pages/institutional/StrategicFAQ';
 import { StrategicAxisHome } from './pages/institutional/StrategicAxisHome';
 import { StrategicAxisGeneric } from './pages/institutional/StrategicAxisGeneric';
 import { StrategicConsultantLayout } from './pages/institutional/StrategicConsultantLayout';
-import { GFWReport } from './pages/technical/GFWReport';
-import { BioReport } from './pages/technical/BioReport';
-import { GBIFDashboard } from './pages/technical/GBIFDashboard';
-import { ProtectedPlanetDashboard } from './pages/technical/ProtectedPlanetDashboard';
-import { FiresDashboard } from './pages/technical/FiresDashboard';
-import { ClimateDashboard } from './pages/technical/ClimateDashboard';
-import { WaterDashboard } from './pages/technical/WaterDashboard';
-import { OceanDashboard } from './pages/technical/OceanDashboard';
+import { AnalysisSandbox } from './pages/technical/analisis_multidimensional/AnalysisSandbox';
+import { QuestionsIndex } from './pages/questions/QuestionsIndex';
+import { AnswerForestState } from './pages/questions/answers/AnswerForestState';
+import { AnswerForestLoss } from './pages/questions/answers/AnswerForestLoss';
+import { AnswerConservation30x30 } from './pages/questions/answers/AnswerConservation30x30';
+import { AnswerSpeciesRecords } from './pages/questions/answers/AnswerSpeciesRecords';
+import { AnswerProtectedAreas } from './pages/questions/answers/AnswerProtectedAreas';
+import { AnswerActiveFires } from './pages/questions/answers/AnswerActiveFires';
+import { AnswerDroughtRisk } from './pages/questions/answers/AnswerDroughtRisk';
+import { AnswerWaterSecurity } from './pages/questions/answers/AnswerWaterSecurity';
+import { AnswerOceanHealth } from './pages/questions/answers/AnswerOceanHealth';
 import { MapHub } from './pages/technical/MapHub';
 import { MapConsultantLayout } from './pages/technical/MapConsultantLayout';
 import { Chatbot } from './components/ai/Chatbot';
@@ -127,6 +128,7 @@ function App() {
           <Route path="/grandes-bosques" element={<GrandesBosques />} />
           <Route path="/grandes-bosques/historias/:slug" element={<ForestStoryDetail />} />
           <Route path="/auth/login" element={<Login onLogin={handleLogin} />} />
+          <Route path="/analisis-multidimensional" element={<AnalysisSandbox />} />
 
           <Route path="/auth/login" element={<Login onLogin={handleLogin} />} />
 
@@ -195,20 +197,30 @@ function App() {
                 description="Amenazas, vulnerabilidad, escenarios climáticos y alertas tempranas."
             />} />
 
-            <Route path="/strategic-questions" element={<StrategicFAQ />} />
-            <Route path="/technical/reports/fra-2024" element={
-              <ProtectedRoute user={user}>
-                <ForestReport />
-              </ProtectedRoute>
-            } />
-            <Route path="/technical/reports/gfw" element={<ProtectedRoute user={user}><GFWReport /></ProtectedRoute>} />
-            <Route path="/technical/reports/biodiversity" element={<ProtectedRoute user={user}><BioReport /></ProtectedRoute>} />
-            <Route path="/technical/reports/gbif" element={<ProtectedRoute user={user}><GBIFDashboard /></ProtectedRoute>} />
-            <Route path="/technical/reports/protected-planet" element={<ProtectedRoute user={user}><ProtectedPlanetDashboard /></ProtectedRoute>} />
-            <Route path="/technical/reports/fires" element={<ProtectedRoute user={user}><FiresDashboard /></ProtectedRoute>} />
-            <Route path="/technical/reports/climate" element={<ProtectedRoute user={user}><ClimateDashboard /></ProtectedRoute>} />
-            <Route path="/technical/reports/water" element={<ProtectedRoute user={user}><WaterDashboard /></ProtectedRoute>} />
-            <Route path="/technical/reports/ocean" element={<ProtectedRoute user={user}><OceanDashboard /></ProtectedRoute>} />
+            <Route path="/strategic-questions" element={<QuestionsIndex />} />
+            <Route path="/preguntas" element={<QuestionsIndex />} />
+            
+            {/* New Clean Clean Paths for Questions */}
+            <Route path="/preguntas/estado-bosques" element={<ProtectedRoute user={user}><AnswerForestState /></ProtectedRoute>} />
+            <Route path="/preguntas/perdida-bosque" element={<ProtectedRoute user={user}><AnswerForestLoss /></ProtectedRoute>} />
+            <Route path="/preguntas/meta-30x30" element={<ProtectedRoute user={user}><AnswerConservation30x30 /></ProtectedRoute>} />
+            <Route path="/preguntas/incendios-activos" element={<ProtectedRoute user={user}><AnswerActiveFires /></ProtectedRoute>} />
+            <Route path="/preguntas/registros-especies" element={<ProtectedRoute user={user}><AnswerSpeciesRecords /></ProtectedRoute>} />
+            <Route path="/preguntas/riesgo-sequia" element={<ProtectedRoute user={user}><AnswerDroughtRisk /></ProtectedRoute>} />
+            <Route path="/preguntas/seguridad-hidrica" element={<ProtectedRoute user={user}><AnswerWaterSecurity /></ProtectedRoute>} />
+            <Route path="/preguntas/salud-oceanos" element={<ProtectedRoute user={user}><AnswerOceanHealth /></ProtectedRoute>} />
+            <Route path="/preguntas/areas-protegidas" element={<ProtectedRoute user={user}><AnswerProtectedAreas /></ProtectedRoute>} />
+
+            {/* Backwards Compatibility Routes */}
+            <Route path="/technical/reports/fra-2024" element={<ProtectedRoute user={user}><AnswerForestState /></ProtectedRoute>} />
+            <Route path="/technical/reports/gfw" element={<ProtectedRoute user={user}><AnswerForestLoss /></ProtectedRoute>} />
+            <Route path="/technical/reports/biodiversity" element={<ProtectedRoute user={user}><AnswerConservation30x30 /></ProtectedRoute>} />
+            <Route path="/technical/reports/gbif" element={<ProtectedRoute user={user}><AnswerSpeciesRecords /></ProtectedRoute>} />
+            <Route path="/technical/reports/protected-planet" element={<ProtectedRoute user={user}><AnswerProtectedAreas /></ProtectedRoute>} />
+            <Route path="/technical/reports/fires" element={<ProtectedRoute user={user}><AnswerActiveFires /></ProtectedRoute>} />
+            <Route path="/technical/reports/climate" element={<ProtectedRoute user={user}><AnswerDroughtRisk /></ProtectedRoute>} />
+            <Route path="/technical/reports/water" element={<ProtectedRoute user={user}><AnswerWaterSecurity /></ProtectedRoute>} />
+            <Route path="/technical/reports/ocean" element={<ProtectedRoute user={user}><AnswerOceanHealth /></ProtectedRoute>} />
           </Route>
 
           {/* Geoespacial Analysis Module wrapped in its own layout */}

@@ -4,7 +4,7 @@ import {
     BarChart, Bar, Cell, PieChart, Pie, Legend
 } from 'recharts';
 import { Download, Share2, Info, TreeDeciduous, TrendingDown, ShieldCheck, ArrowLeft } from 'lucide-react';
-import { Card, Button } from '../../components/ui/Shared';
+import { Card, Button } from '../../../components/ui/Shared';
 import { useNavigate } from 'react-router-dom';
 
 // --- MOCK DATA ESPECÍFICA PARA ESTE REPORTE ---
@@ -61,7 +61,7 @@ const SectionHeader = ({ number, title, subtitle }) => (
 
 // --- COMPONENTE PRINCIPAL ---
 
-export const ForestReport = () => {
+export const AnswerForestState = () => {
     const navigate = useNavigate();
     return (
         <div className="p-8 bg-[#F8FAFC] min-h-full font-sans space-y-8">
