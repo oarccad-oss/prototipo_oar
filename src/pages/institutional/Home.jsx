@@ -20,25 +20,24 @@ export const Home = () => {
     return (
         <div className="flex flex-col min-h-screen bg-white">
             {/* Hero Section - Decision Oriented */}
-            <section className="relative h-[650px] flex items-center justify-center text-white overflow-hidden">
+            <section className="relative h-[650px] flex items-start justify-center text-white overflow-hidden">
                 {/* Background video simulation */}
                 <div className="absolute inset-0 bg-blue-900/40 z-10 mix-blend-multiply"></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-20"></div>
                 <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1516214104703-d870798883c5')] bg-cover bg-center"></div>
 
-                <div className="relative z-30 container mx-auto px-4 text-center space-y-8 pt-20">
-                    <span className="inline-block px-6 py-2 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-400/30 text-emerald-300 text-lg md:text-xl font-bold tracking-wider uppercase">
+                <div className="relative z-30 container mx-auto px-4 text-center space-y-8 pt-24">
+                    <span className="inline-block px-6 py-2 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-400/30 text-emerald-300 text-sm md:text-base font-bold tracking-wider uppercase">
                         Observatorio Ambiental Regional (OAR)
                     </span>
-
                 </div>
             </section>
 
 
             {/* --- SECCIÓN 1: Preguntas Estratégicas (Punto de entrada) --- */}
-            <section className="relative z-40 -mt-16 container mx-auto px-4">
-                <div className="text-center mb-12">
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white shadow-xl text-emerald-700 text-[10px] font-black uppercase tracking-[0.2em] mb-4 border border-emerald-100">
+            <section className="relative z-40 -mt-24 md:-mt-44 lg:-mt-56 container mx-auto px-4">
+                <div className="text-center mb-10">
+                    <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white shadow-2xl text-emerald-700 text-[10px] font-black uppercase tracking-[0.2em] border border-emerald-100">
                         <HelpCircle className="h-3.5 w-3.5" /> Respuestas a Desafíos Regionales
                     </div>
                 </div>
@@ -46,25 +45,28 @@ export const Home = () => {
                     {homeQuestions.map((q) => (
                         <Card
                             key={q.id}
-                            className="flex flex-col h-full hover:shadow-xl transition-all duration-300 border-l-4 group cursor-pointer bg-white"
-                            style={{ borderLeftColor: q.color }}
+                            className="flex flex-col h-full hover:shadow-2xl transition-all duration-500 border-t-4 group cursor-pointer bg-white rounded-xl overflow-hidden shadow-md hover:-translate-y-2"
+                            style={{ borderTopColor: q.color }}
                             onClick={() => navigate(q.path)}
                         >
-                            <div className="p-8 pb-4">
-                                <div className="p-3 rounded-full w-fit mb-4 transition-colors group-hover:bg-opacity-20" style={{ backgroundColor: `${q.color}20` }}>
-                                    <q.icon className="h-8 w-8" style={{ color: q.color }} />
+                            <div className="p-6 flex flex-col h-full">
+                                <div className="flex justify-between items-start mb-4">
+                                    <div className="p-2.5 rounded-full transition-colors group-hover:bg-opacity-30" style={{ backgroundColor: `${q.color}15` }}>
+                                        <q.icon className="h-5 w-5" style={{ color: q.color }} />
+                                    </div>
+                                    <ArrowRight className="h-4 w-4 text-slate-300 group-hover:text-slate-400 group-hover:translate-x-1 transition-all" />
                                 </div>
-                                <h3 className="text-xl font-bold text-slate-800 mb-3 leading-tight group-hover:text-brand-primary transition-colors" title={q.question}>
-                                    {q.question}
+                                
+                                <h3 className="text-lg font-bold text-slate-900 mb-3 leading-tight group-hover:text-brand-primary transition-colors">
+                                    {q.shortQuestion || q.question}
                                 </h3>
-                                <p className="text-sm text-slate-500 leading-relaxed">
-                                    {q.description}
-                                </p>
-                            </div>
-                            <div className="mt-auto px-8 py-4 border-t border-slate-50 flex justify-end">
-                                <span className="text-xs font-bold uppercase tracking-wider flex items-center gap-1" style={{ color: q.color }}>
-                                    Ver Análisis <ArrowRight className="h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
-                                </span>
+
+                                {q.highlight && (
+                                    <div 
+                                        className="text-[13px] text-slate-500 leading-snug"
+                                        dangerouslySetInnerHTML={{ __html: q.highlight }}
+                                    />
+                                )}
                             </div>
                         </Card>
                     ))}
