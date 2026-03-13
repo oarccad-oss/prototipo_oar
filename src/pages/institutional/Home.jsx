@@ -41,38 +41,29 @@ export const Home = () => {
                         <HelpCircle className="h-3.5 w-3.5" /> Respuestas a Desafíos Regionales
                     </div>
                 </div>
-
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {homeQuestions.map((q) => (
                         <Card 
                             key={q.id} 
-                            className="group p-8 bg-white/95 backdrop-blur shadow-xl border-none hover:-translate-y-2 transition-all cursor-pointer relative overflow-hidden flex flex-col h-full"
+                            className="flex flex-col h-full hover:shadow-xl transition-all duration-300 border-l-4 group cursor-pointer bg-white" 
+                            style={{ borderLeftColor: q.color }} 
                             onClick={() => navigate(q.path)}
                         >
-                            <div className="absolute top-0 right-0 p-6 opacity-[0.03] group-hover:scale-125 transition-transform">
-                                <q.icon size={80} />
-                            </div>
-                            
-                            <div className="flex items-center gap-3 mb-6">
-                                <div className="p-3 bg-emerald-50 rounded-2xl text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-                                    <q.icon size={24} />
+                            <div className="p-8 pb-4">
+                                <div className="p-3 rounded-full w-fit mb-4 transition-colors group-hover:bg-opacity-20" style={{ backgroundColor: `${q.color}20` }}>
+                                    <q.icon className="h-8 w-8" style={{ color: q.color }} />
                                 </div>
-                                <Badge variant="outline" className="text-[9px] font-black uppercase tracking-tighter border-emerald-100 text-emerald-700">
-                                    {q.category}
-                                </Badge>
+                                <h3 className="text-xl font-bold text-slate-800 mb-3 leading-tight group-hover:text-brand-primary transition-colors">
+                                    {q.question}
+                                </h3>
+                                <p className="text-sm text-slate-500 leading-relaxed">
+                                    {q.description}
+                                </p>
                             </div>
-
-                            <h3 className="text-xl font-serif font-black text-slate-900 leading-snug mb-4 group-hover:text-emerald-700 transition-colors">
-                                {q.question}
-                            </h3>
-                            
-                            <p className="text-slate-500 text-sm font-light leading-relaxed mb-8 flex-1">
-                                {q.impact}
-                            </p>
-
-                            <div className="flex items-center justify-between pt-6 border-t border-slate-50 mt-auto">
-                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Ver Análisis</span>
-                                <ArrowRight className="h-4 w-4 text-emerald-500 transform group-hover:translate-x-2 transition-transform" />
+                            <div className="mt-auto px-8 py-4 border-t border-slate-50 flex justify-end">
+                                <span className="text-xs font-bold uppercase tracking-wider flex items-center gap-1" style={{ color: q.color }}>
+                                    Ver Análisis <ArrowRight className="h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
+                                </span>
                             </div>
                         </Card>
                     ))}
