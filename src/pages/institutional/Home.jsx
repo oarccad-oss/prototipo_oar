@@ -6,6 +6,7 @@ import { cn } from '../../lib/utils';
 import { MapViewer } from '../../components/map/MapViewer';
 
 import { QUESTIONS_DATA } from '../questions/questions';
+import CIFRAS_DATA from '../../data/cifras/cifras.json';
 
 export const Home = () => {
     const navigate = useNavigate();
@@ -16,6 +17,13 @@ export const Home = () => {
     const homeQuestions = QUESTIONS_DATA.filter(q =>
         ['forest-loss', 'active-fires', 'drought-risk', 'conservation-30x30', 'water-security', 'ocean-health'].includes(q.id)
     );
+
+    // Get 6 random figures from the data
+    const randomCifras = React.useMemo(() => {
+        return [...CIFRAS_DATA]
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 6);
+    }, []);
 
     return (
         <div className="flex flex-col min-h-screen bg-white">
@@ -56,13 +64,13 @@ export const Home = () => {
                                     </div>
                                     <ArrowRight className="h-4 w-4 text-slate-300 group-hover:text-slate-400 group-hover:translate-x-1 transition-all" />
                                 </div>
-                                
+
                                 <h3 className="text-lg font-bold text-slate-900 mb-3 leading-tight group-hover:text-brand-primary transition-colors">
                                     {q.shortQuestion || q.question}
                                 </h3>
 
                                 {q.highlight && (
-                                    <div 
+                                    <div
                                         className="text-[13px] text-slate-500 leading-snug"
                                         dangerouslySetInnerHTML={{ __html: q.highlight }}
                                     />
@@ -80,6 +88,59 @@ export const Home = () => {
                     >
                         Ver todas las preguntas estratégicas <ChevronRight className="ml-2 h-4 w-4" />
                     </Button>
+                </div>
+            </section>
+
+            {/* --- SECCIÓN 2: Cifras de Impacto (Indicadores Clave) --- */}
+            <section className="py-20 bg-slate-50/50">
+                <div className="container mx-auto px-4">
+                    <div className="flex items-center justify-between mb-12">
+                        <div>
+                            <h2 className="text-2xl font-serif font-black text-slate-900 mb-2">Cifras Regionales</h2>
+                            <p className="text-slate-500">Indicadores clave extraídos de bases de datos satelitales y reportes oficiales.</p>
+                        </div>
+                        <Activity className="h-8 w-8 text-emerald-500 opacity-20" />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {randomCifras.map((item, idx) => {
+                            const axisColors = {
+                                'Bosques': '#97BD3D',
+                                'Biodiversidad': '#10B981',
+                                'Agua': '#3B82F6',
+                                'Mares': '#06B6D4',
+                                'Clima': '#8B5CF6',
+                                'Calidad Ambiental': '#475569',
+                                'Incendios': '#EF4444'
+                            };
+                            const color = axisColors[item.eje_tematico] || '#10B981';
+
+                            return (
+                                <Card key={idx} className="bg-white border-t-4 rounded-none shadow-sm p-8" style={{ borderTopColor: color }}>
+                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 block mb-6">
+                                        {item.titulo}
+                                    </span>
+                                    <div className="flex items-baseline gap-2 mb-4">
+                                        <span className="text-4xl font-black text-slate-900 tracking-tight">
+                                            {item.valor}
+                                        </span>
+                                        <span className="text-lg font-bold text-slate-400">
+                                            {item.unidad_medida}
+                                        </span>
+                                    </div>
+                                    <p className="text-sm text-slate-500 leading-relaxed font-medium">
+                                        {item.bajada}
+                                    </p>
+                                    <div className="mt-8 pt-4 border-t border-slate-50 flex items-center justify-between">
+                                        <span className="text-[9px] font-bold text-slate-300 uppercase tracking-widest">{item.fuente}</span>
+                                        <div className="px-2 py-0.5 rounded bg-slate-50 text-[9px] font-bold text-slate-400 border border-slate-100 uppercase italic">
+                                            {item.eje_tematico}
+                                        </div>
+                                    </div>
+                                </Card>
+                            );
+                        })}
+                    </div>
                 </div>
             </section>
 
