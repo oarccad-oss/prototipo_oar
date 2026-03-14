@@ -28,66 +28,65 @@ export const Home = () => {
     return (
         <div className="flex flex-col min-h-screen bg-white">
             {/* Hero Section - Decision Oriented */}
-            <section className="relative h-[650px] flex items-start justify-center text-white overflow-hidden">
+            <section className="relative min-h-[900px] flex items-start justify-center text-white overflow-hidden pb-24">
                 {/* Background video simulation */}
                 <div className="absolute inset-0 bg-blue-900/40 z-10 mix-blend-multiply"></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-20"></div>
                 <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1516214104703-d870798883c5')] bg-cover bg-center"></div>
 
-                <div className="relative z-30 container mx-auto px-4 text-center space-y-8 pt-24">
+                <div className="relative z-30 container mx-auto px-4 text-center space-y-12 pt-24">
                     <span className="inline-block px-8 py-3 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-400/30 text-emerald-300 text-2xl md:text-4xl font-black tracking-widest uppercase">
                         Observatorio Ambiental Regional (OAR)
                     </span>
-                </div>
-            </section>
 
-
-            {/* --- SECCIÓN 1: Preguntas Estratégicas (Punto de entrada) --- */}
-            <section className="relative z-40 -mt-24 md:-mt-44 lg:-mt-56 container mx-auto px-4">
-                <div className="text-center mb-10">
-                    <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white shadow-2xl text-emerald-700 text-[10px] font-black uppercase tracking-[0.2em] border border-emerald-100">
-                        <HelpCircle className="h-3.5 w-3.5" /> Respuestas a Desafíos Regionales
-                    </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {homeQuestions.map((q) => (
-                        <Card
-                            key={q.id}
-                            className="flex flex-col h-full hover:shadow-2xl transition-all duration-500 border-t-4 group cursor-pointer bg-white/50 backdrop-blur-xl border-white/20 rounded-xl overflow-hidden shadow-md hover:-translate-y-2"
-                            style={{ borderTopColor: q.color }}
-                            onClick={() => navigate(q.path)}
-                        >
-                            <div className="p-6 flex flex-col h-full">
-                                <div className="flex justify-between items-start mb-4">
-                                    <div className="p-2.5 rounded-full transition-colors group-hover:bg-opacity-30" style={{ backgroundColor: `${q.color}15` }}>
-                                        <q.icon className="h-5 w-5" style={{ color: q.color }} />
-                                    </div>
-                                    <ArrowRight className="h-4 w-4 text-slate-300 group-hover:text-slate-400 group-hover:translate-x-1 transition-all" />
-                                </div>
-
-                                <h3 className="text-lg font-bold text-slate-900 mb-3 leading-tight group-hover:text-brand-primary transition-colors">
-                                    {q.shortQuestion || q.question}
-                                </h3>
-
-                                {q.highlight && (
-                                    <div
-                                        className="text-[13px] text-slate-500 leading-snug"
-                                        dangerouslySetInnerHTML={{ __html: q.highlight }}
-                                    />
-                                )}
+                    {/* --- SECCIÓN 1: Preguntas Estratégicas (Punto de entrada) --- */}
+                    <div className="max-w-7xl mx-auto">
+                        <div className="text-center mb-10">
+                            <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white shadow-2xl text-emerald-700 text-[10px] font-black uppercase tracking-[0.2em] border border-emerald-100">
+                                <HelpCircle className="h-3.5 w-3.5" /> Respuestas a Desafíos Regionales
                             </div>
-                        </Card>
-                    ))}
-                </div>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
+                            {homeQuestions.map((q) => (
+                                <Card
+                                    key={q.id}
+                                    className="flex flex-col h-full hover:shadow-2xl transition-all duration-500 border-t-4 group cursor-pointer bg-white/85 backdrop-blur-xl border-white/20 rounded-xl overflow-hidden shadow-md hover:-translate-y-2"
+                                    style={{ borderTopColor: q.color }}
+                                    onClick={() => navigate(q.path)}
+                                >
+                                    <div className="p-6 flex flex-col h-full">
+                                        <div className="flex justify-between items-start mb-4">
+                                            <div className="p-2.5 rounded-full transition-colors group-hover:bg-opacity-30" style={{ backgroundColor: `${q.color}15` }}>
+                                                <q.icon className="h-5 w-5" style={{ color: q.color }} />
+                                            </div>
+                                            <ArrowRight className="h-4 w-4 text-slate-300 group-hover:text-slate-400 group-hover:translate-x-1 transition-all" />
+                                        </div>
 
-                <div className="mt-12 text-center">
-                    <Button
-                        variant="outline"
-                        className="rounded-full px-8 py-6 border-emerald-200 text-emerald-700 hover:bg-emerald-50 font-bold"
-                        onClick={() => navigate('/strategic-questions')}
-                    >
-                        Ver todas las preguntas estratégicas <ChevronRight className="ml-2 h-4 w-4" />
-                    </Button>
+                                        <h3 className="text-lg font-bold text-slate-900 mb-3 leading-tight group-hover:text-brand-primary transition-colors">
+                                            {q.shortQuestion || q.question}
+                                        </h3>
+
+                                        {q.highlight && (
+                                            <div
+                                                className="text-[13px] text-slate-500 leading-snug"
+                                                dangerouslySetInnerHTML={{ __html: q.highlight }}
+                                            />
+                                        )}
+                                    </div>
+                                </Card>
+                            ))}
+                        </div>
+
+                        <div className="mt-12 text-center">
+                            <Button
+                                variant="outline"
+                                className="rounded-full px-8 py-6 border-white/20 text-white hover:bg-white/10 font-bold backdrop-blur-md"
+                                onClick={() => navigate('/strategic-questions')}
+                            >
+                                Ver todas las preguntas estratégicas <ChevronRight className="ml-2 h-4 w-4" />
+                            </Button>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -171,32 +170,32 @@ export const Home = () => {
 
                     <div className="space-y-4 max-w-5xl">
                         {[
-                            { 
-                                title: "Calidad Ambiental", 
-                                description: "Calidad de aire/agua, presión antrópica y variables de seguimiento ambiental.", 
-                                icon: Wind, 
-                                color: "text-blue-500", 
+                            {
+                                title: "Calidad Ambiental",
+                                description: "Calidad de aire/agua, presión antrópica y variables de seguimiento ambiental.",
+                                icon: Wind,
+                                color: "text-blue-500",
                                 bgColor: "bg-blue-50",
                                 path: "/strategic-axis/calidad"
                             },
-                            { 
-                                title: "Mares y Biodiversidad", 
-                                description: "Biodiversidad, ecosistemas marino-costeros y conectividad ecológica.", 
-                                icon: Waves, 
-                                color: "text-cyan-500", 
+                            {
+                                title: "Mares y Biodiversidad",
+                                description: "Biodiversidad, ecosistemas marino-costeros y conectividad ecológica.",
+                                icon: Waves,
+                                color: "text-cyan-500",
                                 bgColor: "bg-cyan-50",
                                 path: "/strategic-axis/mares"
                             },
-                            { 
-                                title: "Gestión Integral del Recurso Hídrico", 
-                                description: "Cuencas, disponibilidad hídrica, presión y riesgos asociados al agua.", 
-                                icon: Droplets, 
-                                color: "text-blue-600", 
+                            {
+                                title: "Gestión Integral del Recurso Hídrico",
+                                description: "Cuencas, disponibilidad hídrica, presión y riesgos asociados al agua.",
+                                icon: Droplets,
+                                color: "text-blue-600",
                                 bgColor: "bg-blue-50/50",
                                 path: "/strategic-axis/agua"
                             }
                         ].map((axis, idx) => (
-                            <div 
+                            <div
                                 key={idx}
                                 onClick={() => navigate(axis.path)}
                                 className="group flex items-center justify-between p-6 md:p-8 bg-white border border-slate-100 rounded-[2rem] hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-500 cursor-pointer"
