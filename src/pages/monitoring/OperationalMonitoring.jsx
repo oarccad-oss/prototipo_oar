@@ -1,6 +1,6 @@
-
 import React, { useState, useMemo, useEffect } from 'react';
-import { Search, Trees, LayoutDashboard, BarChart3, AlertCircle, Target, ClipboardList, Zap, CheckCircle, Clock, AlertTriangle, FileText, Link as LinkIcon, Map as MapIcon, Database, File, X, MapPin, FolderCheck, ChevronRight, HelpCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Search, Trees, LayoutDashboard, BarChart3, AlertCircle, Target, ClipboardList, Zap, CheckCircle, Clock, AlertTriangle, FileText, Link as LinkIcon, Map as MapIcon, Database, File, X, MapPin, FolderCheck, ChevronRight, HelpCircle, Info, Scale, Activity, Globe, TrendingUp } from 'lucide-react';
 import { eramForestData } from '../../data/monitoring/eramForest';
 import { Card, Button, Badge, Input } from '../../components/ui/Shared';
 
@@ -103,17 +103,26 @@ const IndicatorCard = ({ item, onClick }) => {
                             <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(255,255,255,.15)_25%,transparent_25%,transparent_50%,rgba(255,255,255,.15)_50%,rgba(255,255,255,.15)_75%,transparent_75%,transparent)] bg-[length:1rem_1rem]"></div>
                         </div>
                     </div>
-                    <Button
-                        onClick={() => onClick(item)}
-                        variant="outline"
-                        className={`w-full py-4 rounded-xl font-black text-xs uppercase tracking-widest transition-all shadow-sm ${
-                            isImpact 
-                            ? 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700' 
-                            : 'bg-emerald-600 text-white border-emerald-600 hover:bg-emerald-700'
-                        }`}
-                    >
-                        <LayoutDashboard className="w-4 h-4 mr-2" /> Analizar Evidencia
-                    </Button>
+                    <div className="flex gap-3">
+                        <Button
+                            onClick={() => onClick(item)}
+                            variant="outline"
+                            className={`flex-1 py-4 rounded-xl font-black text-xs uppercase tracking-widest transition-all shadow-sm ${
+                                isImpact 
+                                    ? 'text-blue-600 border-blue-100 hover:bg-blue-600 hover:text-white' 
+                                    : 'text-emerald-600 border-emerald-100 hover:bg-emerald-600 hover:text-white'
+                            }`}
+                        >
+                            <BarChart3 className="w-4 h-4 mr-2" /> Evidencia
+                        </Button>
+                        <Button
+                            onClick={() => window.dispatchEvent(new CustomEvent('open-ficha', { detail: item }))}
+                            variant="ghost"
+                            className="flex-1 py-4 rounded-xl font-black text-xs uppercase tracking-widest text-slate-500 hover:bg-slate-100 transition-all border border-slate-200"
+                        >
+                            <Info className="w-4 h-4 mr-2" /> Ficha
+                        </Button>
+                    </div>
                 </div>
             </div>
         </Card>
@@ -122,10 +131,17 @@ const IndicatorCard = ({ item, onClick }) => {
 
 export const OperationalMonitoring = () => {
     const [activeItem, setActiveItem] = useState(null);
+    const [activeFicha, setActiveFicha] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedResultado, setSelectedResultado] = useState('Todos');
     const [selectedType, setSelectedType] = useState('Todos');
     const [showOnlyLagging, setShowOnlyLagging] = useState(false);
+
+    useEffect(() => {
+        const handleOpenFicha = (e) => setActiveFicha(e.detail);
+        window.addEventListener('open-ficha', handleOpenFicha);
+        return () => window.removeEventListener('open-ficha', handleOpenFicha);
+    }, []);
 
 
     const availableResults = useMemo(() => {
@@ -195,7 +211,12 @@ export const OperationalMonitoring = () => {
                         </div>
                         <div>
                             <h1 className="text-xl md:text-2xl font-black uppercase tracking-tighter">Monitoreo Operativo ERAM</h1>
-                            <p className="text-emerald-400 text-sm font-bold uppercase tracking-[0.2em]">Eje: Bosques y Paisajes Sostenibles</p>
+                            <div className="flex items-center gap-2">
+                                <p className="text-emerald-400 text-sm font-bold uppercase tracking-[0.2em]">Eje: Bosques y Paisajes Sostenibles</p>
+                                <Link to="/monitoring/strategic" className="bg-emerald-700/50 hover:bg-emerald-600 px-3 py-1 rounded text-[10px] font-black uppercase transition-all flex items-center gap-1.5 ml-2">
+                                    <Globe className="w-3 h-3" /> Ver Estratégico
+                                </Link>
+                            </div>
                         </div>
                     </div>
                     
@@ -511,6 +532,79 @@ export const OperationalMonitoring = () => {
                                 </div>
                             </div>
 
+                        </div>
+                    </Card>
+                </div>
+            )}
+            {/* MODAL: FICHA TÉCNICA OPERATIVA */}
+            {activeFicha && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                    <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setActiveFicha(null)}></div>
+                    <Card className="relative bg-white rounded-[2rem] shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden p-0 border-none">
+                        <div className={`flex items-start justify-between p-8 border-b border-slate-100 ${activeFicha.type === 'impacto' ? 'bg-blue-50/30' : 'bg-emerald-50/30'}`}>
+                            <div className="text-left">
+                                <Badge className={`${activeFicha.type === 'impacto' ? 'bg-blue-100 text-blue-700 border-blue-200' : 'bg-emerald-100 text-emerald-700 border-emerald-200'} px-3 py-1 mb-3 font-black uppercase text-[10px]`}>
+                                    {activeFicha.id} • Ficha Técnica Operativa
+                                </Badge>
+                                <h2 className="text-2xl md:text-3xl font-black text-slate-900">{activeFicha.line}</h2>
+                            </div>
+                            <button onClick={() => setActiveFicha(null)} className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-full transition-all text-left">
+                                <X className="w-8 h-8" />
+                            </button>
+                        </div>
+                        
+                        <div className="p-8 overflow-y-auto space-y-8 flex-1 custom-scrollbar text-left">
+                            <div className="space-y-6">
+                                <div className="flex items-center gap-3 pb-4 border-b border-slate-100">
+                                    <div className={`p-2 rounded-lg ${activeFicha.type === 'impacto' ? 'bg-blue-100 text-blue-600' : 'bg-emerald-100 text-emerald-600'}`}>
+                                        <Target className="w-6 h-6" />
+                                    </div>
+                                    <h4 className="text-xl font-bold text-slate-800">Indicador: {activeFicha.indicator}</h4>
+                                </div>
+                                
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 text-left">
+                                        <h5 className="flex items-center gap-2 text-[10px] font-black uppercase text-slate-400 mb-4 tracking-widest leading-none">
+                                            <Scale className="w-4 h-4" /> Unidad de Medida
+                                        </h5>
+                                        <span className="text-lg font-black text-slate-800">{activeFicha.unit}</span>
+                                    </div>
+                                    <div className="bg-amber-50/30 p-6 rounded-2xl border border-amber-100 text-left">
+                                        <h5 className="flex items-center gap-2 text-[10px] font-black uppercase text-amber-700 mb-4 tracking-widest leading-none">
+                                            <Activity className="w-4 h-4" /> Meta ERAM 2025
+                                        </h5>
+                                        <p className="text-sm text-slate-700 leading-relaxed font-medium">{activeFicha.targetText}</p>
+                                    </div>
+                                </div>
+
+                                <div className={`${activeFicha.type === 'impacto' ? 'bg-blue-50/30 border-blue-100' : 'bg-emerald-50/30 border-emerald-100'} p-6 rounded-2xl border text-left`}>
+                                    <h5 className={`flex items-center gap-2 text-[10px] font-black uppercase mb-4 tracking-widest leading-none ${activeFicha.type === 'impacto' ? 'text-blue-800' : 'text-emerald-800'}`}>
+                                        <TrendingUp className="w-4 h-4" /> Método de Cálculo del Avance
+                                    </h5>
+                                    <p className="text-sm text-slate-700 leading-relaxed font-medium">
+                                        {activeFicha.calculationMethod || "Definición técnica del algoritmo de cálculo regional basado en reportes nacionales consolidados."}
+                                    </p>
+                                </div>
+
+                                <div className="bg-slate-900 p-8 rounded-[2rem] text-white relative overflow-hidden">
+                                    <div className="absolute top-0 right-0 -mt-4 -mr-4 opacity-10">
+                                        <Zap className="w-48 h-48" />
+                                    </div>
+                                    <h5 className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-400 mb-4">Acción Estratégica ERAM</h5>
+                                    <p className="text-lg font-medium italic leading-relaxed relative z-10">
+                                        "{activeFicha.accionEstrategica}"
+                                    </p>
+                                </div>
+
+                                <div className={`${activeFicha.type === 'impacto' ? 'bg-blue-50/30 border-blue-100' : 'bg-emerald-50/30 border-emerald-100'} p-6 rounded-2xl border`}>
+                                    <h5 className={`flex items-center gap-2 text-[10px] font-black uppercase mb-6 tracking-widest leading-none ${activeFicha.type === 'impacto' ? 'text-blue-800' : 'text-emerald-800'}`}>
+                                        <Database className="w-4 h-4" /> Resultado Asociado
+                                    </h5>
+                                    <div className="space-y-2">
+                                        <p className="text-sm text-slate-600 leading-relaxed font-bold">{activeFicha.resultado}</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </Card>
                 </div>

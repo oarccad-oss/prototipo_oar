@@ -1,5 +1,5 @@
-
 import React, { useState, useMemo, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Search, Globe, ShieldAlert, Leaf, BookOpen, Target, BarChart3, Info, X, MapPin, Activity, CalendarDays, TrendingUp, TableProperties, Database, Scale, ClipboardList } from 'lucide-react';
 import { indicatorsData } from '../../data/monitoring/indicators';
 import { RegionalEvolutionChart } from '../../components/monitoring/RegionalChart';
@@ -143,7 +143,12 @@ export const StrategicMonitoring = () => {
                         </div>
                         <div className="text-left">
                             <h1 className="text-xl md:text-2xl font-black leading-tight uppercase tracking-tight">Monitoreo Estratégico</h1>
-                            <p className="text-indigo-200 text-xs font-bold uppercase tracking-widest">SICA | Sinergias Convenciones de Río</p>
+                            <div className="flex items-center gap-2">
+                                <p className="text-indigo-200 text-xs font-bold uppercase tracking-widest">SICA | Sinergias Convenciones de Río</p>
+                                <Link to="/monitoring/operational" className="bg-indigo-700/50 hover:bg-indigo-600 px-3 py-1 rounded text-[10px] font-black uppercase transition-all flex items-center gap-1.5 ml-2">
+                                    <Trees className="w-3 h-3" /> Ver Operativo
+                                </Link>
+                            </div>
                         </div>
                     </div>
                     <div className="w-full sm:w-80">
