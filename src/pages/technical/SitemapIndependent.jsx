@@ -331,6 +331,9 @@ export const SitemapIndependent = () => {
                 {
                   id: "l4", name: "Landing Eje 4: Bosques y Paisajes", path: "/strategic-axis/bosques", depth: 3, icon: Trees,
                   children: [
+                    { id: "l4-t1", name: "Visor Final: Análisis Geoespacial", path: "/technical/geo-analysis", depth: 4, icon: Activity },
+                    { id: "l4-t2", name: "Visor Final: Tablero de KPIs", path: "/analisis-multidimensional", depth: 4, icon: LayoutDashboard },
+                    { id: "l4-t3", name: "Recurso: Metadatos Capas Bosques", path: "/technical/docs", depth: 4, icon: Folder },
                     {
                       id: "l4-preg", name: "Sección: Preguntas Críticas", path: "/strategic-questions", depth: 4, icon: HelpCircle,
                       children: [
@@ -366,6 +369,9 @@ export const SitemapIndependent = () => {
               id: "reportes", name: "Sección: Reportes Temáticos", depth: 2, icon: Layers,
               children: [
                 {
+                  id: "fra-2024", name: "Visor Final: Reporte FRA 2024", path: "/technical/reports/fra-2024", depth: 3, icon: FileText
+                },
+                {
                   id: "l4-hist", name: "Colección: Grandes Bosques", path: "/grandes-bosques", depth: 3, icon: Folder,
                   children: [
                     { id: "l4-h1", name: "Visor Final: Montañas Mayas", path: "/grandes-bosques/historias/montanas-mayas", depth: 4, icon: LayoutDashboard },
@@ -375,6 +381,13 @@ export const SitemapIndependent = () => {
                     { id: "l4-h5", name: "Visor Final: Darién", path: "/grandes-bosques/historias/parque-nacional-darien", depth: 4, icon: LayoutDashboard },
                   ]
                 }
+              ]
+            },
+            {
+              id: "indicadores-root", name: "Sección: Indicadores", depth: 2, icon: Activity,
+              children: [
+                { id: "ind-strat", name: "Visor Final: Monitoreo Estratégico", path: "/monitoring/strategic", depth: 3, icon: LayoutDashboard },
+                { id: "ind-oper", name: "Visor Final: Monitoreo Operativo", path: "/monitoring/operational", depth: 3, icon: LayoutDashboard }
               ]
             },
             { 
@@ -392,14 +405,9 @@ export const SitemapIndependent = () => {
             {
               id: "plataforma", name: "Plataforma Adaptativa", depth: 2, icon: Settings,
               children: [
-                {
-                  id: "ic3", name: "Módulo: Monitoreo Regional", path: "/monitoring", depth: 3, icon: Activity,
-                  children: [
-                    { id: "ic3-1", name: "Visor Final: Monitoreo Estratégico", path: "/monitoring/strategic", depth: 4, icon: LayoutDashboard },
-                    { id: "ic3-2", name: "Visor Final: Monitoreo Operativo", path: "/monitoring/operational", depth: 4, icon: LayoutDashboard },
-                  ]
-                },
-                { id: "in1", name: "Portal: Acceso Funcionarios", path: "/auth/login", depth: 3, icon: Lock }
+                { id: "plat-dash", name: "Dashboard", path: "/technical/dashboard", depth: 3, icon: LayoutDashboard },
+                { id: "plat-visor", name: "Visor Interactivo", path: "/technical/map", depth: 3, icon: MapIcon },
+                { id: "plat-hist", name: "Historias", path: "/grandes-bosques", depth: 3, icon: FileText }
               ]
             },
             {

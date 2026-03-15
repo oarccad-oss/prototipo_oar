@@ -206,5 +206,44 @@
     "source": "IPCC, CMNUCC y dependencias meteorológicas nacionales.",
     "learnMore": "/strategic-questions",
     "image": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80&w=800"
+  },
+  "/technical/docs": {
+    "title": "Centro de Documentación Técnica",
+    "description": "Repositorio central de guías, metodologías y manuales del Observatorio Ambiental Regional.",
+    "features": [
+        "Acceso a metodologías de cálculo de indicadores estratégicos.",
+        "Repositorio de publicaciones técnicas y reportes institucionales.",
+        "Guías de usuario para el uso de visores y herramientas BI.",
+        "Manuales de integración y documentación de APIs para desarrolladores."
+    ],
+    "source": "Secretaría Ejecutiva de la CCAD, especialistas técnicos y socios regionales.",
+    "learnMore": "/technical/developers",
+    "image": "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&q=80&w=800"
+  },
+  "/technical/map": {
+    "title": "Visor Interactivo Geoespacial",
+    "description": "Herramienta de exploración cartográfica a pantalla completa para el análisis detallado del territorio regional.",
+    "features": [
+        "Navegación fluida por capas de información espacial del SICA.",
+        "Herramientas de medición, dibujo y análisis de proximidad.",
+        "Cambio dinámico entre mapas base satelitales, topográficos y de calles.",
+        "Acceso a la tabla de atributos de las capas vectoriales."
+    ],
+    "source": "Infraestructura de Datos Espaciales (IDE) de CCAD y socios institucionales.",
+    "learnMore": "/technical/maps",
+    "image": "https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=800"
+  },
+  "/grandes-bosques": {
+    "title": "Reporte Especial: Grandes Bosques",
+    "description": "Exploración narrativa y técnica de los corredores biológicos más importantes de Mesoamérica y República Dominicana.",
+    "features": [
+        "Historias de conservación y desafíos en tiempo real.",
+        "Mapas de situación de los 5 grandes bosques regionales.",
+        "Acceso a indicadores específicos de biodiversidad y presiones.",
+        "Galería de recursos visuales y técnicos sobre gestión forestal."
+    ],
+    "source": "CCAD, WCS, programas Selva Maya y contrapartes nacionales.",
+    "learnMore": "/strategic-axis/bosques",
+    "image": "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&q=80&w=800"
   }
 }
