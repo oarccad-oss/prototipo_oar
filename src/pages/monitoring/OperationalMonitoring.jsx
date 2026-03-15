@@ -125,6 +125,7 @@ export const OperationalMonitoring = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedResultado, setSelectedResultado] = useState('Todos');
     const [selectedType, setSelectedType] = useState('Todos');
+    const [showOnlyLagging, setShowOnlyLagging] = useState(false);
 
 
     const availableResults = useMemo(() => {
@@ -156,9 +157,11 @@ export const OperationalMonitoring = () => {
                     item.indicator.toLowerCase().includes(searchLower);
                 const matchesFilter = selectedResultado === 'Todos' || item.resultado === selectedResultado;
                 const matchesType = selectedType === 'Todos' || item.type === selectedType;
-                return matchesSearch && matchesFilter && matchesType;
+                const matchesLagging = !showOnlyLagging || item.progress < 40;
+                
+                return matchesSearch && matchesFilter && matchesType && matchesLagging;
             });
-    }, [searchTerm, selectedResultado, selectedType]);
+    }, [searchTerm, selectedResultado, selectedType, showOnlyLagging]);
 
     const groupedData = useMemo(() => {
         const groups = {};
@@ -216,11 +219,11 @@ export const OperationalMonitoring = () => {
                         <div className="flex flex-col gap-4">
                             <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest text-left">Tipología de Indicadores</span>
                             <div className="flex gap-2">
-                                <button onClick={() => setSelectedType('Todos')} className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all border-2 ${selectedType === 'Todos' ? 'bg-slate-800 text-white border-slate-800 shadow-lg' : 'bg-white text-slate-500 border-slate-100 hover:bg-slate-50'}`}>Todos</button>
-                                <button onClick={() => setSelectedType('impacto')} className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all border-2 flex items-center gap-2 ${selectedType === 'impacto' ? 'bg-blue-600 text-white border-blue-600 shadow-lg' : 'bg-white text-blue-600 border-blue-50 hover:bg-blue-50/50'}`}>
+                                <button onClick={() => { setSelectedType('Todos'); setShowOnlyLagging(false); }} className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all border-2 ${selectedType === 'Todos' && !showOnlyLagging ? 'bg-slate-800 text-white border-slate-800 shadow-lg' : 'bg-white text-slate-500 border-slate-100 hover:bg-slate-50'}`}>Todos</button>
+                                <button onClick={() => { setSelectedType('impacto'); setShowOnlyLagging(false); }} className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all border-2 flex items-center gap-2 ${selectedType === 'impacto' ? 'bg-blue-600 text-white border-blue-600 shadow-lg' : 'bg-white text-blue-600 border-blue-50 hover:bg-blue-50/50'}`}>
                                     <Target className="w-4 h-4"/> Impacto
                                 </button>
-                                <button onClick={() => setSelectedType('gestion')} className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all border-2 flex items-center gap-2 ${selectedType === 'gestion' ? 'bg-emerald-600 text-white border-emerald-600 shadow-lg' : 'bg-white text-emerald-600 border-emerald-50 hover:bg-emerald-50/50'}`}>
+                                <button onClick={() => { setSelectedType('gestion'); setShowOnlyLagging(false); }} className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all border-2 flex items-center gap-2 ${selectedType === 'gestion' ? 'bg-emerald-600 text-white border-emerald-600 shadow-lg' : 'bg-white text-emerald-600 border-emerald-50 hover:bg-emerald-50/50'}`}>
                                     <ClipboardList className="w-4 h-4"/> Gestión
                                 </button>
                             </div>
@@ -249,7 +252,10 @@ export const OperationalMonitoring = () => {
 
                     {/* KPI SUMMARY */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-8 border-t border-slate-50">
-                        <div className="flex items-center gap-4 group">
+                        <div 
+                            onClick={() => { setShowOnlyLagging(false); setSelectedResultado('Todos'); setSelectedType('Todos'); }}
+                            className="flex items-center gap-4 group cursor-pointer hover:bg-slate-50 p-2 rounded-2xl transition-all"
+                        >
                             <div className="bg-emerald-100 p-4 rounded-2xl group-hover:scale-110 transition-transform">
                                 <BarChart3 className="w-6 h-6 text-emerald-600" />
                             </div>
@@ -258,8 +264,8 @@ export const OperationalMonitoring = () => {
                                 <h3 className="text-3xl font-black text-slate-800">{totalProgress}%</h3>
                             </div>
                         </div>
-                        <div className="flex items-center gap-4 group">
-                            <div className="bg-blue-100 p-4 rounded-2xl group-hover:scale-110 transition-transform">
+                        <div className="flex items-center gap-4 group cursor-default p-2">
+                            <div className="bg-blue-100 p-4 rounded-2xl">
                                 <Target className="w-6 h-6 text-blue-600" />
                             </div>
                             <div className="text-left">
@@ -267,8 +273,8 @@ export const OperationalMonitoring = () => {
                                 <h3 className="text-3xl font-black text-slate-800">{activeActions}</h3>
                             </div>
                         </div>
-                        <div className="flex items-center gap-4 group">
-                            <div className="bg-indigo-100 p-4 rounded-2xl group-hover:scale-110 transition-transform">
+                        <div className="flex items-center gap-4 group cursor-default p-2">
+                            <div className="bg-indigo-100 p-4 rounded-2xl">
                                 <ClipboardList className="w-6 h-6 text-indigo-600" />
                             </div>
                             <div className="text-left">
@@ -276,16 +282,21 @@ export const OperationalMonitoring = () => {
                                 <h3 className="text-3xl font-black text-slate-800">{totalIndicators}</h3>
                             </div>
                         </div>
-                        <div className="flex items-center gap-4 group relative">
-                            <div className="bg-rose-100 p-4 rounded-2xl group-hover:scale-110 transition-transform">
-                                <AlertCircle className="w-6 h-6 text-rose-600" />
+                        <div 
+                            onClick={() => setShowOnlyLagging(!showOnlyLagging)}
+                            className={`flex items-center gap-4 group cursor-pointer p-2 rounded-2xl transition-all border-2 ${
+                                showOnlyLagging ? 'bg-rose-50 border-rose-200' : 'hover:bg-rose-50 border-transparent'
+                            }`}
+                        >
+                            <div className={`p-4 rounded-2xl transition-transform ${showOnlyLagging ? 'bg-rose-600 text-white' : 'bg-rose-100 text-rose-600 group-hover:scale-110'}`}>
+                                <AlertCircle className="w-6 h-6" />
                             </div>
                             <div className="text-left">
                                 <div className="flex items-center gap-2">
                                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Alertas Rezago</p>
                                     <div className="relative group/tooltip">
                                         <HelpCircle className="w-3.5 h-3.5 text-slate-300 cursor-help hover:text-slate-500 transition-colors" />
-                                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-4 bg-slate-900 text-white text-[11px] rounded-xl opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all z-50 shadow-2xl pointer-events-none">
+                                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-4 bg-slate-900 text-white text-[11px] rounded-xl opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all z-50 shadow-2xl pointer-events-none text-left">
                                             <p className="font-bold border-b border-white/10 pb-2 mb-2 uppercase tracking-widest text-[9px] text-rose-400">Lógica de Estimación</p>
                                             <p className="font-light leading-relaxed">
                                                 Un indicador se considera en <span className="text-rose-400 font-bold">rezago crítico</span> si su avance es inferior al 40% respecto a la meta 2025. 
