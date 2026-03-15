@@ -11,6 +11,7 @@ export const eramForestData = [
     targetText: "3 plataformas regionales activas y funcionales al 2025.",
     unit: "Plataformas",
     targetValue: 3,
+    calculationMethod: "Conteo directo de instancias regionales (Gubernamental, Intersectorial, Pueblos Indígenas) con agenda activa y actas de sesión verificables.",
     verificationMeans: [
       { name: "Actas de sesiones de las plataformas", type: "pdf", uploaded: 2, required: 3 },
       { name: "Reglamento de funcionamiento interno", type: "doc", uploaded: 3, required: 3 }
@@ -29,6 +30,7 @@ export const eramForestData = [
     targetText: "80% de avance en la alineación normativa regional.",
     unit: "% de Concordancia",
     targetValue: 80,
+    calculationMethod: "Puntaje agregado basado en la adopción de protocolos de armonización legal en los 8 estados miembros del SICA.",
     verificationMeans: [
       { name: "Matriz de armonización legal por país", type: "data", uploaded: 32, required: 80 },
       { name: "Informes de consultoría técnica jurídica", type: "pdf", uploaded: 5, required: 8 }
@@ -51,6 +53,7 @@ export const eramForestData = [
     targetText: "Variación positiva del 5% respecto al valor base 2020.",
     unit: "% de Cobertura",
     targetValue: 40.5, // Supongamos base 38.5% + 5% de mejora
+    calculationMethod: "Promedio ponderado de la cobertura forestal nacional respecto al territorio total, monitoreado vía sensores remotos (SAR/Óptico).",
     verificationMeans: [
       { name: "Mapas oficiales de cobertura forestal", type: "map", uploaded: 8, required: 8 },
       { name: "Base de datos del Sistema de Monitoreo regional", type: "data", uploaded: 1, required: 1 }
@@ -71,6 +74,7 @@ export const eramForestData = [
     targetText: "500,000 hectáreas en procesos de restauración activa consolidada.",
     unit: "Hectáreas (Has)",
     targetValue: 500000,
+    calculationMethod: "Sumatoria de hectáreas bajo restauración activa (reforestación, enriquecimiento) reportadas y georreferenciadas por los países.",
     verificationMeans: [
       { name: "Registros de incentivos a la restauración", type: "pdf", uploaded: 4500, required: "N/A" },
       { name: "Reporte Regional de Restauración (Iniciativa 20x20)", type: "link", uploaded: 1, required: 1 }
@@ -93,6 +97,7 @@ export const eramForestData = [
     targetText: "300 personas clave capacitadas y certificadas regionalmente.",
     unit: "Personas",
     targetValue: 300,
+    calculationMethod: "Registro de certificados emitidos por programas de formación regional avalados por el Consejo de Ministros de la CCAD.",
     verificationMeans: [
       { name: "Listas de asistencia y diplomas emitidos", type: "pdf", uploaded: 215, required: 300 },
       { name: "Curricula de los programas regionales de formación", type: "doc", uploaded: 4, required: 5 }
@@ -111,6 +116,7 @@ export const eramForestData = [
     targetText: "100% de la política regional diseñada y validada por el consejo de ministros.",
     unit: "% de Desarrollo",
     targetValue: 100,
+    calculationMethod: "Promedio ponderado del grado de implementación técnica y legal de la política (Borrador, Validación, Oficialización).",
     verificationMeans: [
       { name: "Borrador de la Política de Compra Verde", type: "doc", uploaded: 1, required: 1 },
       { name: "Acta de validación del comité técnico regional", type: "pdf", uploaded: 0, required: 1 }
@@ -131,6 +137,7 @@ export const eramForestData = [
     targetText: "Incremento del 15% en PYMES forestales certificadas respecto a 2020.",
     unit: "Empresas",
     targetValue: 65, // Supongamos base 50 + 15
+    calculationMethod: "Conteo de certificaciones vigentes emitidas por organismos internacionales de control forestal (FSC/PEFC).",
     verificationMeans: [
       { name: "Certificados FSC/PEFC vigentes", type: "data", uploaded: 45, required: 65 },
       { name: "Convenios de asistencia técnica para certificación", type: "pdf", uploaded: 12, required: 20 }
@@ -151,6 +158,7 @@ export const eramForestData = [
     targetText: "100% de consolidación de la cartera de inversión regional REDD+ y ERAM.",
     unit: "% de Avance",
     targetValue: 100,
+    calculationMethod: "Porcentaje de movilización financiera efectiva respecto a la cartera proyectada en el plan plurianual de inversión REDD+.",
     verificationMeans: [
       { name: "Documento consolidado de la Cartera de Proyectos", type: "pdf", uploaded: 1, required: 1 },
       { name: "Informes de gestión de fondos internacionales", type: "data", uploaded: 3, required: 5 }
@@ -169,6 +177,7 @@ export const eramForestData = [
     targetText: "Fondo regional constituido y operativo al 100%.",
     unit: "% de Constitución",
     targetValue: 100,
+    calculationMethod: "Verificación de personería jurídica y depósito inicial del fondo en el BCIE o instancia financiera regional designada.",
     verificationMeans: [
       { name: "Decreto de creación del fondo", type: "pdf", uploaded: 0, required: 1 },
       { name: "Convenio con bancos regionales", type: "doc", uploaded: 0, required: 5 }
