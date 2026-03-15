@@ -175,7 +175,7 @@ export const Home = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {/* Card Estratégico */}
-                        <div 
+                        <div
                             className="bg-slate-800/50 border border-slate-700 p-8 rounded-[2rem] hover:bg-slate-800 transition-all border-t-4 border-t-blue-500 group cursor-pointer"
                             onClick={() => navigate('/monitoring?level=estrategico')}
                         >
@@ -197,7 +197,7 @@ export const Home = () => {
                         </div>
 
                         {/* Card Operativo */}
-                        <div 
+                        <div
                             className="bg-slate-800/50 border border-slate-700 p-8 rounded-[2rem] hover:bg-slate-800 transition-all border-t-4 border-t-emerald-500 group cursor-pointer"
                             onClick={() => navigate('/monitoring?level=operativo')}
                         >
@@ -222,34 +222,7 @@ export const Home = () => {
             </section>
 
 
-            {/* --- SECCIÓN 2.5: Explorar por ejes ERAM (Versión Lista Premium) --- */}
-            <section className="py-24 bg-white">
-                <div className="container mx-auto px-4">
-                    <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-8">
-                        <div className="max-w-3xl">
-                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase tracking-widest mb-6 border border-emerald-100/50">
-                                <Globe className="h-3 w-3" /> Marco Estratégico
-                            </div>
-                            <h2 className="text-4xl md:text-5xl font-serif font-black text-slate-900 leading-tight mb-8">
-                                Explorar por <span className="bg-blue-600/10 text-blue-600 px-4 py-1 rounded-lg">ejes ERAM</span>
-                            </h2>
-                            <p className="text-slate-500 text-lg md:text-xl font-light leading-relaxed">
-                                Seleccione un eje estratégico para acceder a sus tableros, mapas y reportes especializados orientados a la resiliencia regional.
-                            </p>
-                        </div>
-                        <Button
-                            className="bg-slate-900 text-white hover:bg-slate-800 rounded-full px-12 py-7 h-auto font-black text-lg shadow-2xl shadow-slate-900/20 transform hover:scale-105 active:scale-95 transition-all group"
-                            onClick={() => navigate('/data/cifras')}
-                        >
-                            <span className="flex items-center gap-3">
-                                <Activity className="h-5 w-5 text-emerald-400" />
-                                Ir al Centro de Cifras
-                                <ArrowRight className="h-5 w-5 group-hover:translate-x-2 transition-transform" />
-                            </span>
-                        </Button>
-                    </div>
-                </div>
-            </section>
+
 
             {/* --- SECCIÓN 3: Ejes Estratégicos ERAM (Explorar por ejes) --- */}
             <section className="py-24 bg-white border-t border-slate-100">
@@ -710,8 +683,8 @@ export const Home = () => {
 
 
             {/* Footer Divider / Context */}
-            <div className="max-w-7xl mx-auto px-8 pb-16 mt-32">
-                <div className="border-t border-slate-200 py-8 text-center text-slate-400 text-[10px] font-black uppercase tracking-[0.2em]">
+            <div className="max-w-7xl mx-auto px-8 pb-4 mt-6 mb-4">
+                <div className="border-t border-slate-200 py-4 text-center text-slate-400 text-[10px] font-black uppercase tracking-[0.2em]">
                     Observatorio Ambiental Regional (OAR) • Estrategia Regional Ambiental de Centroamérica y República Dominicana
                 </div>
             </div>

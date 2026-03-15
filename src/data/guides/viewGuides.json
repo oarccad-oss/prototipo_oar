@@ -154,5 +154,57 @@
     "source": "Sistema Integrado de Monitoreo (SIME) y reportes oficiales CCAD.",
     "learnMore": "/monitoring/strategic",
     "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800"
+  },
+  "/strategic-axis/calidad": {
+    "title": "Eje 1: Calidad Ambiental",
+    "description": "Monitoreo integral de la salud de los ecosistemas, calidad del aire, suelo y gestión de residuos contaminantes.",
+    "features": [
+        "Monitoreo de índices de salud ambiental regional.",
+        "Seguimiento a políticas de gestión de desechos sólidos.",
+        "Análisis de contaminantes químicos y orgánicos.",
+        "Acceso a indicadores de impacto en la salud pública."
+    ],
+    "source": "Sistemas nacionales de calidad ambiental y reportes SICA-CCAD.",
+    "learnMore": "/strategic-questions",
+    "image": "https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?auto=format&fit=crop&q=80&w=800"
+  },
+  "/strategic-axis/mares": {
+    "title": "Eje 2: Mares y Biodiversidad",
+    "description": "Portal para la preservación de la riqueza biológica de Mesoamérica y sus ecosistemas marinos y costeros.",
+    "features": [
+        "Monitoreo de biomasa y biodiversidad arrecifal.",
+        "Seguimiento de áreas protegidas marinas.",
+        "Análisis de amenazas a especies migratorias.",
+        "Visualizaciones de salud de manglares y estuarios."
+    ],
+    "source": "NASA, NOAA, Global Fishing Watch e institutos de biodiversidad regionales.",
+    "learnMore": "/strategic-questions",
+    "image": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&q=80&w=800"
+  },
+  "/strategic-axis/agua": {
+    "title": "Eje 3: Gestión Hídrica",
+    "description": "Seguimiento a la disponibilidad, calidad y gestión sostenible del recurso hídrico en cuencas estratégicas.",
+    "features": [
+        "Balance hídrico regional en tiempo real.",
+        "Monitoreo de cuencas transfronterizas.",
+        "Seguimiento a la infraestructura de saneamiento.",
+        "Alertas de estrés hídrico y seguridad para el consumo."
+    ],
+    "source": "Ministerios de Agua, Institutos de Hidrología y modelos GLDAS.",
+    "learnMore": "/strategic-questions",
+    "image": "https://images.unsplash.com/photo-1527067829737-40299c5895bb?auto=format&fit=crop&q=80&w=800"
+  },
+  "/strategic-axis/clima": {
+    "title": "Eje 5: Cambio Climático",
+    "description": "Resiliencia regional frente al cambio climático: mitigación, adaptación y gestión de riesgos.",
+    "features": [
+        "Mapas de vulnerabilidad y riesgo climático.",
+        "Seguimiento de contribuciones nacionalmente determinadas (NDC).",
+        "Inventario de gases de efecto invernadero por sector.",
+        "Modelado de escenarios climáticos futuros para el SICA."
+    ],
+    "source": "IPCC, CMNUCC y dependencias meteorológicas nacionales.",
+    "learnMore": "/strategic-questions",
+    "image": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80&w=800"
   }
 }

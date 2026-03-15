@@ -26,6 +26,7 @@ const NodeCard = ({ node, isActive, onHover, colors }) => {
     return (
         <div 
             onMouseEnter={() => onHover(node)}
+            onMouseLeave={() => onHover(null)}
             onClick={() => node.path && navigate(node.path)}
             className={cn(
                 "group relative flex flex-col p-4 rounded-2xl border transition-all duration-300 transform w-[260px] shadow-sm",
@@ -116,7 +117,7 @@ const TreeNodeHorizontal = ({ node, onHover, hoveredNodeId }) => {
                                 <div key={child.id} className="relative flex items-center">
                                     {!isOnly && (
                                         <div className={cn(
-                                            "absolute -left-12 w-px bg-slate-300",
+                                            "absolute -left-12 w-px bg-slate-200",
                                             isFirst ? 'top-1/2 bottom-0' : '',
                                             isLast ? 'top-0 h-1/2' : '',
                                             !isFirst && !isLast ? 'top-0 bottom-0' : ''
@@ -190,57 +191,6 @@ const QuickPeek = ({ guide, position }) => {
                     )}
                 </div>
             </Card>
-        </div>
-    );
-};
-
-const MiniMap = ({ node, hoveredNodeId }) => {
-    const renderNode = (n) => {
-        const isActive = n.id === hoveredNodeId;
-        const hasChildren = n.children && n.children.length > 0;
-        
-        return (
-            <div key={n.id} className="flex flex-col items-center">
-                {/* Node Dot */}
-                <div className={cn(
-                    "w-2 h-2 rounded-full transition-all duration-300 relative z-10 border border-white",
-                    isActive ? "bg-indigo-600 scale-[2] shadow-lg" : "bg-slate-300"
-                )} />
-                
-                {hasChildren && (
-                    <div className="relative pt-3 flex gap-1.5 focus-within:z-20">
-                        {/* Parent connection line */}
-                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-3 bg-slate-200" />
-                        
-                        {n.children.map((child, idx) => (
-                            <div key={child.id} className="relative">
-                                {/* Horizontal joining lines */}
-                                {n.children.length > 1 && (
-                                    <div className={cn(
-                                        "absolute top-0 h-px bg-slate-200",
-                                        idx === 0 ? "left-1/2 right-0" : 
-                                        idx === n.children.length - 1 ? "left-0 right-1/2" : 
-                                        "left-0 right-0"
-                                    )} />
-                                )}
-                                {renderNode(child)}
-                            </div>
-                        ))}
-                    </div>
-                )}
-            </div>
-        );
-    };
-
-    return (
-        <div className="fixed bottom-24 right-8 z-[50] p-6 bg-white/90 backdrop-blur-xl border border-slate-200 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] animate-in slide-in-from-right-8 fade-in h-44 w-72 flex items-center justify-center overflow-hidden group">
-            <div className="text-[9px] absolute top-4 left-6 text-slate-400 font-black uppercase tracking-[0.2em] flex items-center gap-2">
-                <Maximize size={10} className="text-indigo-400" />
-                Arquitectura del Sitio
-            </div>
-            <div className="scale-[0.4] transition-transform duration-500 origin-center group-hover:scale-[0.45] mt-4">
-                {renderNode(node)}
-            </div>
         </div>
     );
 };
@@ -475,8 +425,8 @@ export const SitemapIndependent = () => {
                 </div>
             </header>
 
-            {/* Breadcrumbs Floating Bar */}
-            <div className="sticky top-20 z-40 bg-white/60 backdrop-blur-md border-b border-slate-200 py-4 shadow-sm">
+            {/* Breadcrumbs Floating Bar - Fixed */}
+            <div className="fixed top-20 left-0 right-0 z-40 bg-white/70 backdrop-blur-md border-b border-slate-200 py-4 shadow-sm">
                 <div className="container mx-auto px-8 flex items-center gap-4 text-[11px] font-black uppercase tracking-[0.3em] text-slate-400">
                     <div className="flex items-center gap-2 text-indigo-600">
                         <div className="w-1.5 h-1.5 rounded-full bg-indigo-600 animate-ping" />
@@ -497,6 +447,9 @@ export const SitemapIndependent = () => {
                     )}
                 </div>
             </div>
+
+            {/* Spacer to avoid content being hidden behind the fixed bars */}
+            <div className="h-[136px]" />
 
             <main className="flex-1 overflow-auto p-12 bg-slate-50/50 min-h-[calc(100vh-160px)]">
                 <div className="min-w-max h-full">
@@ -560,7 +513,6 @@ export const SitemapIndependent = () => {
                 />
             )}
             
-            <MiniMap node={sitemapData} hoveredNodeId={hoveredNode?.id} />
 
             {tourStep !== null && (
                 <OnboardingTour 
@@ -570,6 +522,13 @@ export const SitemapIndependent = () => {
                     onClose={handleCloseTour}
                 />
             )}
+
+            {/* Footer Divider / Context */}
+            <div className="max-w-7xl mx-auto px-8 pb-4 mt-6 mb-4">
+                <div className="border-t border-slate-200 py-4 text-center text-slate-400 text-[10px] font-black uppercase tracking-[0.2em]">
+                    Observatorio Ambiental Regional (OAR) • Estrategia Regional Ambiental de Centroamérica y República Dominicana
+                </div>
+            </div>
 
             <style dangerouslySetInnerHTML={{ __html: `
                 ::-webkit-scrollbar { width: 8px; height: 8px; }
