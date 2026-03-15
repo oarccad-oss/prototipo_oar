@@ -45,16 +45,51 @@ export const StrategicMonitoring = () => {
     const [selectedType, setSelectedType] = useState('Todas');
     const [selectedYear, setSelectedYear] = useState(2024);
 
-    const categories = ['Todas', ...new Set(indicatorsData.map(item => item.category))];
+    const availableCategories = useMemo(() => {
+        const filteredByType = selectedType === 'Todas' 
+            ? indicatorsData 
+            : indicatorsData.filter(item => item.type === selectedType);
+        return ['Todas', ...new Set(filteredByType.map(item => item.category))];
+    }, [selectedType]);
 
-    const filteredIndicators = indicatorsData.filter(indicator => {
-        const matchesSearch = indicator.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            indicator.metrics.some(m => m.variable.toLowerCase().includes(searchTerm.toLowerCase())) ||
-            indicator.id.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesCategory = selectedCategory === 'Todas' || indicator.category === selectedCategory;
-        const matchesType = selectedType === 'Todas' || indicator.type === selectedType;
-        return matchesSearch && matchesCategory && matchesType;
-    });
+    const availableTypes = useMemo(() => {
+        const filteredByCategory = selectedCategory === 'Todas'
+            ? indicatorsData
+            : indicatorsData.filter(item => item.category === selectedCategory);
+        return ['Todas', ...new Set(filteredByCategory.map(item => item.type))];
+    }, [selectedCategory]);
+
+    useEffect(() => {
+        if (!availableCategories.includes(selectedCategory)) {
+            setSelectedCategory('Todas');
+        }
+    }, [availableCategories, selectedCategory]);
+
+    useEffect(() => {
+        if (!availableTypes.includes(selectedType)) {
+            setSelectedType('Todas');
+        }
+    }, [availableTypes, selectedType]);
+
+    const filteredIndicators = useMemo(() => {
+        return indicatorsData.filter(indicator => {
+            const matchesSearch = indicator.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                indicator.metrics.some(m => m.variable.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                indicator.id.toLowerCase().includes(searchTerm.toLowerCase());
+            const matchesCategory = selectedCategory === 'Todas' || indicator.category === selectedCategory;
+            const matchesType = selectedType === 'Todas' || indicator.type === selectedType;
+            return matchesSearch && matchesCategory && matchesType;
+        });
+    }, [searchTerm, selectedCategory, selectedType]);
+
+    const counts = useMemo(() => {
+        return {
+            total: filteredIndicators.length,
+            impacto: filteredIndicators.filter(i => i.type === 'impacto').length,
+            gestion: filteredIndicators.filter(i => i.type === 'gestion').length,
+            synergies: [...new Set(filteredIndicators.flatMap(i => i.synergies))].length
+        };
+    }, [filteredIndicators]);
 
     const dataset = useMemo(() => {
         if (!activeDataView) return null;
@@ -129,7 +164,7 @@ export const StrategicMonitoring = () => {
                     <div className="flex flex-col gap-3 flex-1">
                         <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest text-left">Filtrar por Categoría</span>
                         <div className="flex flex-wrap gap-2">
-                            {categories.map(cat => (
+                            {availableCategories.map(cat => (
                                 <button
                                     key={cat}
                                     onClick={() => setSelectedCategory(cat)}
@@ -148,38 +183,84 @@ export const StrategicMonitoring = () => {
                     <div className="flex flex-col gap-3">
                         <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest text-left">Tipología</span>
                         <div className="flex gap-2">
-                            <button
-                                onClick={() => setSelectedType('Todas')}
-                                className={`px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-widest transition-all ${
-                                    selectedType === 'Todas'
-                                        ? 'bg-slate-800 text-white shadow-lg'
-                                        : 'bg-slate-50 text-slate-500 border border-slate-200 hover:bg-slate-100'
-                                }`}
-                            >
-                                Todas
-                            </button>
-                            <button
-                                onClick={() => setSelectedType('impacto')}
-                                className={`px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-widest transition-all flex items-center gap-2 ${
-                                    selectedType === 'impacto'
-                                        ? 'bg-blue-600 text-white shadow-lg'
-                                        : 'bg-white text-blue-600 border border-blue-100 hover:bg-blue-50'
-                                }`}
-                            >
-                                <Target className="w-4 h-4" /> Impacto
-                            </button>
-                            <button
-                                onClick={() => setSelectedType('gestion')}
-                                className={`px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-widest transition-all flex items-center gap-2 ${
-                                    selectedType === 'gestion'
-                                        ? 'bg-emerald-600 text-white shadow-lg'
-                                        : 'bg-white text-emerald-600 border border-emerald-100 hover:bg-emerald-50'
-                                }`}
-                            >
-                                <ClipboardList className="w-4 h-4" /> Gestión
-                            </button>
+                            {availableTypes.map(type => (
+                                <button
+                                    key={type}
+                                    onClick={() => setSelectedType(type)}
+                                    className={`px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-widest transition-all flex items-center gap-2 ${
+                                        selectedType === type
+                                            ? (type === 'impacto' ? 'bg-blue-600 text-white shadow-lg' : type === 'gestion' ? 'bg-emerald-600 text-white shadow-lg' : 'bg-slate-800 text-white shadow-lg')
+                                            : 'bg-white text-slate-500 border border-slate-200 hover:bg-slate-50'
+                                    }`}
+                                >
+                                    {type === 'Todas' ? 'Todas' : type === 'impacto' ? <><Target className="w-4 h-4" /> Impacto</> : <><ClipboardList className="w-4 h-4" /> Gestión</>}
+                                </button>
+                            ))}
                         </div>
                     </div>
+                </div>
+
+                {/* KPI DASHBOARD */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                    <Card 
+                        onClick={() => { setSelectedCategory('Todas'); setSelectedType('Todas'); setSearchTerm(''); }}
+                        className="bg-indigo-50 border-indigo-100 p-6 rounded-[2rem] hover:shadow-md transition-all cursor-pointer group"
+                    >
+                        <div className="flex items-center gap-4">
+                            <div className="bg-indigo-600 p-3 rounded-2xl text-white group-hover:scale-110 transition-transform">
+                                <BarChart3 className="w-6 h-6" />
+                            </div>
+                            <div className="text-left">
+                                <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest">Total Indicadores</p>
+                                <div className="flex items-baseline gap-2">
+                                    <h3 className="text-3xl font-black text-indigo-900">{counts.total}</h3>
+                                    <span className="text-[10px] font-bold text-indigo-400 uppercase">Reseteo</span>
+                                </div>
+                            </div>
+                        </div>
+                    </Card>
+
+                    <Card 
+                        onClick={() => setSelectedType('impacto')}
+                        className={`p-6 rounded-[2rem] transition-all cursor-pointer border-2 ${selectedType === 'impacto' ? 'bg-blue-600 border-blue-600 text-white shadow-lg' : 'bg-white border-blue-50 text-slate-600 hover:bg-blue-50'}`}
+                    >
+                        <div className="flex items-center gap-4">
+                            <div className={`${selectedType === 'impacto' ? 'bg-white/20' : 'bg-blue-100'} p-3 rounded-2xl ${selectedType === 'impacto' ? 'text-white' : 'text-blue-600'}`}>
+                                <Target className="w-6 h-6" />
+                            </div>
+                            <div className="text-left">
+                                <p className={`text-[10px] font-black uppercase tracking-widest ${selectedType === 'impacto' ? 'text-blue-100' : 'text-blue-400'}`}>Impacto</p>
+                                <h3 className={`text-3xl font-black ${selectedType === 'impacto' ? 'text-white' : 'text-slate-800'}`}>{counts.impacto}</h3>
+                            </div>
+                        </div>
+                    </Card>
+
+                    <Card 
+                        onClick={() => setSelectedType('gestion')}
+                        className={`p-6 rounded-[2rem] transition-all cursor-pointer border-2 ${selectedType === 'gestion' ? 'bg-emerald-600 border-emerald-600 text-white shadow-lg' : 'bg-white border-emerald-50 text-slate-600 hover:bg-emerald-50'}`}
+                    >
+                        <div className="flex items-center gap-4">
+                            <div className={`${selectedType === 'gestion' ? 'bg-white/20' : 'bg-emerald-100'} p-3 rounded-2xl ${selectedType === 'gestion' ? 'text-white' : 'text-emerald-600'}`}>
+                                <ClipboardList className="w-6 h-6" />
+                            </div>
+                            <div className="text-left">
+                                <p className={`text-[10px] font-black uppercase tracking-widest ${selectedType === 'gestion' ? 'text-emerald-100' : 'text-emerald-400'}`}>Gestión</p>
+                                <h3 className={`text-3xl font-black ${selectedType === 'gestion' ? 'text-white' : 'text-slate-800'}`}>{counts.gestion}</h3>
+                            </div>
+                        </div>
+                    </Card>
+
+                    <Card className="bg-white border-slate-100 p-6 rounded-[2rem] shadow-sm">
+                        <div className="flex items-center gap-4">
+                            <div className="bg-amber-100 p-3 rounded-2xl text-amber-600">
+                                <Activity className="w-6 h-6" />
+                            </div>
+                            <div className="text-left">
+                                <p className="text-[10px] font-black text-amber-500 uppercase tracking-widest">Sinergias Río</p>
+                                <h3 className="text-3xl font-black text-slate-800">{counts.synergies}</h3>
+                            </div>
+                        </div>
+                    </Card>
                 </div>
 
                 {/* GRID */}
