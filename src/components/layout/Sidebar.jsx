@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '../../lib/utils';
+import { getEramAxes } from '../../lib/eram';
 import { LayoutDashboard, Map, Columns, FileText, Code, Settings, BarChart3, HelpCircle, Trees, Shield, Flame, Footprints, Droplet, Anchor, Database, BookOpen, Wind, Waves, CloudRain, Activity } from 'lucide-react';
 
 export const Sidebar = ({ isOpen }) => {
@@ -13,65 +14,21 @@ export const Sidebar = ({ isOpen }) => {
         )}>
             <div className="py-6">
 
-                <div className="px-4 mb-2">
-                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Ejes Estratégicos ERAM</p>
-                </div>
-
                 <nav className="space-y-1 px-2">
-                    <Link
-                        to="/strategic-axis/calidad"
-                        className={cn(
-                            "flex items-center gap-3 px-4 py-3 text-slate-300 rounded-lg hover:bg-slate-800 hover:text-white transition-colors",
-                            location.pathname === '/strategic-axis/calidad' && "bg-blue-600 text-white font-medium shadow-inner"
-                        )}
-                    >
-                        <Wind className="h-5 w-5" />
-                        <span>Calidad Ambiental</span>
-                    </Link>
-
-                    <Link
-                        to="/strategic-axis/mares"
-                        className={cn(
-                            "flex items-center gap-3 px-4 py-3 text-slate-300 rounded-lg hover:bg-slate-800 hover:text-white transition-colors",
-                            location.pathname === '/strategic-axis/mares' && "bg-cyan-600 text-white font-medium shadow-inner"
-                        )}
-                    >
-                        <Waves className="h-5 w-5" />
-                        <span>Mares y Biodiversidad</span>
-                    </Link>
-
-                    <Link
-                        to="/strategic-axis/agua"
-                        className={cn(
-                            "flex items-center gap-3 px-4 py-3 text-slate-300 rounded-lg hover:bg-slate-800 hover:text-white transition-colors",
-                            location.pathname === '/strategic-axis/agua' && "bg-blue-500 text-white font-medium shadow-inner"
-                        )}
-                    >
-                        <Droplet className="h-5 w-5" />
-                        <span>Recurso Hídrico</span>
-                    </Link>
-
-                    <Link
-                        to="/strategic-axis/bosques"
-                        className={cn(
-                            "flex items-center gap-3 px-4 py-3 text-slate-300 rounded-lg hover:bg-slate-800 hover:text-white transition-colors",
-                            location.pathname === '/strategic-axis/bosques' && "bg-emerald-600 text-white font-medium"
-                        )}
-                    >
-                        <Trees className="h-5 w-5" />
-                        <span>Bosques y Paisajes</span>
-                    </Link>
-
-                    <Link
-                        to="/strategic-axis/clima"
-                        className={cn(
-                            "flex items-center gap-3 px-4 py-3 text-slate-300 rounded-lg hover:bg-slate-800 hover:text-white transition-colors",
-                            location.pathname === '/strategic-axis/clima' && "bg-purple-600 text-white font-medium shadow-inner"
-                        )}
-                    >
-                        <CloudRain className="h-5 w-5" />
-                        <span>Cambio Climático</span>
-                    </Link>
+                    {getEramAxes().map((axis) => (
+                        <Link
+                            key={axis.id}
+                            to={axis.ruta}
+                            className={cn(
+                                "flex items-center gap-3 px-4 py-3 text-slate-300 rounded-lg hover:bg-slate-800 hover:text-white transition-colors",
+                                location.pathname === axis.ruta && "text-white font-medium shadow-inner"
+                            )}
+                            style={location.pathname === axis.ruta ? { backgroundColor: axis.color } : {}}
+                        >
+                            <axis.iconComponent className="h-5 w-5" />
+                            <span>{axis.text}</span>
+                        </Link>
+                    ))}
                 </nav>
 
 

@@ -1,0 +1,52 @@
+[
+  {
+    "id": "calidad",
+    "linea": "1",
+    "text": "Calidad Ambiental",
+    "color": "#2563eb",
+    "color_secundario": "#eff6ff",
+    "icon": "Wind",
+    "ruta": "/strategic-axis/calidad",
+    "description": "Monitoreo de la calidad del aire, suelo y agua, así como la gestión de residuos y contaminantes."
+  },
+  {
+    "id": "mares",
+    "linea": "2",
+    "text": "Mares y Biodiversidad",
+    "color": "#0891b2",
+    "color_secundario": "#ecfeff",
+    "icon": "Waves",
+    "ruta": "/strategic-axis/mares",
+    "description": "Protección de ecosistemas marinos, costeros y la biodiversidad terrestre de la región."
+  },
+  {
+    "id": "agua",
+    "linea": "3",
+    "text": "Gestión Hídrica",
+    "color": "#3b82f6",
+    "color_secundario": "#eff6ff",
+    "icon": "Droplet",
+    "ruta": "/strategic-axis/agua",
+    "description": "Gestión integral de los recursos hídricos y cuencas transfronterizas del SICA."
+  },
+  {
+    "id": "bosques",
+    "linea": "4",
+    "text": "Bosques y Paisajes",
+    "color": "#059669",
+    "color_secundario": "#ecfdf5",
+    "icon": "Trees",
+    "ruta": "/strategic-axis/bosques",
+    "description": "Conservación de la cobertura forestal, restauración de paisajes y lucha contra los incendios."
+  },
+  {
+    "id": "clima",
+    "linea": "5",
+    "text": "Cambio Climático",
+    "color": "#9333ea",
+    "color_secundario": "#faf5ff",
+    "icon": "CloudRain",
+    "ruta": "/strategic-axis/clima",
+    "description": "Mitigación y adaptación al cambio climático y gestión de riesgos ante desastres naturales."
+  }
+]

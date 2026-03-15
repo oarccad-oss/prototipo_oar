@@ -38,6 +38,7 @@ import { ShieldAlert, Activity, Layers, Briefcase, LayoutDashboard } from 'lucid
 import { MonitoringPortal } from './pages/monitoring/MonitoringPortal';
 import { StrategicMonitoring } from './pages/monitoring/StrategicMonitoring';
 import { OperationalMonitoring } from './pages/monitoring/OperationalMonitoring';
+import { SitemapIndependent } from './pages/technical/SitemapIndependent';
 
 // Component to scroll to top on route change
 const ScrollToTop = () => {
@@ -294,6 +295,7 @@ function App() {
 
 
 
+          <Route path="/mapa_sitio_independiente" element={<SitemapIndependent />} />
         </Route>
       </Routes>
     </Router>

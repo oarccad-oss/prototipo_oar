@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../ui/Shared';
 
 import { LogOut, User, Menu, Search, X, ChevronDown } from 'lucide-react';
+import { getEramAxes } from '../../lib/eram';
 import { GlobalSearch } from '../ui/GlobalSearch';
 
 export const Navbar = ({ user, onLogout, toggleSidebar, isSidebarVisible }) => {
@@ -66,14 +67,31 @@ export const Navbar = ({ user, onLogout, toggleSidebar, isSidebarVisible }) => {
                                     Ejes ERAM <ChevronDown className="h-4 w-4" />
                                 </button>
                                 <div className="absolute top-full left-0 w-64 bg-white border border-slate-200 shadow-xl rounded-2xl p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all translate-y-2 group-hover:translate-y-0 z-[100]">
-                                    <Link to="/strategic-axis/calidad" className="block px-4 py-2 hover:bg-slate-50 rounded-xl text-xs font-bold text-slate-700 hover:text-blue-600">Línea 1: Calidad Ambiental</Link>
-                                    <Link to="/strategic-axis/mares" className="block px-4 py-2 hover:bg-slate-50 rounded-xl text-xs font-bold text-slate-700 hover:text-cyan-600">Línea 2: Mares y Biodiversidad</Link>
-                                    <Link to="/strategic-axis/agua" className="block px-4 py-2 hover:bg-slate-50 rounded-xl text-xs font-bold text-slate-700 hover:text-blue-700">Línea 3: Gestión Hídrica</Link>
-                                    <Link to="/strategic-axis/bosques" className="block px-4 py-2 bg-emerald-50 rounded-xl text-xs font-bold text-emerald-700">Línea 4: Bosques y Paisajes</Link>
-                                    <Link to="/strategic-axis/clima" className="block px-4 py-2 hover:bg-slate-50 rounded-xl text-xs font-bold text-slate-700 hover:text-purple-600">Línea 5: Cambio Climático</Link>
+                                    {getEramAxes().map((axis) => (
+                                        <Link 
+                                            key={axis.id} 
+                                            to={axis.ruta} 
+                                            className="block px-4 py-2 hover:bg-slate-50 rounded-xl text-xs font-bold text-slate-700 transition-colors"
+                                            style={{ '--hover-color': axis.color }}
+                                            onMouseEnter={(e) => e.currentTarget.style.color = axis.color}
+                                            onMouseLeave={(e) => e.currentTarget.style.color = ''}
+                                        >
+                                            Línea {axis.linea}: {axis.text}
+                                        </Link>
+                                    ))}
                                 </div>
                             </div>
 
+                            {/* Indicadores Dropdown */}
+                            <div className="relative group py-4">
+                                <button className="flex items-center gap-1 hover:text-brand-primary transition-colors cursor-pointer">
+                                    Indicadores <ChevronDown className="h-4 w-4" />
+                                </button>
+                                <div className="absolute top-full left-0 w-64 bg-white border border-slate-200 shadow-xl rounded-2xl p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all translate-y-2 group-hover:translate-y-0 z-[100]">
+                                    <Link to="/monitoring/strategic" className="block px-4 py-2 hover:bg-slate-50 rounded-xl text-xs font-bold text-slate-700 hover:text-brand-primary">Monitoreo Estratégico</Link>
+                                    <Link to="/monitoring/operational" className="block px-4 py-2 hover:bg-slate-50 rounded-xl text-xs font-bold text-slate-700 hover:text-brand-primary">Monitoreo Operativo ERAM</Link>
+                                </div>
+                            </div>
                         </div>
 
                         {!user ? (

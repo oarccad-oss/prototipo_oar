@@ -15,7 +15,11 @@ import {
     Activity
 } from 'lucide-react';
 import CIFRAS_DATA from '../../data/cifras/cifras.json';
+import { getEramAxes, getAxisColor } from '../../lib/eram';
 import { cn } from '../../lib/utils';
+
+// Helper to get color for an axis
+const getAxisColorHelper = (axis) => getAxisColor(axis);
 
 // Helper to get country emoji
 const getCountryEmoji = (country) => {
@@ -31,16 +35,6 @@ const getCountryEmoji = (country) => {
         'Regional': '🌎'
     };
     return flags[country] || '📍';
-};
-
-const AXIS_COLORS = {
-    'Bosques': '#97BD3D',
-    'Biodiversidad': '#10B981',
-    'Agua': '#3B82F6',
-    'Mares': '#06B6D4',
-    'Clima': '#8B5CF6',
-    'Calidad Ambiental': '#475569',
-    'Incendios': '#EF4444'
 };
 
 export const CifrasCenter = () => {
@@ -231,7 +225,7 @@ export const CifrasCenter = () => {
                                                 <div className="flex items-center gap-2">
                                                     <div 
                                                         className="h-2 w-2 rounded-full" 
-                                                        style={{ backgroundColor: AXIS_COLORS[axis] || '#10B981' }} 
+                                                        style={{ backgroundColor: getAxisColorHelper(axis) }} 
                                                     />
                                                     {axis}
                                                 </div>
@@ -278,7 +272,7 @@ export const CifrasCenter = () => {
                         {/* Infinite Grid */}
                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-6">
                             {paginatedData.map((item, idx) => {
-                                const color = AXIS_COLORS[item.eje_tematico] || '#10B981';
+                                const color = getAxisColorHelper(item.eje_tematico);
                                 return (
                                     <Card 
                                         key={`${item.titulo}-${idx}`} 

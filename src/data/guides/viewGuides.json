@@ -1,0 +1,158 @@
+{
+  "/": {
+    "title": "Portal Principal OAR",
+    "description": "Bienvenido al Observatorio Ambiental Regional. Esta vista central conecta todas las herramientas estratégicas del SICA.",
+    "features": [
+        "Acceso a Preguntas Estratégicas y respuestas basadas en datos.",
+        "Visualización de Cifras Regionales clave por eje temático.",
+        "Monitoreo de compromisos internacionales y metas ERAM.",
+        "Laboratorio de Análisis Geoespacial e Inteligencia de Negocios."
+    ],
+    "source": "Sistemas integrados de CCAD, NASA, GFW y fuentes nacionales SICA.",
+    "learnMore": "/technical/docs",
+    "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800"
+  },
+  "/data/cifras": {
+    "title": "Centro de Cifras Regionales",
+    "description": "Inventario completo de indicadores ambientales estratégicos del SICA.",
+    "features": [
+        "Filtrado multiselect por país y eje estratégico.",
+        "Búsqueda por palabras clave en títulos y descripciones.",
+        "Exportación de datos filtrados en formatos CSV y PDF.",
+        "Visualización aleatoria de cifras destacadas."
+    ],
+    "source": "Global Forest Watch, IUCN, FAO, WDPA y Ministerios de Ambiente regionales.",
+    "learnMore": "/technical/docs",
+    "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800"
+  },
+  "/monitoring/operational": {
+    "title": "Monitoreo Operativo ERAM",
+    "description": "Seguimiento técnico del avance de la Estrategia Regional Ambiental.",
+    "features": [
+        "Identificación de alertas de rezago en acciones estratégicas.",
+        "Análisis de evidencia y medios de verificación por país.",
+        "Seguimiento de metas operativas y gestión institucional.",
+        "Desglose de contribución nacional al cumplimiento regional."
+    ],
+    "source": "Plataforma SIME - Sistema de Monitoreo de la ERAM (CCAD).",
+    "learnMore": "/monitoring",
+    "image": "https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d?auto=format&fit=crop&q=80&w=800"
+  },
+  "/monitoring/strategic": {
+    "title": "Monitoreo Estratégico Regional",
+    "description": "Dashboard de alto nivel sobre el cumplimiento de convenios internacionales y metas globales.",
+    "features": [
+        "Seguimiento de sinergias entre Convenciones de Río (CBD, UNCCD, UNFCCC).",
+        "Visualización de indicadores de impacto a largo plazo.",
+        "Análisis de metas 30x30 y neutralidad de degradación de la tierra.",
+        "Reportes sintetizados para tomadores de decisiones."
+    ],
+    "source": "Secretaría Ejecutiva CCAD y Organismos Internacionales.",
+    "learnMore": "/monitoring",
+    "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800"
+  },
+  "/preguntas": {
+    "title": "Preguntas Estratégicas",
+    "description": "Respuestas directas a las interrogantes más críticas sobre el estado del ambiente regional.",
+    "features": [
+        "Exploración por temas: Bosques, Agua, Clima, Biodiversidad.",
+        "Visualizaciones interactivas y mapas de situación actual.",
+        "Acceso a datos crudos y reportes técnicos asociados.",
+        "Narrativas simplificadas para facilitar la comprensión."
+    ],
+    "source": "Base de datos unificada del OAR combinando +50 fuentes satelitales y locales.",
+    "learnMore": "/strategic-questions",
+    "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800"
+  },
+  "/technical/dashboard": {
+    "title": "Tablero de Control Técnico",
+    "description": "Visualización técnica y estadística detallada de todos los parámetros del OAR.",
+    "features": [
+        "Gráficos comparativos de tendencias históricas.",
+        "Desglose estadístico por país y categoría.",
+        "Seguimiento de KPIS críticos de salud ambiental.",
+        "Herramientas de filtrado avanzado para perfiles técnicos."
+    ],
+    "source": "Data Lake Regional OAR.",
+    "learnMore": "/technical/dashboard",
+    "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800"
+  },
+  "/technical/geo-analysis": {
+    "title": "Laboratorio Geoespacial",
+    "description": "Herramientas avanzadas de análisis espacial para la toma de decisiones.",
+    "features": [
+        "Detección histórica de deforestación mediante satélites.",
+        "Análisis de restricciones de conservación en áreas protegidas.",
+        "Inventario dinámico de ecosistemas y biodiversidad.",
+        "Cruce de proyectos de cooperación en el territorio."
+    ],
+    "source": "Motores de procesamiento OAR, Sentinel-2, Landsat y capas vectoriales SICA.",
+    "learnMore": "/technical/map",
+    "image": "https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&q=80&w=800"
+  },
+  "/technical/maps": {
+    "title": "Explorador de Mapas Regionales",
+    "description": "Centro de recursos geoespaciales para la visualización de capas temáticas y territoriales del SICA.",
+    "features": [
+        "Visualización de áreas protegidas y ecosistemas terrestres.",
+        "Mapas de amenazas climáticas y seguridad hídrica en tiempo real.",
+        "Comparativa de capas históricas para análisis de cambios.",
+        "Acceso a metadatos y fuentes oficiales de cada capa."
+    ],
+    "source": "Infraestructura de Datos Espaciales (IDE) de CCAD y socios regionales.",
+    "learnMore": "/technical/docs",
+    "image": "https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=800"
+  },
+  "/analisis-multidimensional": {
+    "title": "Análisis Multidimensional (BI)",
+    "description": "Herramienta avanzada de Inteligencia de Negocios para el cruce de variables ambientales y socioeconómicas.",
+    "features": [
+        "Cruce dinámico de indicadores entre múltiples bases de datos.",
+        "Generación automática de gráficos de correlación y tendencia.",
+        "Filtrado por periodos temporales y escalas geográficas.",
+        "Exportación de resultados en alta resolución para informes."
+    ],
+    "source": "Data Lake OAR y repositorios estadísticos nacionales del SICA.",
+    "learnMore": "/technical/docs",
+    "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800"
+  },
+  "/technical/reports/fra-2024": {
+    "title": "Estado de los Bosques (FRA 2024)",
+    "description": "Análisis detallado de la cobertura forestal y su evolución basado en la Evaluación de los Recursos Forestales Mundiales.",
+    "features": [
+        "Monitoreo de la superficie forestal total por país.",
+        "Análisis de tasas de deforestación y regeneración.",
+        "Estadísticas de biomasa y stocks de carbono.",
+        "Comparativa histórica de metas de cobertura regional."
+    ],
+    "source": "FAO - Evaluación de los Recursos Forestales Mundiales (FRA) y datos nacionales.",
+    "learnMore": "/preguntas/estado-bosques",
+    "image": "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&q=80&w=800"
+  },
+  "/strategic-axis/bosques": {
+    "title": "Eje 4: Bosques y Paisajes",
+    "description": "Portal dedicado a la gestión forestal sostenible, restauración de paisajes y conectividad ecológica en la región.",
+    "features": [
+        "Visualización de los 5 Grandes Bosques de Mesoamérica.",
+        "Acceso a narrativas e historias de conservación territorial.",
+        "Monitoreo de metas de restauración y cobertura boscosa.",
+        "Preguntas estratégicas relacionadas con incendios y deforestación."
+    ],
+    "source": "Estrategia Regional Ambiental (ERAM), CCAD y Ministerios de Ambiente regionales.",
+    "learnMore": "/strategic-questions",
+    "image": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&q=80&w=800"
+  },
+  "/monitoring": {
+    "title": "Centro de Monitoreo OAR",
+    "description": "Plataforma centralizada para el seguimiento del estado ambiental regional y metas estratégicas del SICA.",
+    "features": [
+        "Dashboard interactivo con niveles Estratégico y Operativo.",
+        "Seguimiento de cumplimiento de convenios internacionales.",
+        "Alertas tempranas sobre indicadores en estado de rezago.",
+        "Desglose de contribuciones nacionales por país."
+    ],
+    "source": "Sistema Integrado de Monitoreo (SIME) y reportes oficiales CCAD.",
+    "learnMore": "/monitoring/strategic",
+    "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800"
+  }
+}

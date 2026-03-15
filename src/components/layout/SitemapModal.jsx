@@ -2,10 +2,11 @@ import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { 
     Home, Trees, Database, HelpCircle, Map as MapIcon, 
-    ShieldCheck, X, Activity, Globe
+    ShieldCheck, X, Activity, Globe, LayoutDashboard, ExternalLink
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { QUESTIONS_DATA } from '../../pages/questions/questions';
+import { getEramAxes } from '../../lib/eram';
 import { Card } from '../ui/Shared';
 
 const SITEMAP_DATA = {
@@ -20,109 +21,81 @@ const SITEMAP_DATA = {
             name: "Ejes Estratégicos ERAM",
             icon: Globe,
             depth: 2,
-            children: [
-                { 
-                    id: 'calidad', 
-                    name: "Calidad Ambiental", 
-                    path: "/strategic-axis/calidad", 
-                    depth: 3 
-                },
-                { 
-                    id: 'mares', 
-                    name: "Mares y Biodiversidad", 
-                    path: "/strategic-axis/mares", 
-                    depth: 3,
-                    children: [
-                        {
-                            id: 'preguntas_biodiv',
-                            name: "Preguntas de Biodiversidad",
-                            path: "/strategic-questions",
-                            depth: 4,
-                            children: QUESTIONS_DATA.filter(q => ['Biodiversidad', 'Mares'].includes(q.category)).map(q => ({
-                                id: q.id,
-                                name: q.shortQuestion || q.question,
-                                path: q.path,
-                                depth: 5
-                            }))
-                        }
-                    ]
-                },
-                { 
-                    id: 'agua', 
-                    name: "Gestión Hídrica", 
-                    path: "/strategic-axis/agua", 
-                    depth: 3,
-                    children: [
-                        {
-                            id: 'preguntas_agua',
-                            name: "Preguntas de Agua",
-                            path: "/strategic-questions",
-                            depth: 4,
-                            children: QUESTIONS_DATA.filter(q => q.category === 'Agua').map(q => ({
-                                id: q.id,
-                                name: q.shortQuestion || q.question,
-                                path: q.path,
-                                depth: 5
-                            }))
-                        }
-                    ]
-                },
-                { 
-                    id: 'bosques_hub', 
-                    name: "Bosques y Paisajes", 
-                    path: "/strategic-axis/bosques", 
-                    depth: 3,
-                    children: [
-                        {
-                            id: 'historias_bosques',
-                            name: "Grandes Bosques (Historias)",
-                            icon: Trees,
-                            path: "/grandes-bosques",
-                            depth: 4,
-                            children: [
-                                { id: 'mm', name: "Montañas Mayas", path: "/grandes-bosques/historias/montanas-mayas", depth: 5 },
-                                { id: 'bm', name: "Biosfera Maya", path: "/grandes-bosques/historias/reserva-de-la-biosfera-maya", depth: 5 },
-                                { id: 'ei', name: "El Imposible", path: "/grandes-bosques/historias/parque-nacional-el-imposible", depth: 5 },
-                                { id: 'rp', name: "Río Plátano", path: "/grandes-bosques/historias/reserva-de-la-biosfera-del-rio-platano", depth: 5 },
-                                { id: 'da', name: "Darién", path: "/grandes-bosques/historias/parque-nacional-darien", depth: 5 }
-                            ]
-                        },
-                        { 
-                            id: 'preguntas_bosques', 
-                            name: "Preguntas de Bosques", 
-                            path: "/strategic-questions", 
-                            icon: HelpCircle, 
-                            depth: 4,
-                            children: QUESTIONS_DATA.filter(q => q.category === 'Bosques' || q.category === 'Incendios').map(q => ({
-                                id: q.id,
-                                name: q.shortQuestion || q.question,
-                                path: q.path,
-                                depth: 5
-                            }))
-                        }
-                    ]
-                },
-                { 
-                    id: 'clima', 
-                    name: "Cambio Climático", 
-                    path: "/strategic-axis/clima", 
-                    depth: 3,
-                    children: [
-                        {
-                            id: 'preguntas_clima',
-                            name: "Preguntas de Clima",
-                            path: "/strategic-questions",
-                            depth: 4,
-                            children: QUESTIONS_DATA.filter(q => q.category === 'Clima').map(q => ({
-                                id: q.id,
-                                name: q.shortQuestion || q.question,
-                                path: q.path,
-                                depth: 5
-                            }))
-                        }
-                    ]
-                }
-            ]
+            children: getEramAxes().map(axis => ({
+                id: axis.id,
+                name: axis.text,
+                icon: axis.iconComponent,
+                path: axis.ruta,
+                depth: 3,
+                children: axis.id === 'mares' ? [
+                    {
+                        id: 'preguntas_biodiv',
+                        name: "Preguntas de Biodiversidad",
+                        path: "/strategic-questions",
+                        depth: 4,
+                        children: QUESTIONS_DATA.filter(q => ['Biodiversidad', 'Mares'].includes(q.category)).map(q => ({
+                            id: q.id,
+                            name: q.shortQuestion || q.question,
+                            path: q.path,
+                            depth: 5
+                        }))
+                    }
+                ] : axis.id === 'agua' ? [
+                    {
+                        id: 'preguntas_agua',
+                        name: "Preguntas de Agua",
+                        path: "/strategic-questions",
+                        depth: 4,
+                        children: QUESTIONS_DATA.filter(q => q.category === 'Agua').map(q => ({
+                            id: q.id,
+                            name: q.shortQuestion || q.question,
+                            path: q.path,
+                            depth: 5
+                        }))
+                    }
+                ] : axis.id === 'bosques' ? [
+                    {
+                        id: 'historias_bosques',
+                        name: "Grandes Bosques (Historias)",
+                        icon: Trees,
+                        path: "/grandes-bosques",
+                        depth: 4,
+                        children: [
+                            { id: 'mm', name: "Montañas Mayas", path: "/grandes-bosques/historias/montanas-mayas", depth: 5 },
+                            { id: 'bm', name: "Biosfera Maya", path: "/grandes-bosques/historias/reserva-de-la-biosfera-maya", depth: 5 },
+                            { id: 'ei', name: "El Imposible", path: "/grandes-bosques/historias/parque-nacional-el-imposible", depth: 5 },
+                            { id: 'rp', name: "Río Plátano", path: "/grandes-bosques/historias/reserva-de-la-biosfera-del-rio-platano", depth: 5 },
+                            { id: 'da', name: "Darién", path: "/grandes-bosques/historias/parque-nacional-darien", depth: 5 }
+                        ]
+                    },
+                    { 
+                        id: 'preguntas_bosques', 
+                        name: "Preguntas de Bosques", 
+                        path: "/strategic-questions", 
+                        icon: HelpCircle, 
+                        depth: 4,
+                        children: QUESTIONS_DATA.filter(q => q.category === 'Bosques' || q.category === 'Incendios').map(q => ({
+                            id: q.id,
+                            name: q.shortQuestion || q.question,
+                            path: q.path,
+                            depth: 5
+                        }))
+                    }
+                ] : axis.id === 'clima' ? [
+                    {
+                        id: 'preguntas_clima',
+                        name: "Preguntas de Clima",
+                        path: "/strategic-questions",
+                        depth: 4,
+                        children: QUESTIONS_DATA.filter(q => q.category === 'Clima').map(q => ({
+                            id: q.id,
+                            name: q.shortQuestion || q.question,
+                            path: q.path,
+                            depth: 5
+                        }))
+                    }
+                ] : undefined
+            }))
         },
         {
             id: 'intelligence',
@@ -130,7 +103,20 @@ const SITEMAP_DATA = {
             icon: Activity,
             depth: 2,
             children: [
-                { id: 'bi', name: "Análisis Multidimensional", path: "/analisis-multidimensional", icon: Database, depth: 3 }
+                { id: 'cifras', name: "Centro de Cifras", path: "/data/cifras", icon: Database, depth: 3 },
+                { id: 'questions', name: "Preguntas Estratégicas", path: "/preguntas", icon: HelpCircle, depth: 3 },
+                { 
+                    id: 'monitoreo', 
+                    name: "Monitoreo Regional", 
+                    path: "/monitoring", 
+                    icon: LayoutDashboard,
+                    depth: 3,
+                    children: [
+                        { id: 'mon_strat', name: "Monitoreo Estratégico", path: "/monitoring/strategic", depth: 4 },
+                        { id: 'mon_oper', name: "Monitoreo Operativo ERAM", path: "/monitoring/operational", depth: 4 }
+                    ]
+                },
+                { id: 'bi', name: "Análisis Multidimensional", path: "/analisis-multidimensional", icon: Activity, depth: 3 }
             ]
         },
         {
@@ -140,6 +126,7 @@ const SITEMAP_DATA = {
             depth: 2,
             children: [
                 { id: 'explorador', name: "Explorador de Mapas", path: "/technical/maps", depth: 3 },
+                { id: 'geo', name: "Laboratorio Geoespacial", path: "/technical/geo-analysis", depth: 3 },
                 { id: 'docs', name: "Centro de Documentación", path: "/technical/docs", depth: 3 },
                 { id: 'devs', name: "Portal Desarrolladores", path: "/technical/developers", depth: 3 }
             ]
@@ -265,7 +252,15 @@ export const SitemapModal = ({ isOpen, onClose }) => {
 
                 {/* Footer Info */}
                 <div className="p-6 bg-emerald-900/40 border-t border-emerald-800/30 flex justify-between items-center text-[10px] text-emerald-400/40 uppercase tracking-widest font-bold relative z-10">
-                    <span>Estructura de Información OAR v2.0</span>
+                    <div className="flex gap-4 items-center">
+                        <span>Estructura de Información OAR v2.0</span>
+                        <button 
+                            onClick={() => handleNavigate('/mapa_sitio_independiente')}
+                            className="bg-emerald-500/20 hover:bg-emerald-500/40 text-emerald-400 px-3 py-1 rounded-full border border-emerald-500/30 flex items-center gap-2 transition-all"
+                        >
+                            Ver Mapa Full Page <ExternalLink size={10} />
+                        </button>
+                    </div>
                     <div className="flex gap-6">
                         <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-emerald-500"></div> Ubicación Actual</div>
                         <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-emerald-900 border border-emerald-700"></div> Rutas Disponibles</div>

@@ -63,6 +63,15 @@
     "pais": "Panamá"
   },
   {
+    "titulo": "REGISTROS BIODIVERSIDAD",
+    "valor": "12,450,000",
+    "unidad_medida": "obs",
+    "bajada": "Total de registros de presencia de especies disponibles en la red regional.",
+    "fuente": "GBIF",
+    "eje_tematico": "Biodiversidad",
+    "pais": "Regional"
+  },
+  {
     "titulo": "CAPACIDAD INSTALADA RENOVABLE",
     "valor": "78.4",
     "unidad_medida": "%",

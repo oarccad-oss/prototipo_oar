@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageSquare, X, Send, Bot, User, Search, HelpCircle, Database, ChevronUp, ChevronDown } from 'lucide-react';
-import { Card, Button } from '../ui/Shared';
+import { MessageSquare, X, Send, Bot, User, Search, HelpCircle, Database, ChevronUp, ChevronDown, Lightbulb } from 'lucide-react';
+import { Card, Button, ViewGuideModal } from '../ui/Shared';
 import { AI_RESPONSES } from '../../api/mockData';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { cn } from '../../lib/utils';
@@ -8,6 +8,7 @@ import { cn } from '../../lib/utils';
 export const Chatbot = () => {
     const [isChatOpen, setIsChatOpen] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isGuideOpen, setIsGuideOpen] = useState(false);
     const [messages, setMessages] = useState([
         { id: 1, sender: 'bot', text: 'Hola, soy el asistente IA del OAR. ¿En qué puedo ayudarte hoy? (Prueba preguntar sobre "incendios" o "cobertura")' }
     ]);
@@ -93,6 +94,16 @@ export const Chatbot = () => {
             icon: Database, 
             color: 'bg-brand-primary', 
             action: () => navigate('/analisis-multidimensional') 
+        },
+        { 
+            id: 'guide', 
+            label: 'Guía de esta Vista', 
+            icon: Lightbulb, 
+            color: 'bg-amber-500', 
+            action: () => {
+                setIsGuideOpen(true);
+                setIsMenuOpen(false);
+            } 
         },
         { 
             id: 'chat', 
@@ -246,6 +257,8 @@ export const Chatbot = () => {
                     </Card>
                 </div>
             )}
+            {/* View Guide Modal */}
+            <ViewGuideModal isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} />
         </>
     );
 };

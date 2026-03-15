@@ -145,3 +145,4 @@ export const ShareButton = ({ className, variant = "white", size = "sm" }) => {
         </Button>
     );
 };
+export { ViewGuideModal } from './ViewGuideModal';
