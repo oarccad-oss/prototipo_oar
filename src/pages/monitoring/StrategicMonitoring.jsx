@@ -1,5 +1,5 @@
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Search, Globe, ShieldAlert, Leaf, BookOpen, Target, BarChart3, Info, X, MapPin, Activity, CalendarDays, TrendingUp, TableProperties, Database, Scale, ClipboardList } from 'lucide-react';
 import { indicatorsData } from '../../data/monitoring/indicators';
 import { RegionalEvolutionChart } from '../../components/monitoring/RegionalChart';
