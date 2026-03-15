@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoreo de Indicadores Estratégicos SICA</title>
+    
+    <!-- Tailwind CSS para los estilos -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React y ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel para traducir JSX en el navegador -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Estilos personalizados para la barra de desplazamiento (Scrollbar) */
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+    
+    <!-- Contenedor principal donde React dibujará la aplicación -->
+    <div id="root"></div>
+
+    <!-- Script de la aplicación en React/JSX -->
+    <script type="text/babel">
+        const { useState, useMemo, useEffect } = React;
+
+        // Componente de Íconos para la versión web
+        const Icon = ({ name, className }) => {
+            useEffect(() => {
+                if (window.lucide) window.lucide.createIcons();
+            });
+            return <i data-lucide={name} className={className}></i>;
+        };
+
+        // Base de datos de indicadores
+        const indicatorsData = [
+          {
+            category: "Objetivos Globales",
+            id: "Goal A (1)",
+            title: "A.1 Lista Roja de Ecosistemas",
+            synergies: ["CDB", "CNULD"],
+            metrics: [
+              {
+                variable: "Proporción de ecosistemas degradados",
+                unit: "%",
+                method: "Modelado de reducción espacial y degradación abiótica/biótica siguiendo criterios A-E.",
+                sources: {
+                  national: "Informes nacionales de la UICN RLE; Ministerios de Ambiente (mapas históricos de cobertura).",
+                  regional: "Plataforma de la Lista Roja de Ecosistemas de las Américas; series climáticas globales."
+                }
+              }
+            ]
+          },
+          {
+            category: "Objetivos Globales",
+            id: "Goal A (2)",
+            title: "A.2 Extensión de ecosistemas naturales",
+            synergies: ["CDB", "CMNUCC", "CNULD"],
+            metrics: [
+              {
+                variable: "Área neta de ecosistemas naturales",
+                unit: "Miles de ha",
+                method: "Análisis de clasificación de uso de suelo (LULC) mediante SIG e intersección espacial.",
+                sources: {
+                  national: "Sistemas Nacionales de Monitoreo de Bosques (MRV); Inventarios Forestales Nacionales.",
+                  regional: "MapBiomas (Centroamérica/Sudamérica); Dynamic World; Global Forest Watch."
+                }
+              }
+            ]
+          },
+          {
+            category: "Objetivos Globales",
+            id: "Goal A (3)",
+            title: "A.3 Índice de la Lista Roja",
+            synergies: ["CDB"],
+            metrics: [
+              {
+                variable: "Cambios genuinos en riesgo de extinción",
+                unit: "Índice (0-1)",
+                method: "Fórmula RLI (sumatoria de cambios de peso por categoría de amenaza de las especies a lo largo del tiempo).",
+                sources: {
+                  national: "Listas Rojas Nacionales de Especies Amenazadas elaboradas por autoridades de vida silvestre.",
+                  regional: "Base de datos API de la Lista Roja de la UICN; registros de ocurrencia en GBIF."
+                }
+              }
+            ]
+          },
+          {
+            category: "Metas de Reducción de Amenazas",
+            id: "Meta 3",
+            title: "3.1 Cobertura de áreas protegidas y OECM",
+            synergies: ["CDB", "CMNUCC", "CNULD"],
+            metrics: [
+              {
+                variable: "Superficie de Áreas Protegidas",
+                unit: "% del territorio",
+                method: "Sumatoria espacial disuelta de polígonos oficiales sobre la superficie terrestre/marina del país.",
+                sources: {
+                  national: "Sistemas Nacionales de Áreas Protegidas (SINAP); Catastros y registros de OECM.",
+                  regional: "World Database on Protected Areas (WDPA); Lista Verde de la UICN."
+                }
+              }
+            ]
+          },
+          {
+            category: "Metas de Reducción de Amenazas",
+            id: "Meta 8",
+            title: "8.1 Mitigación del cambio climático",
+            synergies: ["CDB", "CMNUCC", "CNULD"],
+            metrics: [
+              {
+                variable: "Inventarios de GEI (Sector AFOLU/LULUCF)",
+                unit: "Millones tCO2e",
+                method: "Ecuaciones de inventarios de GEI aplicadas a matrices de cambios de uso de suelo (Niveles 1 o 2 del IPCC).",
+                sources: {
+                  national: "Comunicaciones Nacionales CMNUCC; Informes Bienales de Actualización (BUR).",
+                  regional: "Mapas de biomasa ESA CCI; FAOSTAT (Emisiones terrestres)."
+                }
+              }
+            ]
+          },
+          {
+            category: "Herramientas y Soluciones",
+            id: "Meta 14",
+            title: "14.1 Integración sectorial",
+            synergies: ["CDB", "CMNUCC", "CNULD"],
+            metrics: [
+              {
+                variable: "Políticas con metas de biodiversidad",
+                unit: "Número de políticas",
+                method: "Auditoría de planes sectoriales e implementación de manuales SEEA para cuentas nacionales.",
+                sources: {
+                  national: "Boletines oficiales del Estado; Institutos Nacionales de Estadística (Cuentas Ambientales).",
+                  regional: "Repositorios del Marco Mundial para el Desarrollo de Estadísticas Ambientales (FDES)."
+                }
+              }
+            ]
+          },
+          {
+            category: "Herramientas y Soluciones",
+            id: "Meta 19",
+            title: "D.1 Recursos financieros",
+            synergies: ["CDB", "CMNUCC", "CNULD"],
+            metrics: [
+              {
+                variable: "Gasto público en biodiversidad",
+                unit: "Millones USD",
+                method: "Etiquetado presupuestario (Budget Tagging) para identificar y consolidar flujos financieros.",
+                sources: {
+                  national: "Ministerios de Hacienda; Presupuestos Generales de la Nación; reportes nacionales BIOFIN.",
+                  regional: "Sistema CRS de la OCDE (para flujos internacionales); Plataformas de datos del GEF."
+                }
+              }
+            ]
+          }
+        ];
+
+        // Generador de datos falsos de series temporales (Mock Data) para SICA
+        const generateMockData = (indicator) => {
+          const countries = ["Belice", "Costa Rica", "El Salvador", "Guatemala", "Honduras", "Nicaragua", "Panamá", "Rep. Dominicana"];
+          const mainMetric = indicator.metrics[0];
+          const unit = mainMetric.unit;
+          
+          const isPercentage = unit.includes('%');
+          const isIndex = unit.includes('Índice');
+          const isSummable = !isPercentage && !isIndex; 
+          
+          const startYear = 2015;
+          const endYear = 2025;
+          const years = Array.from({length: endYear - startYear + 1}, (_, i) => startYear + i);
+          
+          let allData = [];
+
+          countries.forEach(c => {
+            let baseVal = isPercentage ? (Math.random() * 30 + 10) :
+                          isIndex ? (Math.random() * 0.4 + 0.4) :
+                          (Math.random() * 800 + 50); 
+            
+            let trend = (Math.random() - 0.2) * (isPercentage ? 1.5 : isIndex ? 0.01 : 20);
+
+            years.forEach(y => {
+              let val = baseVal + trend * (y - startYear) + (Math.random() * (isPercentage ? 2 : isIndex ? 0.01 : 15) - (isPercentage ? 1 : isIndex ? 0.005 : 7.5));
+              
+              if (isPercentage) val = Math.max(0, Math.min(100, val));
+              if (isIndex) val = Math.max(0, Math.min(1, val));
+              if (!isPercentage && !isIndex) val = Math.max(0, val);
+
+              allData.push({
+                country: c,
+                year: y,
+                value: isIndex ? Number(val.toFixed(3)) : Number(val.toFixed(1)),
+                unit: unit
+              });
+            });
+          });
+
+          return { data: allData, years, isSummable, unit };
+        };
+
+        // Helper para colores de sinergias
+        const getSynergyColor = (synergy) => {
+          switch(synergy) {
+            case 'CDB': return 'bg-emerald-100 text-emerald-800 border-emerald-200';
+            case 'CMNUCC': return 'bg-blue-100 text-blue-800 border-blue-200';
+            case 'CNULD': return 'bg-amber-100 text-amber-800 border-amber-200';
+            default: return 'bg-gray-100 text-gray-800';
+          }
+        };
+
+        const getCategoryIcon = (category) => {
+          switch(category) {
+            case 'Objetivos Globales': return <Icon name="globe" className="w-5 h-5 text-indigo-500" />;
+            case 'Metas de Reducción de Amenazas': return <Icon name="shield-alert" className="w-5 h-5 text-red-500" />;
+            case 'Metas de Uso Sostenible y Beneficios': return <Icon name="leaf" className="w-5 h-5 text-green-500" />;
+            case 'Herramientas y Soluciones': return <Icon name="book-open" className="w-5 h-5 text-blue-500" />;
+            default: return <Icon name="target" className="w-5 h-5" />;
+          }
+        };
+
+        // Componente Principal de la Aplicación
+        function App() {
+          const [searchTerm, setSearchTerm] = useState('');
+          const [selectedCategory, setSelectedCategory] = useState('Todas');
+          
+          const [activeIndicator, setActiveIndicator] = useState(null); 
+          const [activeDataView, setActiveDataView] = useState(null); 
+          const [selectedYear, setSelectedYear] = useState(2024);
+
+          const categories = ['Todas', ...new Set(indicatorsData.map(item => item.category))];
+
+          const filteredIndicators = indicatorsData.filter(indicator => {
+            const matchesSearch = indicator.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                                  indicator.metrics.some(m => m.variable.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                                  indicator.id.toLowerCase().includes(searchTerm.toLowerCase());
+            const matchesCategory = selectedCategory === 'Todas' || indicator.category === selectedCategory;
+            return matchesSearch && matchesCategory;
+          });
+
+          const dataset = useMemo(() => {
+            if (!activeDataView) return null;
+            return generateMockData(activeDataView);
+          }, [activeDataView]);
+
+          const { regionalData, currentYearData } = useMemo(() => {
+            if (!dataset) return { regionalData: [], currentYearData: [] };
+            
+            const regional = dataset.years.map(y => {
+              const yearRecords = dataset.data.filter(d => d.year === y);
+              const sum = yearRecords.reduce((acc, curr) => acc + curr.value, 0);
+              const val = dataset.isSummable ? sum : (sum / yearRecords.length);
+              return { 
+                year: y, 
+                value: Number(val.toFixed(dataset.unit.includes('Índice') ? 3 : 1)) 
+              };
+            });
+
+            const current = dataset.data
+              .filter(d => d.year === selectedYear)
+              .sort((a, b) => b.value - a.value);
+
+            return { regionalData: regional, currentYearData: current };
+          }, [dataset, selectedYear]);
+
+          return (
+            <div className="min-h-screen">
+              
+              {/* HEADER */}
+              <header className="bg-emerald-800 text-white shadow-md sticky top-0 z-10">
+                <div className="max-w-6xl mx-auto px-4 py-5 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+                  <div className="flex items-center gap-3">
+                    <Icon name="leaf" className="w-8 h-8 text-emerald-300" />
+                    <div>
+                      <h1 className="text-xl sm:text-2xl font-bold leading-tight">Monitoreo de Indicadores Estratégicos</h1>
+                      <p className="text-emerald-200 text-sm">Monitoreo Integrado SICA (Convenciones de Río)</p>
+                    </div>
+                  </div>
+                  <div className="relative w-full sm:w-72">
+                    <Icon name="search" className="absolute left-3 top-2.5 h-4 w-4 text-emerald-300 pointer-events-none" />
+                    <input
+                      type="text"
+                      className="block w-full pl-10 pr-3 py-2 border border-emerald-600 rounded-md bg-emerald-900/50 text-white placeholder-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300"
+                      placeholder="Buscar indicador..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </header>
+
+              <main className="max-w-6xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+                
+                {/* FILTROS */}
+                <div className="mb-8 overflow-x-auto pb-2 flex space-x-2 custom-scrollbar">
+                  {categories.map(cat => (
+                    <button
+                      key={cat}
+                      onClick={() => setSelectedCategory(cat)}
+                      className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+                        selectedCategory === cat 
+                        ? 'bg-emerald-600 text-white shadow-sm' 
+                        : 'bg-white text-gray-600 border border-gray-200 hover:bg-emerald-50 hover:text-emerald-700'
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+
+                {/* GRID DE INDICADORES */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filteredIndicators.map((indicator, idx) => (
+                    <div key={idx} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col h-full hover:shadow-md transition-shadow">
+                      
+                      <div className="p-5 flex-grow">
+                        <div className="flex items-center gap-2 mb-3">
+                          {getCategoryIcon(indicator.category)}
+                          <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                            {indicator.id}
+                          </span>
+                        </div>
+                        <h3 className="text-lg font-bold text-gray-900 leading-tight mb-2">
+                          {indicator.title}
+                        </h3>
+                        <div className="flex flex-wrap gap-1 mb-3">
+                          {indicator.synergies.map((syn) => (
+                            <span key={syn} className={`px-2 py-0.5 rounded text-[10px] font-bold border ${getSynergyColor(syn)}`}>
+                              {syn}
+                            </span>
+                          ))}
+                        </div>
+                        <p className="text-sm text-gray-600 line-clamp-2">
+                          <span className="font-semibold text-gray-800">Variable:</span> {indicator.metrics[0].variable}
+                        </p>
+                      </div>
+                      
+                      <div className="flex border-t border-gray-100 bg-gray-50 divide-x divide-gray-200">
+                        <button 
+                          onClick={() => {
+                            setActiveDataView(indicator);
+                            setSelectedYear(2024);
+                          }}
+                          className="flex-1 py-3 px-4 flex justify-center items-center gap-2 text-sm font-bold text-blue-600 hover:bg-blue-50 transition-colors"
+                        >
+                          <Icon name="bar-chart-3" className="w-4 h-4" /> Ver Datos
+                        </button>
+                        <button 
+                          onClick={() => setActiveIndicator(indicator)}
+                          className="flex-1 py-3 px-4 flex justify-center items-center gap-2 text-sm font-bold text-emerald-600 hover:bg-emerald-50 transition-colors"
+                        >
+                          <Icon name="info" className="w-4 h-4" /> Abrir Ficha
+                        </button>
+                      </div>
+
+                    </div>
+                  ))}
+                </div>
+              </main>
+
+              {/* MODAL 1: FICHA TÉCNICA */}
+              {activeIndicator && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+                  <div className="absolute inset-0 bg-gray-900/60 backdrop-blur-sm" onClick={() => setActiveIndicator(null)}></div>
+                  <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden">
+                    <div className="flex items-start justify-between p-6 border-b border-gray-100 bg-emerald-50/50">
+                      <div>
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-100 text-emerald-800 mb-2">
+                          {activeIndicator.category} • Ficha Metodológica
+                        </span>
+                        <h2 className="text-2xl font-bold text-gray-900">{activeIndicator.title}</h2>
+                      </div>
+                      <button onClick={() => setActiveIndicator(null)} className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full">
+                        <Icon name="x" className="w-6 h-6" />
+                      </button>
+                    </div>
+                    
+                    <div className="p-6 overflow-y-auto custom-scrollbar space-y-6 flex-1">
+                      {activeIndicator.metrics.map((metric, index) => (
+                        <div key={index} className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+                          
+                          <h4 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                            <Icon name="target" className="w-5 h-5 text-emerald-500" /> {metric.variable}
+                          </h4>
+                          
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div className="bg-purple-50 p-4 rounded-lg border border-purple-100 flex flex-col">
+                              <h5 className="flex items-center gap-2 text-xs font-bold uppercase text-purple-800 mb-2"><Icon name="scale" className="w-4 h-4" /> Unidad de Medida</h5>
+                              <span className="text-sm font-mono bg-white px-2 py-1 rounded border border-purple-100 self-start">{metric.unit}</span>
+                            </div>
+                            <div className="bg-amber-50 p-4 rounded-lg border border-amber-100">
+                              <h5 className="flex items-center gap-2 text-xs font-bold uppercase text-amber-800 mb-2"><Icon name="activity" className="w-4 h-4" /> Método de Cálculo</h5>
+                              <p className="text-sm text-gray-700 leading-relaxed">{metric.method}</p>
+                            </div>
+                          </div>
+
+                          <div className="bg-blue-50/50 p-4 rounded-lg border border-blue-100">
+                            <h5 className="flex items-center gap-2 text-xs font-bold uppercase text-blue-800 mb-3 pb-2 border-b border-blue-100">
+                              <Icon name="database" className="w-4 h-4" /> Fuentes de Datos Sugeridas
+                            </h5>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                              {metric.sources.national && (
+                                <div>
+                                  <span className="text-xs font-bold text-blue-500 uppercase flex items-center gap-1.5 mb-1.5">
+                                    <Icon name="map-pin" className="w-3.5 h-3.5"/> Nivel Nacional
+                                  </span>
+                                  <p className="text-sm text-gray-700 leading-relaxed">
+                                    {metric.sources.national}
+                                  </p>
+                                </div>
+                              )}
+                              
+                              {metric.sources.regional && (
+                                <div>
+                                  <span className="text-xs font-bold text-blue-500 uppercase flex items-center gap-1.5 mb-1.5">
+                                    <Icon name="globe" className="w-3.5 h-3.5"/> Nivel Regional / Global
+                                  </span>
+                                  <p className="text-sm text-gray-700 leading-relaxed">
+                                    {metric.sources.regional}
+                                  </p>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* MODAL 2: DASHBOARD DE DATOS */}
+              {activeDataView && dataset && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+                  <div className="absolute inset-0 bg-gray-900/60 backdrop-blur-sm" onClick={() => setActiveDataView(null)}></div>
+                  <div className="relative bg-gray-50 rounded-2xl shadow-2xl w-full max-w-6xl max-h-[95vh] flex flex-col overflow-hidden">
+                    
+                    <div className="flex items-start justify-between p-6 border-b border-gray-200 bg-white">
+                      <div>
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-blue-100 text-blue-800 mb-2 border border-blue-200">
+                          <Icon name="bar-chart-3" className="w-4 h-4" /> Dashboard Analítico • SICA
+                        </span>
+                        <h2 className="text-xl sm:text-2xl font-bold text-gray-900">{activeDataView.title}</h2>
+                        <p className="text-sm text-gray-600 mt-1">Variable activa: <span className="font-medium text-gray-800">{activeDataView.metrics[0].variable}</span></p>
+                      </div>
+                      <button onClick={() => setActiveDataView(null)} className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full">
+                        <Icon name="x" className="w-6 h-6" />
+                      </button>
+                    </div>
+
+                    <div className="p-6 overflow-y-auto custom-scrollbar flex-1 space-y-6">
+                      
+                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        
+                        <div className="col-span-1 flex flex-col gap-6">
+                          
+                          <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+                            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider flex items-center gap-2 mb-4">
+                              <Icon name="calendar-days" className="w-4 h-4 text-blue-500" /> Selector de Año Temporal
+                            </h3>
+                            <div className="flex justify-between text-lg font-bold text-blue-600 mb-2">
+                              <span>{dataset.years[0]}</span>
+                              <span className="text-2xl text-gray-900">{selectedYear}</span>
+                              <span>{dataset.years[dataset.years.length - 1]}</span>
+                            </div>
+                            <input 
+                              type="range" 
+                              min={dataset.years[0]} 
+                              max={dataset.years[dataset.years.length - 1]} 
+                              step="1"
+                              value={selectedYear}
+                              onChange={(e) => setSelectedYear(Number(e.target.value))}
+                              className="w-full h-2 bg-blue-100 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                            />
+                            <p className="text-xs text-gray-400 mt-3 text-center">Desliza para actualizar el dashboard</p>
+                          </div>
+
+                          <div className="bg-gradient-to-br from-blue-600 to-emerald-600 p-5 rounded-xl border border-transparent shadow-md text-white flex-1 flex flex-col justify-center relative overflow-hidden">
+                            <div className="absolute top-0 right-0 -mt-4 -mr-4 text-white/10">
+                              <Icon name="globe" className="w-32 h-32" />
+                            </div>
+                            <h3 className="text-sm font-bold uppercase tracking-wider text-blue-100 flex items-center gap-2 mb-2 relative z-10">
+                              <Icon name="trending-up" className="w-4 h-4" /> Agregado Regional SICA
+                            </h3>
+                            <div className="relative z-10">
+                              <span className="text-4xl font-extrabold tracking-tight">
+                                {regionalData.find(d => d.year === selectedYear)?.value.toLocaleString() || 0}
+                              </span>
+                              <span className="text-lg font-medium ml-2 text-emerald-100">
+                                {dataset.unit.includes('%') ? '%' : dataset.unit.split(' ')[0]}
+                              </span>
+                            </div>
+                            <p className="text-xs text-blue-100 mt-2 relative z-10">
+                              {dataset.isSummable ? "Sumatoria total" : "Promedio regional"} para el año {selectedYear}
+                            </p>
+                          </div>
+
+                        </div>
+
+                        <div className="col-span-1 lg:col-span-2 bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col">
+                          <h3 className="text-md font-bold text-gray-800 flex items-center gap-2 mb-4">
+                            <Icon name="trending-up" className="w-5 h-5 text-emerald-500" /> Evolución Histórica Regional
+                          </h3>
+                          
+                          <div className="flex-1 relative w-full h-48 sm:h-auto min-h-[200px] mt-2">
+                            {(() => {
+                              const minVal = Math.min(...regionalData.map(d => d.value));
+                              const maxVal = Math.max(...regionalData.map(d => d.value));
+                              const range = maxVal - minVal || 1; 
+                              const pad = range * 0.2; 
+                              const viewMin = minVal - pad;
+                              const viewMax = maxVal + pad;
+                              
+                              const width = 800;
+                              const height = 300;
+                              const points = regionalData.map((d, i) => {
+                                const x = (i / (regionalData.length - 1)) * width;
+                                const y = height - ((d.value - viewMin) / (viewMax - viewMin)) * height;
+                                return `${x},${y}`;
+                              }).join(' ');
+
+                              return (
+                                <div className="absolute inset-0 w-full h-full">
+                                  <div className="absolute top-0 left-0 text-[10px] font-mono text-gray-400 -mt-2">{viewMax.toFixed(1)}</div>
+                                  <div className="absolute bottom-6 left-0 text-[10px] font-mono text-gray-400 mb-1">{viewMin.toFixed(1)}</div>
+                                  
+                                  <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none" className="w-full h-full pb-6 overflow-visible">
+                                    <polyline fill="none" stroke="#3b82f6" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" points={points} />
+                                    {regionalData.map((d, i) => {
+                                      const x = (i / (regionalData.length - 1)) * width;
+                                      const y = height - ((d.value - viewMin) / (viewMax - viewMin)) * height;
+                                      const isSelected = d.year === selectedYear;
+                                      
+                                      return (
+                                        <g key={i}>
+                                          <text x={x} y={height + 25} fontSize="14" fill="#64748b" textAnchor="middle">
+                                            {d.year % 2 === 0 || isSelected ? d.year : ''}
+                                          </text>
+                                          <circle 
+                                            cx={x} cy={y} 
+                                            r={isSelected ? "8" : "4"} 
+                                            fill={isSelected ? "#10b981" : "#ffffff"} 
+                                            stroke={isSelected ? "#047857" : "#3b82f6"} 
+                                            strokeWidth="3"
+                                            className="transition-all duration-300"
+                                          />
+                                          {isSelected && (
+                                            <text x={x} y={y - 15} fontSize="16" fontWeight="bold" fill="#1e293b" textAnchor="middle">
+                                              {d.value}
+                                            </text>
+                                          )}
+                                        </g>
+                                      );
+                                    })}
+                                  </svg>
+                                </div>
+                              )
+                            })()}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        
+                        <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+                          <h3 className="text-md font-bold text-gray-800 mb-4 flex items-center gap-2">
+                            <Icon name="bar-chart-3" className="w-5 h-5 text-blue-500" /> Distribución SICA ({selectedYear})
+                          </h3>
+                          <div className="space-y-4">
+                            {currentYearData.map((d, i) => {
+                              const maxVal = Math.max(...currentYearData.map(item => item.value));
+                              const widthPercent = (d.value / maxVal) * 100;
+                              return (
+                                <div key={i} className="flex items-center gap-3">
+                                  <div className="w-24 text-sm font-medium text-gray-700 text-right truncate">{d.country}</div>
+                                  <div className="flex-1 h-5 bg-gray-100 rounded-sm relative overflow-hidden">
+                                    <div 
+                                      className="absolute top-0 left-0 h-full bg-blue-500 rounded-sm transition-all duration-500 ease-out"
+                                      style={{ width: `${widthPercent}%` }}
+                                    ></div>
+                                  </div>
+                                  <div className="w-16 text-sm font-bold text-gray-900 text-left">
+                                    {d.value.toLocaleString()} 
+                                  </div>
+                                </div>
+                              )
+                            })}
+                          </div>
+                        </div>
+
+                        <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden flex flex-col">
+                          <div className="p-5 border-b border-gray-100 bg-gray-50/50">
+                            <h3 className="text-md font-bold text-gray-800 flex items-center gap-2">
+                              <Icon name="table-properties" className="w-5 h-5 text-emerald-500" /> Registros Detallados ({selectedYear})
+                            </h3>
+                          </div>
+                          <div className="overflow-x-auto">
+                            <table className="w-full text-left text-sm text-gray-600">
+                              <thead className="bg-gray-100 text-gray-700 uppercase text-[10px] tracking-wider font-bold">
+                                <tr>
+                                  <th className="px-5 py-3 border-b">País</th>
+                                  <th className="px-5 py-3 border-b">Año</th>
+                                  <th className="px-5 py-3 border-b text-right">Valor Reportado</th>
+                                  <th className="px-5 py-3 border-b">Unidad</th>
+                                </tr>
+                              </thead>
+                              <tbody className="divide-y divide-gray-100">
+                                {currentYearData.map((d, i) => (
+                                  <tr key={i} className="hover:bg-blue-50/50 transition-colors">
+                                    <td className="px-5 py-3 font-medium text-gray-900">{d.country}</td>
+                                    <td className="px-5 py-3">{d.year}</td>
+                                    <td className="px-5 py-3 text-right font-mono font-medium text-blue-700">{d.value.toLocaleString()}</td>
+                                    <td className="px-5 py-3 text-xs text-gray-500">{d.unit}</td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        }
+
+        // Renderizar la aplicación en el div con id "root"
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

@@ -34,7 +34,10 @@ import { Chatbot } from './components/ai/Chatbot';
 import { GeoAnalysisLayout } from './pages/technical/GeoAnalysisLayout';
 import { GeoAnalysisHome } from './pages/technical/GeoAnalysisHome';
 import { GeoAnalysisGeneric } from './pages/technical/GeoAnalysisGeneric';
-import { ShieldAlert, Activity, Layers, Briefcase } from 'lucide-react';
+import { ShieldAlert, Activity, Layers, Briefcase, LayoutDashboard } from 'lucide-react';
+import { MonitoringPortal } from './pages/monitoring/MonitoringPortal';
+import { StrategicMonitoring } from './pages/monitoring/StrategicMonitoring';
+import { OperationalMonitoring } from './pages/monitoring/OperationalMonitoring';
 
 // Component to scroll to top on route change
 const ScrollToTop = () => {
@@ -54,6 +57,7 @@ const Layout = ({ user, sidebarOpen, setSidebarOpen, onLogout }) => {
     location.pathname === '/strategic-questions' ||
     location.pathname.startsWith('/grandes-bosques') ||
     location.pathname.startsWith('/strategic-axis') ||
+    location.pathname.startsWith('/monitoring') ||
     location.pathname.startsWith('/technical/geo-analysis');
 
   // Auto-hide sidebar logic for Strategic Axes & Analysis
@@ -131,6 +135,9 @@ function App() {
           <Route path="/auth/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/analisis-multidimensional" element={<AnalysisSandbox />} />
           <Route path="/data/cifras" element={<CifrasCenter />} />
+          <Route path="/monitoring" element={<MonitoringPortal />} />
+          <Route path="/monitoring/strategic" element={<StrategicMonitoring />} />
+          <Route path="/monitoring/operational" element={<OperationalMonitoring />} />
 
           {/* Technical Routes (Protected) */}
           <Route path="/technical/dashboard" element={

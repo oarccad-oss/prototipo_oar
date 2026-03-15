@@ -114,6 +114,23 @@ export const Sidebar = ({ isOpen }) => {
                     </Link>
                 </nav>
 
+                <div className="px-4 mt-8 mb-2">
+                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Cumplimiento y Metas</p>
+                </div>
+
+                <nav className="space-y-1 px-2">
+                    <Link
+                        to="/monitoring"
+                        className={cn(
+                            "flex items-center gap-3 px-4 py-3 text-slate-300 rounded-lg hover:bg-slate-800 hover:text-white transition-colors",
+                            location.pathname.startsWith('/monitoring') && "bg-emerald-600 text-white font-medium shadow-lg shadow-emerald-900/40"
+                        )}
+                    >
+                        <LayoutDashboard className="h-5 w-5" />
+                        <span>Seguimiento de Indicadores</span>
+                    </Link>
+                </nav>
+
 
                 <div className="px-4 mt-8 mb-2">
                     <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Interoperabilidad</p>

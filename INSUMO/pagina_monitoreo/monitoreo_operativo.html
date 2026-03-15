@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoreo ERAM: Eje Bosques</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React y ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
+        .progress-striped {
+            background-image: linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+            background-size: 1rem 1rem;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans">
+    
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo } = React;
+
+        const Icon = ({ name, className }) => {
+            useEffect(() => {
+                if (window.lucide) window.lucide.createIcons();
+            });
+            return <i data-lucide={name} className={className}></i>;
+        };
+
+        // BASE DE DATOS COMPLETA: ERAM - Eje Bosques y Paisajes
+        const eramForestData = [
+          // RESULTADO 1: GOBERNANZA
+          {
+            id: "IND-1.1",
+            type: "gestion",
+            resultado: "R1: Mejorada la gobernanza e institucionalidad forestal regional",
+            line: "Trazabilidad Forestal",
+            accionEstrategica: "Promover el desarrollo de sistemas nacionales de trazabilidad forestal interoperables para combatir la tala ilegal.",
+            indicator: "Países implementando sistemas de trazabilidad forestal interoperables.",
+            targetText: "8 países con sistemas activos al 2025.",
+            unit: "Países",
+            targetValue: 8,
+            verificationMeans: [
+              { name: "Leyes/Decretos de Trazabilidad publicados", type: "pdf", uploaded: 6, required: 8 },
+              { name: "Plataformas informáticas (APIs) en línea", type: "link", uploaded: 5, required: 8 }
+            ],
+            countries: [
+              { name: "Belice", value: 0 }, { name: "Costa Rica", value: 1 }, { name: "El Salvador", value: 1 },
+              { name: "Guatemala", value: 1 }, { name: "Honduras", value: 1 }, { name: "Nicaragua", value: 1 },
+              { name: "Panamá", value: 0 }, { name: "Rep. Dominicana", value: 0 }
+            ]
+          },
+          {
+            id: "IND-1.2",
+            type: "gestion",
+            resultado: "R1: Mejorada la gobernanza e institucionalidad forestal regional",
+            line: "Políticas Nacionales Forestales",
+            accionEstrategica: "Actualizar y armonizar los marcos normativos nacionales con los lineamientos de la ERAM.",
+            indicator: "Leyes y Políticas Forestales Nacionales actualizadas y aprobadas.",
+            targetText: "8 Políticas nacionales actualizadas.",
+            unit: "Políticas",
+            targetValue: 8,
+            verificationMeans: [
+              { name: "Gacetas/Diarios Oficiales publicados", type: "pdf", uploaded: 4, required: 8 },
+              { name: "Matriz de armonización ERAM-Nacional", type: "doc", uploaded: 8, required: 8 }
+            ],
+            countries: [
+              { name: "Belice", value: 0 }, { name: "Costa Rica", value: 1 }, { name: "El Salvador", value: 1 },
+              { name: "Guatemala", value: 1 }, { name: "Honduras", value: 1 }, { name: "Nicaragua", value: 0 },
+              { name: "Panamá", value: 1 }, { name: "Rep. Dominicana", value: 1 }
+            ]
+          },
+          {
+            id: "IND-1.3",
+            type: "gestion",
+            resultado: "R1: Mejorada la gobernanza e institucionalidad forestal regional",
+            line: "Mecanismos Financieros",
+            accionEstrategica: "Fortalecer la capitalización y operación de los Fondos Forestales y Ambientales nacionales.",
+            indicator: "Mecanismos financieros nacionales (Fondos Verdes/Forestales) operando y capitalizados.",
+            targetText: "8 Fondos operando de manera autosostenible.",
+            unit: "Fondos Operativos",
+            targetValue: 8,
+            verificationMeans: [
+              { name: "Informes de auditoría financiera anual", type: "pdf", uploaded: 5, required: 8 },
+              { name: "Decretos de creación de los fondos", type: "pdf", uploaded: 7, required: 8 }
+            ],
+            countries: [
+              { name: "Belice", value: 0 }, { name: "Costa Rica", value: 1 }, { name: "El Salvador", value: 1 },
+              { name: "Guatemala", value: 1 }, { name: "Honduras", value: 0 }, { name: "Nicaragua", value: 0 },
+              { name: "Panamá", value: 1 }, { name: "Rep. Dominicana", value: 0 }
+            ]
+          },
+
+          // RESULTADO 2: RESTAURACIÓN Y CONSERVACIÓN
+          {
+            id: "IND-2.1",
+            type: "impacto",
+            resultado: "R2: Incrementada la restauración y conservación de paisajes degradados",
+            line: "Restauración de Paisajes",
+            accionEstrategica: "Impulsar programas alineados a la Iniciativa 20x20 para la restauración de tierras degradadas.",
+            indicator: "Hectáreas de tierras y bosques degradados bajo procesos de restauración.",
+            targetText: "5,000,000 de hectáreas regionales bajo restauración.",
+            unit: "Hectáreas (Has)",
+            targetValue: 5000000,
+            verificationMeans: [
+              { name: "Polígonos georreferenciados (SIG)", type: "map", uploaded: 340, required: "N/A" },
+              { name: "Informes Nacionales (Iniciativa 20x20)", type: "pdf", uploaded: 6, required: 8 }
+            ],
+            countries: [
+              { name: "Belice", value: 100000 }, { name: "Costa Rica", value: 350000 }, { name: "El Salvador", value: 120000 },
+              { name: "Guatemala", value: 450000 }, { name: "Honduras", value: 300000 }, { name: "Nicaragua", value: 400000 },
+              { name: "Panamá", value: 250000 }, { name: "Rep. Dominicana", value: 180000 }
+            ]
+          },
+          {
+            id: "IND-2.2",
+            type: "impacto",
+            resultado: "R2: Incrementada la restauración y conservación de paisajes degradados",
+            line: "Manejo Forestal Sostenible (MFS)",
+            accionEstrategica: "Aumentar la superficie de bosques naturales y plantaciones bajo planes de manejo sostenible aprobados.",
+            indicator: "Hectáreas bajo esquemas de Manejo Forestal Sostenible.",
+            targetText: "3,000,000 de hectáreas bajo MFS.",
+            unit: "Hectáreas (Has)",
+            targetValue: 3000000,
+            verificationMeans: [
+              { name: "Resoluciones de aprobación de Planes de Manejo", type: "pdf", uploaded: 125, required: "N/A" },
+              { name: "Certificaciones forestales (FSC, etc.)", type: "doc", uploaded: 45, required: "N/A" }
+            ],
+            countries: [
+              { name: "Belice", value: 150000 }, { name: "Costa Rica", value: 400000 }, { name: "El Salvador", value: 20000 },
+              { name: "Guatemala", value: 600000 }, { name: "Honduras", value: 500000 }, { name: "Nicaragua", value: 300000 },
+              { name: "Panamá", value: 150000 }, { name: "Rep. Dominicana", value: 80000 }
+            ]
+          },
+          {
+            id: "IND-2.3",
+            type: "impacto",
+            resultado: "R2: Incrementada la restauración y conservación de paisajes degradados",
+            line: "Reducción de Emisiones (REDD+)",
+            accionEstrategica: "Implementar las Estrategias Nacionales REDD+ para reducir la deforestación y generar pagos por resultados.",
+            indicator: "Toneladas de CO2 equivalente reducidas/removidas en el sector forestal.",
+            targetText: "20,000,000 tCO2e reducidas a nivel regional.",
+            unit: "tCO2e",
+            targetValue: 20000000,
+            verificationMeans: [
+              { name: "Informes de Nivel de Referencia Forestal", type: "pdf", uploaded: 8, required: 8 },
+              { name: "Anexos Técnicos REDD+ (BUR/BTR entregados a CMNUCC)", type: "link", uploaded: 5, required: 8 }
+            ],
+            countries: [
+              { name: "Belice", value: 500000 }, { name: "Costa Rica", value: 5000000 }, { name: "El Salvador", value: 200000 },
+              { name: "Guatemala", value: 4000000 }, { name: "Honduras", value: 3000000 }, { name: "Nicaragua", value: 1000000 },
+              { name: "Panamá", value: 2500000 }, { name: "Rep. Dominicana", value: 800000 }
+            ]
+          },
+
+          // RESULTADO 3: VULNERABILIDAD, PLAGAS E INCENDIOS
+          {
+            id: "IND-3.1",
+            type: "gestion",
+            resultado: "R3: Reducida la vulnerabilidad ante amenazas, plagas e incendios",
+            line: "Planes Fitosanitarios",
+            accionEstrategica: "Implementar la Estrategia Regional de Sanidad Forestal (énfasis gorgojo descortezador).",
+            indicator: "Planes de Contingencia Fitosanitaria nacionales operativos.",
+            targetText: "8 Planes de Contingencia fondeados.",
+            unit: "Planes",
+            targetValue: 8,
+            verificationMeans: [
+              { name: "Documentos de los planes aprobados", type: "pdf", uploaded: 5, required: 8 },
+              { name: "Informes de ejecución presupuestaria", type: "data", uploaded: 3, required: 8 }
+            ],
+            countries: [
+              { name: "Belice", value: 0 }, { name: "Costa Rica", value: 1 }, { name: "El Salvador", value: 0 },
+              { name: "Guatemala", value: 1 }, { name: "Honduras", value: 1 }, { name: "Nicaragua", value: 0 },
+              { name: "Panamá", value: 0 }, { name: "Rep. Dominicana", value: 1 }
+            ]
+          },
+          {
+            id: "IND-3.2",
+            type: "impacto",
+            resultado: "R3: Reducida la vulnerabilidad ante amenazas, plagas e incendios",
+            line: "Manejo Integral del Fuego",
+            accionEstrategica: "Reducir la incidencia e impacto territorial de los megaincendios forestales en la época seca.",
+            indicator: "Hectáreas de bosque bajo manejo preventivo de incendios.",
+            targetText: "10,000,000 de hectáreas bajo prevención.",
+            unit: "Hectáreas (Has)",
+            targetValue: 10000000,
+            verificationMeans: [
+              { name: "Mapas de cicatrices de quemas (FIRMS/NASA)", type: "map", uploaded: 45, required: "N/A" },
+              { name: "Reportes de brigadas comunitarias/bomberos forestales", type: "doc", uploaded: 110, required: "N/A" }
+            ],
+            countries: [
+              { name: "Belice", value: 400000 }, { name: "Costa Rica", value: 1200000 }, { name: "El Salvador", value: 150000 },
+              { name: "Guatemala", value: 1800000 }, { name: "Honduras", value: 2000000 }, { name: "Nicaragua", value: 1500000 },
+              { name: "Panamá", value: 800000 }, { name: "Rep. Dominicana", value: 600000 }
+            ]
+          },
+          {
+            id: "IND-3.3",
+            type: "gestion",
+            resultado: "R3: Reducida la vulnerabilidad ante amenazas, plagas e incendios",
+            line: "Sistemas de Alerta Temprana",
+            accionEstrategica: "Establecer y operar Sistemas de Alerta Temprana (SAT) para riesgos forestales y climáticos.",
+            indicator: "Sistemas de Alerta Temprana (SAT) forestal integrados y emitiendo boletines.",
+            targetText: "8 SAT operando a nivel nacional.",
+            unit: "Sistemas (SAT)",
+            targetValue: 8,
+            verificationMeans: [
+              { name: "Boletines de alerta publicados", type: "pdf", uploaded: 24, required: "N/A" },
+              { name: "Plataformas de monitoreo en tiempo real", type: "link", uploaded: 6, required: 8 }
+            ],
+            countries: [
+              { name: "Belice", value: 0 }, { name: "Costa Rica", value: 1 }, { name: "El Salvador", value: 1 },
+              { name: "Guatemala", value: 1 }, { name: "Honduras", value: 1 }, { name: "Nicaragua", value: 1 },
+              { name: "Panamá", value: 1 }, { name: "Rep. Dominicana", value: 1 }
+            ]
+          },
+
+          // RESULTADO 4: COMUNITARIA Y CADENAS DE VALOR
+          {
+            id: "IND-4.1",
+            type: "impacto",
+            resultado: "R4: Fortalecida la forestería comunitaria y cadenas de valor",
+            line: "Iniciativas Comunitarias",
+            accionEstrategica: "Fomentar iniciativas con asistencia técnica para el desarrollo comercial de MIPYMES forestales.",
+            indicator: "Iniciativas de forestería comunitaria operando comercialmente en el territorio.",
+            targetText: "40 iniciativas operando comercialmente.",
+            unit: "Iniciativas",
+            targetValue: 40,
+            verificationMeans: [
+              { name: "Convenios de co-ejecución firmados con comunidades", type: "pdf", uploaded: 18, required: 40 },
+              { name: "Auditorías financieras de desembolsos a MIPYMES", type: "data", uploaded: 12, required: 40 }
+            ],
+            countries: [
+              { name: "Belice", value: 1 }, { name: "Costa Rica", value: 4 }, { name: "El Salvador", value: 2 },
+              { name: "Guatemala", value: 8 }, { name: "Honduras", value: 6 }, { name: "Nicaragua", value: 3 },
+              { name: "Panamá", value: 3 }, { name: "Rep. Dominicana", value: 1 }
+            ]
+          },
+          {
+            id: "IND-4.2",
+            type: "impacto",
+            resultado: "R4: Fortalecida la forestería comunitaria y cadenas de valor",
+            line: "Generación de Empleos Verdes",
+            accionEstrategica: "Incrementar la resiliencia socioeconómica de las comunidades a través de la formalización del empleo forestal.",
+            indicator: "Empleos verdes formales e informales generados por la cadena de valor forestal.",
+            targetText: "250,000 empleos verdes mantenidos o creados.",
+            unit: "Empleos",
+            targetValue: 250000, 
+            verificationMeans: [
+              { name: "Censos nacionales agropecuarios/forestales", type: "data", uploaded: 4, required: 8 },
+              { name: "Registros de cooperativas y asociaciones", type: "doc", uploaded: 35, required: "N/A" }
+            ],
+            countries: [
+              { name: "Belice", value: 5000 }, { name: "Costa Rica", value: 25000 }, { name: "El Salvador", value: 8000 },
+              { name: "Guatemala", value: 55000 }, { name: "Honduras", value: 40000 }, { name: "Nicaragua", value: 30000 },
+              { name: "Panamá", value: 15000 }, { name: "Rep. Dominicana", value: 12000 }
+            ]
+          },
+          {
+            id: "IND-4.3",
+            type: "impacto",
+            resultado: "R4: Fortalecida la forestería comunitaria y cadenas de valor",
+            line: "Comercio de Productos Forestales",
+            accionEstrategica: "Impulsar el intercambio intrarregional y la exportación de productos maderables y no maderables de origen legal.",
+            indicator: "Valor de las exportaciones de productos forestales de origen verificado.",
+            targetText: "500 Millones USD exportados/comercializados.",
+            unit: "Millones USD",
+            targetValue: 500,
+            verificationMeans: [
+              { name: "Bases de datos de aduanas e importaciones/exportaciones", type: "data", uploaded: 8, required: 8 },
+              { name: "Certificados de origen CITES / Forestal", type: "pdf", uploaded: 450, required: "N/A" }
+            ],
+            countries: [
+              { name: "Belice", value: 15 }, { name: "Costa Rica", value: 85 }, { name: "El Salvador", value: 20 },
+              { name: "Guatemala", value: 110 }, { name: "Honduras", value: 75 }, { name: "Nicaragua", value: 40 },
+              { name: "Panamá", value: 60 }, { name: "Rep. Dominicana", value: 25 }
+            ]
+          }
+        ];
+
+        // Componentes Auxiliares
+        const getProgressColor = (progress) => {
+          if (progress >= 75) return "bg-emerald-500";
+          if (progress >= 40) return "bg-amber-400";
+          return "bg-rose-500";
+        };
+
+        const getStatusData = (progress) => {
+          if (progress >= 75) return { text: 'Avanzado', bg: 'bg-emerald-100', textC: 'text-emerald-800', border: 'border-emerald-200', icon: 'check-circle' };
+          if (progress >= 40) return { text: 'En Proceso', bg: 'bg-amber-100', textC: 'text-amber-800', border: 'border-amber-200', icon: 'clock' };
+          return { text: 'Rezago', bg: 'bg-rose-100', textC: 'text-rose-800', border: 'border-rose-200', icon: 'alert-triangle' };
+        };
+
+        const getVerificationIcon = (type) => {
+          switch(type) {
+            case 'pdf': return "file-text";
+            case 'link': return "link";
+            case 'map': return "map";
+            case 'data': return "database";
+            case 'doc': return "file";
+            default: return "file";
+          }
+        };
+
+        // Componente: Tarjeta de Indicador (CON TRATAMIENTO DIFERENCIADO)
+        const IndicatorCard = ({ item, onClick }) => {
+          const st = getStatusData(item.progress);
+          const isImpact = item.type === "impacto";
+          
+          return (
+            <div className={`bg-white rounded-xl shadow-sm border ${isImpact ? 'border-blue-100 hover:border-blue-300' : 'border-emerald-100 hover:border-emerald-300'} overflow-hidden transition-colors mb-4`}>
+              <div className="p-5 sm:p-6 flex flex-col lg:flex-row gap-6 items-start lg:items-center">
+                
+                {/* Definición y Acción */}
+                <div className="flex-1 w-full">
+                  <div className="flex flex-wrap items-center gap-3 mb-3">
+                    <span className="px-2 py-1 rounded text-xs font-bold font-mono bg-slate-100 text-slate-600 border border-slate-200">
+                      {item.id}
+                    </span>
+                    {/* ETIQUETA EXPLÍCITA DEL TIPO DE INDICADOR */}
+                    <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${isImpact ? 'bg-blue-100 text-blue-700 border-blue-300' : 'bg-emerald-100 text-emerald-700 border-emerald-300'}`}>
+                      {isImpact ? <><Icon name="target" className="w-3 h-3 inline mr-1" /> Impacto Operativo</> : <><Icon name="clipboard-list" className="w-3 h-3 inline mr-1" /> Gestión Institucional</>}
+                    </span>
+                  </div>
+                  
+                  <h3 className="text-lg font-bold text-slate-800 mb-3">{item.line}</h3>
+                  
+                  <div className={`mb-4 p-3 rounded-lg border ${isImpact ? 'bg-blue-50/50 border-blue-100' : 'bg-emerald-50/50 border-emerald-100'}`}>
+                    <span className={`text-[10px] font-bold uppercase tracking-wider block mb-1 flex items-center gap-1 ${isImpact ? 'text-blue-600' : 'text-emerald-600'}`}>
+                      <Icon name="zap" className="w-3 h-3" /> Acción Estratégica
+                    </span>
+                    <p className="text-sm text-slate-700 italic">{item.accionEstrategica}</p>
+                  </div>
+
+                  <p className="text-sm text-slate-600 mb-4 leading-relaxed">
+                    <span className="font-bold text-slate-700 block mb-1">Indicador Evaluado:</span>
+                    {item.indicator}
+                  </p>
+                  
+                  {/* TRATAMIENTO DIFERENCIADO: CAJA DE NUMEROS */}
+                  {isImpact ? (
+                    // Tratamiento para IMPACTO (Volumen Físico)
+                    <div className="bg-blue-50/50 border border-blue-100 rounded-lg p-3 inline-flex flex-wrap gap-4 items-center w-full sm:w-auto">
+                       <div>
+                          <span className="block text-[10px] font-bold uppercase tracking-wider text-blue-500">Volumen Físico Reportado</span>
+                          <span className="text-xl font-black text-blue-700">
+                            {item.currentValue.toLocaleString()} <span className="text-sm font-medium opacity-75">{item.unit}</span>
+                          </span>
+                       </div>
+                       <div className="h-8 w-px hidden sm:block bg-blue-200"></div>
+                       <div>
+                          <span className="block text-[10px] font-bold uppercase tracking-wider text-blue-500">Meta Cuantitativa 2025</span>
+                          <span className="text-xl font-black text-slate-700">
+                            {item.targetValue.toLocaleString()} <span className="text-sm font-medium opacity-75">{item.unit}</span>
+                          </span>
+                       </div>
+                    </div>
+                  ) : (
+                    // Tratamiento para GESTIÓN (Instrumentos/Checklist)
+                    <div className="bg-emerald-50/50 border border-emerald-100 rounded-lg p-3 inline-flex flex-wrap gap-4 items-center w-full sm:w-auto">
+                       <div>
+                          <span className="block text-[10px] font-bold uppercase tracking-wider text-emerald-600">Instrumentos / Países Habilitados</span>
+                          <span className="text-xl font-black text-emerald-700">
+                            {item.currentValue} <span className="text-sm font-medium opacity-75">de {item.targetValue} {item.unit}</span>
+                          </span>
+                       </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Progreso y Botón */}
+                <div className="w-full lg:w-72 shrink-0 bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${st.bg} ${st.textC} ${st.border}`}>
+                      <Icon name={st.icon} className="w-3 h-3 inline mr-1" />{st.text}
+                    </span>
+                    <span className="text-2xl font-black text-slate-800">{item.progress}%</span>
+                  </div>
+                  <div className="w-full bg-slate-100 rounded-full h-3 mb-4 overflow-hidden shadow-inner border border-slate-200">
+                    <div className={`${getProgressColor(item.progress)} progress-striped h-3 rounded-full transition-all duration-1000`} style={{width: `${item.progress}%`}}></div>
+                  </div>
+                  <button 
+                    onClick={() => onClick(item)}
+                    className={`w-full border font-bold py-2 px-4 rounded-lg text-sm flex items-center justify-center gap-2 transition-colors ${
+                      isImpact 
+                      ? 'bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-600 hover:text-white' 
+                      : 'bg-emerald-50 border-emerald-200 text-emerald-700 hover:bg-emerald-600 hover:text-white'
+                    }`}
+                  >
+                    <Icon name="layout-dashboard" className="w-4 h-4" /> Ver Desglose y Evidencia
+                  </button>
+                </div>
+                
+              </div>
+            </div>
+          );
+        };
+
+        function App() {
+          const [activeItem, setActiveItem] = useState(null);
+          const [searchTerm, setSearchTerm] = useState('');
+          const [selectedResultado, setSelectedResultado] = useState('Todos');
+          
+          // NUEVO: Filtro Global de Tipo
+          const [selectedType, setSelectedType] = useState('Todos');
+
+          const resultadosFilters = ['Todos', ...new Set(eramForestData.map(item => item.resultado.split(':')[0]))];
+
+          // Procesar Datos
+          const processedData = useMemo(() => {
+            return eramForestData
+              .map(item => {
+                const currentValue = item.countries.reduce((acc, curr) => acc + curr.value, 0);
+                const progress = Math.min(100, Math.round((currentValue / item.targetValue) * 100));
+                return { ...item, currentValue, progress };
+              })
+              .filter(item => {
+                // Filtro Buscador
+                const searchLower = searchTerm.toLowerCase();
+                const matchesSearch = item.resultado.toLowerCase().includes(searchLower) ||
+                                      item.line.toLowerCase().includes(searchLower) ||
+                                      item.accionEstrategica.toLowerCase().includes(searchLower) ||
+                                      item.indicator.toLowerCase().includes(searchLower);
+                
+                // Filtro Resultado
+                const matchesFilter = selectedResultado === 'Todos' || item.resultado.startsWith(selectedResultado);
+                
+                // Filtro Tipo (Gestión vs Impacto)
+                const matchesType = selectedType === 'Todos' || item.type === selectedType;
+
+                return matchesSearch && matchesFilter && matchesType;
+              });
+          }, [searchTerm, selectedResultado, selectedType]);
+
+          // Agrupar por Resultado
+          const groupedData = useMemo(() => {
+            const groups = {};
+            processedData.forEach(item => {
+              if (!groups[item.resultado]) groups[item.resultado] = [];
+              groups[item.resultado].push(item);
+            });
+            return Object.keys(groups).sort().reduce((acc, key) => {
+              acc[key] = groups[key];
+              return acc;
+            }, {});
+          }, [processedData]);
+
+          const totalProgress = processedData.length > 0 
+            ? Math.round(processedData.reduce((acc, curr) => acc + curr.progress, 0) / processedData.length)
+            : 0;
+          const criticalItems = processedData.filter(d => d.progress < 40).length;
+
+          return (
+            <div className="min-h-screen flex flex-col">
+              
+              {/* HEADER ERAM CON BUSCADOR */}
+              <header className="bg-slate-900 text-white shadow-lg sticky top-0 z-10 border-b-4 border-emerald-600">
+                <div className="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+                  <div className="flex items-center gap-4">
+                    <div className="bg-emerald-600 p-2 rounded-lg">
+                      <Icon name="trees" className="w-8 h-8 text-white" />
+                    </div>
+                    <div>
+                      <h1 className="text-xl font-bold tracking-wide uppercase">Monitoreo Operativo ERAM</h1>
+                      <p className="text-emerald-400 text-sm font-medium">Eje Estratégico: Bosques y Paisajes Sostenibles</p>
+                    </div>
+                  </div>
+                  
+                  <div className="relative w-full md:w-80 shrink-0">
+                    <Icon name="search" className="absolute left-3 top-2.5 h-4 w-4 text-slate-400 pointer-events-none" />
+                    <input
+                      type="text"
+                      className="block w-full pl-10 pr-3 py-2 border border-slate-700 rounded-lg bg-slate-800 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors text-sm"
+                      placeholder="Buscar acción o indicador..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </header>
+
+              <main className="max-w-6xl mx-auto px-4 py-8 flex-1 w-full">
+                
+                {/* BOTONERA DOBLE DE FILTROS */}
+                <div className="flex flex-col gap-4 mb-8">
+                  {/* Filtros de Tipología (NUEVO) */}
+                  <div className="flex space-x-2">
+                    <span className="text-sm font-bold text-slate-500 uppercase tracking-wider flex items-center mr-2">Tipología:</span>
+                    <button onClick={() => setSelectedType('Todos')} className={`px-4 py-1.5 rounded-md text-sm font-bold transition-colors border ${selectedType === 'Todos' ? 'bg-slate-700 text-white border-slate-700' : 'bg-white text-slate-600 border-slate-300 hover:bg-slate-100'}`}>Ambos</button>
+                    <button onClick={() => setSelectedType('impacto')} className={`px-4 py-1.5 rounded-md text-sm font-bold transition-colors border flex items-center gap-1 ${selectedType === 'impacto' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-blue-600 border-blue-200 hover:bg-blue-50'}`}>
+                      <Icon name="target" className="w-4 h-4"/> Impacto
+                    </button>
+                    <button onClick={() => setSelectedType('gestion')} className={`px-4 py-1.5 rounded-md text-sm font-bold transition-colors border flex items-center gap-1 ${selectedType === 'gestion' ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-emerald-600 border-emerald-200 hover:bg-emerald-50'}`}>
+                      <Icon name="clipboard-list" className="w-4 h-4"/> Gestión
+                    </button>
+                  </div>
+
+                  {/* Filtros de Resultado */}
+                  <div className="flex space-x-2 overflow-x-auto pb-2 custom-scrollbar">
+                    <span className="text-sm font-bold text-slate-500 uppercase tracking-wider flex items-center mr-2 shrink-0">Resultado:</span>
+                    {resultadosFilters.map(res => {
+                      const label = res === 'Todos' ? 'Mostrar Todos' : `Filtrar ${res}`;
+                      return (
+                        <button
+                          key={res}
+                          onClick={() => setSelectedResultado(res)}
+                          className={`px-4 py-1.5 rounded-full text-sm font-bold whitespace-nowrap transition-colors flex-shrink-0 border ${
+                            selectedResultado === res 
+                            ? 'bg-slate-800 text-white border-slate-800 shadow-sm' 
+                            : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100'
+                          }`}
+                        >
+                          {label}
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+
+                {/* KPI DASHBOARD GLOBAL */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                  <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex items-center gap-4">
+                    <div className="rounded-full bg-emerald-100 p-4">
+                      <Icon name="bar-chart-big" className="w-6 h-6 text-emerald-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-slate-500 uppercase">Avance Medio Ponderado</p>
+                      <h3 className="text-3xl font-black text-slate-800">{totalProgress}% <span className="text-sm font-medium text-slate-400">al 2025</span></h3>
+                    </div>
+                  </div>
+                  <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex items-center gap-4">
+                    <div className="rounded-full bg-blue-100 p-4">
+                      <Icon name="list-checks" className="w-6 h-6 text-blue-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-slate-500 uppercase">Indicadores Filtrados</p>
+                      <h3 className="text-3xl font-black text-slate-800">{processedData.length}</h3>
+                    </div>
+                  </div>
+                  <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex items-center gap-4">
+                    <div className="rounded-full bg-rose-100 p-4">
+                      <Icon name="alert-circle" className="w-6 h-6 text-rose-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-slate-500 uppercase">Líneas en Rezago</p>
+                      <h3 className="text-3xl font-black text-rose-600">{criticalItems} <span className="text-sm font-medium text-slate-400">Alertas</span></h3>
+                    </div>
+                  </div>
+                </div>
+
+                {/* LISTADO DE INDICADORES AGRUPADOS POR RESULTADO */}
+                {Object.keys(groupedData).length === 0 ? (
+                  <div className="text-center py-12">
+                    <Icon name="search-x" className="w-16 h-16 text-slate-300 mx-auto mb-4" />
+                    <h3 className="text-xl font-bold text-slate-600">No se encontraron indicadores</h3>
+                    <p className="text-slate-500">Intenta buscar con otros términos o cambia la tipología.</p>
+                  </div>
+                ) : (
+                  Object.entries(groupedData).map(([resultadoStr, items]) => {
+                    const [resCode, ...resTitleArr] = resultadoStr.split(':');
+                    const resTitle = resTitleArr.join(':').trim();
+
+                    return (
+                      <div key={resultadoStr} className="mb-12">
+                        <div className="flex items-center gap-3 mb-6 bg-slate-200/50 p-4 rounded-xl border border-slate-200">
+                          <div className="bg-slate-800 px-3 py-2 rounded-lg shadow-sm">
+                            <span className="text-white font-black text-lg">{resCode}</span>
+                          </div>
+                          <div>
+                            <h2 className="text-xl font-black text-slate-800 leading-tight">{resTitle}</h2>
+                          </div>
+                        </div>
+
+                        <div className="space-y-4 pl-0 sm:pl-4 border-l-4 border-slate-300 ml-4">
+                          {items.map((item, idx) => (
+                            <IndicatorCard key={idx} item={item} onClick={setActiveItem} />
+                          ))}
+                        </div>
+                      </div>
+                    )
+                  })
+                )}
+
+              </main>
+
+              {/* MODAL / FICHA DE DESGLOSE Y VERIFICACIÓN */}
+              {activeItem && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+                  <div className="absolute inset-0 bg-slate-900/70 backdrop-blur-sm" onClick={() => setActiveItem(null)}></div>
+                  <div className="relative bg-slate-50 rounded-2xl shadow-2xl w-full max-w-5xl max-h-[95vh] flex flex-col overflow-hidden">
+                    
+                    <div className={`flex items-start justify-between p-6 border-b border-slate-200 ${activeItem.type === 'impacto' ? 'bg-blue-50/50' : 'bg-emerald-50/50'}`}>
+                      <div>
+                        <span className={`inline-flex items-center gap-2 px-3 py-1 rounded-md text-xs font-bold font-mono border mb-3 ${activeItem.type === 'impacto' ? 'bg-blue-100 text-blue-700 border-blue-200' : 'bg-emerald-100 text-emerald-700 border-emerald-200'}`}>
+                          {activeItem.id} • Análisis de {activeItem.type === 'impacto' ? 'Impacto Operativo' : 'Gestión Institucional'}
+                        </span>
+                        <h2 className="text-2xl font-bold text-slate-900 leading-tight mb-2">{activeItem.line}</h2>
+                        <p className="text-sm text-slate-600 flex items-start gap-2 max-w-3xl">
+                           <Icon name="zap" className={`w-4 h-4 shrink-0 mt-0.5 ${activeItem.type === 'impacto' ? 'text-blue-500' : 'text-emerald-500'}`} /> 
+                           <span className="italic">{activeItem.accionEstrategica}</span>
+                        </p>
+                      </div>
+                      <button onClick={() => setActiveItem(null)} className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-full transition-colors">
+                        <Icon name="x" className="w-6 h-6" />
+                      </button>
+                    </div>
+
+                    <div className="p-6 overflow-y-auto custom-scrollbar flex-1 space-y-8">
+                      
+                      {/* TRATAMIENTO DIFERENCIADO EN MODAL: CAJA RESUMEN */}
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className={`${activeItem.type === 'impacto' ? 'bg-blue-600' : 'bg-emerald-600'} text-white p-5 rounded-xl shadow-sm`}>
+                           <p className={`${activeItem.type === 'impacto' ? 'text-blue-200' : 'text-emerald-200'} text-sm font-bold uppercase tracking-wide`}>
+                              {activeItem.type === 'impacto' ? 'Volumen Físico Ejecutado' : 'Instrumentos Habilitados'}
+                           </p>
+                           <h3 className="text-3xl font-black mt-1">{activeItem.currentValue.toLocaleString()}</h3>
+                           <p className={`${activeItem.type === 'impacto' ? 'text-blue-100' : 'text-emerald-100'} text-sm`}>{activeItem.unit}</p>
+                        </div>
+                        <div className="bg-white border border-slate-200 p-5 rounded-xl shadow-sm">
+                           <p className="text-slate-500 text-sm font-bold uppercase tracking-wide">Meta ERAM al 2025</p>
+                           <h3 className="text-3xl font-black text-slate-800 mt-1">{activeItem.targetValue.toLocaleString()}</h3>
+                           <p className="text-slate-500 text-sm">{activeItem.unit}</p>
+                        </div>
+                        <div className="bg-white border border-slate-200 p-5 rounded-xl shadow-sm flex flex-col justify-center">
+                           <div className="flex justify-between items-center mb-2">
+                             <span className="text-slate-500 font-bold uppercase text-sm">Progreso Logrado</span>
+                             <span className={`text-xl font-black ${activeItem.progress >= 50 ? 'text-emerald-600' : 'text-amber-600'}`}>{activeItem.progress}%</span>
+                           </div>
+                           <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                              <div className={`${getProgressColor(activeItem.progress)} h-2.5 rounded-full`} style={{width: `${activeItem.progress}%`}}></div>
+                           </div>
+                        </div>
+                      </div>
+
+                      {/* DESGLOSE POR PAÍS */}
+                      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div className="bg-slate-50 p-4 border-b border-slate-200 flex justify-between items-center">
+                          <h3 className="text-md font-bold text-slate-800 flex items-center gap-2">
+                            <Icon name="map-pin" className={`w-5 h-5 ${activeItem.type === 'impacto' ? 'text-blue-600' : 'text-emerald-600'}`} /> Aporte Nacional a la Meta
+                          </h3>
+                        </div>
+                        <div className="p-5">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+                            {activeItem.countries.sort((a,b) => b.value - a.value).map((country, idx) => {
+                              // El % visual evita dividir entre cero. Para Gestión, llena al 100% si aportó su unidad.
+                              let visualWidth = 0;
+                              if (activeItem.type === "gestion") {
+                                visualWidth = country.value > 0 ? 100 : 0;
+                              } else {
+                                const maxCountryValue = Math.max(...activeItem.countries.map(c => c.value));
+                                visualWidth = maxCountryValue > 0 ? (country.value / maxCountryValue) * 100 : 0;
+                              }
+                              
+                              return (
+                                <div key={idx} className="flex flex-col border-b border-slate-100 pb-2">
+                                  <div className="flex justify-between items-end mb-1">
+                                    <span className="text-sm font-bold text-slate-700">{country.name}</span>
+                                    <span className={`text-sm font-mono font-bold ${activeItem.type === 'impacto' ? 'text-blue-700' : 'text-emerald-700'}`}>
+                                      {country.value.toLocaleString()} <span className="text-xs text-slate-400 font-sans">{activeItem.type === 'gestion' ? (country.value > 0 ? 'Logrado' : 'Pendiente') : activeItem.unit.split(' ')[0]}</span>
+                                    </span>
+                                  </div>
+                                  <div className="w-full bg-slate-100 rounded-full h-1.5 mt-1">
+                                    <div className={`${activeItem.type === 'impacto' ? 'bg-blue-400' : 'bg-emerald-400'} h-1.5 rounded-full`} style={{width: `${visualWidth}%`}}></div>
+                                  </div>
+                                </div>
+                              )
+                            })}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* MEDIOS DE VERIFICACIÓN (AUDITORÍA) */}
+                      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div className={`${activeItem.type === 'impacto' ? 'bg-blue-900' : 'bg-emerald-900'} p-4 flex items-center justify-between`}>
+                          <h3 className="text-md font-bold text-white flex items-center gap-2">
+                            <Icon name="folder-check" className="w-5 h-5 text-white/70" /> Respaldo Documental (Auditoría)
+                          </h3>
+                          <span className="text-xs font-bold text-slate-800 bg-white px-3 py-1 rounded-full">Evidencia reportada por el país</span>
+                        </div>
+                        <div className="p-0">
+                          <ul className="divide-y divide-slate-100">
+                            {activeItem.verificationMeans.map((mv, i) => {
+                              let req = typeof mv.required === 'number' ? mv.required : mv.uploaded;
+                              let statusPercent = Math.min(100, (mv.uploaded / req) * 100);
+                              let isComplete = statusPercent === 100;
+
+                              return (
+                                <li key={i} className="p-4 sm:p-5 hover:bg-slate-50 transition-colors flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
+                                  <div className="flex gap-4 items-start w-full">
+                                    <div className={`p-3 rounded-lg flex-shrink-0 ${isComplete ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-500'}`}>
+                                      <Icon name={getVerificationIcon(mv.type)} className="w-6 h-6" />
+                                    </div>
+                                    <div className="flex-1">
+                                      <h4 className="font-bold text-slate-800 text-sm mb-1">{mv.name}</h4>
+                                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 mt-2">
+                                        <p className="text-xs text-slate-500 font-mono">
+                                          Archivos validados: <span className="font-bold text-slate-700">{mv.uploaded}</span> {mv.required !== 'N/A' && `/ ${mv.required}`}
+                                        </p>
+                                        <div className="flex-1 max-w-xs flex items-center gap-2">
+                                           <div className="w-full bg-slate-200 rounded-full h-1.5">
+                                              <div className={`${isComplete ? 'bg-emerald-500' : 'bg-amber-400'} h-1.5 rounded-full`} style={{width: `${statusPercent}%`}}></div>
+                                           </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <button className="hidden sm:flex shrink-0 px-4 py-2 bg-white border border-slate-300 text-slate-700 text-xs font-bold rounded hover:bg-slate-100 transition-colors justify-center items-center gap-2">
+                                      Explorar
+                                    </button>
+                                  </div>
+                                </li>
+                              )
+                            })}
+                          </ul>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              )}
+
+            </div>
+          );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

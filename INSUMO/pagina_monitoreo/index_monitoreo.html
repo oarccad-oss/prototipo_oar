@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoreo de Indicadores Estratégicos y Operativos</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React y ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .bg-pattern {
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans">
+    
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const Icon = ({ name, className }) => {
+            useEffect(() => {
+                if (window.lucide) window.lucide.createIcons();
+            });
+            return <i data-lucide={name} className={className}></i>;
+        };
+
+        function App() {
+          const [activeTab, setActiveTab] = useState('estrategico');
+
+          return (
+            <div className="min-h-screen flex flex-col">
+              
+              {/* HEADER Y HERO SECTION */}
+              <div className="bg-slate-900 text-white relative overflow-hidden">
+                <div className="absolute inset-0 opacity-10 bg-pattern"></div>
+                <div className="absolute top-0 right-0 -mr-20 -mt-20 opacity-20">
+                  <Icon name="globe" className="w-96 h-96" />
+                </div>
+                
+                <header className="relative z-10 border-b border-slate-800">
+                  <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+                    <div className="flex items-center gap-3">
+                      <div className="bg-emerald-600 p-2 rounded-lg">
+                        <Icon name="leaf" className="w-6 h-6 text-white" />
+                      </div>
+                      <span className="font-bold text-xl tracking-widest text-slate-100">SICA <span className="text-emerald-500">|</span> CCAD</span>
+                    </div>
+                  </div>
+                </header>
+
+                <div className="relative z-10 max-w-6xl mx-auto px-4 py-20 sm:py-24">
+                  <div className="max-w-4xl">
+                    <span className="inline-block py-1 px-3 rounded-full bg-slate-800 border border-slate-700 text-emerald-400 text-sm font-bold tracking-wider mb-6">
+                      SISTEMA INTEGRADO DE SEGUIMIENTO (SIME)
+                    </span>
+                    <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight mb-6">
+                      Monitoreo de Indicadores <br/><span className="text-emerald-400">Estratégicos y Operativos</span>
+                    </h1>
+                    <p className="text-lg sm:text-xl text-slate-300 leading-relaxed mb-10 max-w-3xl">
+                      Plataforma regional para la evaluación integral del desempeño ambiental. Este sistema conecta la evaluación de alto nivel frente a los compromisos internacionales con la auditoría de la ejecución técnica en el territorio centroamericano.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* TARJETAS DE NAVEGACIÓN PRINCIPAL (ENLACES) */}
+              <div className="max-w-6xl mx-auto px-4 -mt-12 relative z-20 w-full mb-16">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  
+                  {/* ENLACE: MONITOREO ESTRATÉGICO */}
+                  <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden flex flex-col h-full">
+                    <div className="h-2 bg-indigo-500 w-full"></div>
+                    <div className="p-8 flex-1 flex flex-col">
+                      <div className="flex justify-between items-start mb-6">
+                        <div className="bg-indigo-100 p-4 rounded-xl">
+                          <Icon name="globe-2" className="w-8 h-8 text-indigo-600" />
+                        </div>
+                        <span className="text-xs font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">
+                          Perspectiva Global
+                        </span>
+                      </div>
+                      <h2 className="text-2xl font-black text-slate-800 mb-3">Tablero Estratégico (Sinergias)</h2>
+                      <p className="text-slate-600 leading-relaxed mb-6 flex-1">
+                        Toma como base las metas del <strong>Marco de Kunming-Montreal (GBF)</strong>, pero estructura sus indicadores biofísicos para responder simultáneamente a las <strong>Tres Convenciones de Río</strong>.
+                      </p>
+                      
+                      <a href="monitoreo_estrategico.html" className="group flex items-center justify-center gap-2 w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold transition-colors shadow-md">
+                        Acceder al Tablero Estratégico <Icon name="arrow-right" className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* ENLACE: MONITOREO OPERATIVO (CON EJES ERAM) */}
+                  <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden flex flex-col h-full">
+                    <div className="h-2 bg-emerald-500 w-full"></div>
+                    <div className="p-8 flex-1 flex flex-col">
+                      <div className="flex justify-between items-start mb-6">
+                        <div className="bg-emerald-100 p-4 rounded-xl">
+                          <Icon name="layout-dashboard" className="w-8 h-8 text-emerald-600" />
+                        </div>
+                        <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+                          Ejecución Regional
+                        </span>
+                      </div>
+                      <h2 className="text-2xl font-black text-slate-800 mb-3">Tablero Operativo (ERAM)</h2>
+                      <p className="text-slate-600 leading-relaxed mb-6">
+                        Responde directamente al cumplimiento de los <strong>Ejes Estratégicos de la ERAM</strong>. Seleccione el eje que desea monitorear para auditar su gestión e impacto:
+                      </p>
+                      
+                      {/* Enlaces a los Ejes de la ERAM */}
+                      <div className="space-y-3 mt-auto border-t border-slate-100 pt-4">
+                        <a href="monitoreo_operativo.html" className="group flex items-center justify-between p-3 rounded-lg border border-emerald-200 bg-emerald-50 hover:bg-emerald-600 hover:text-white transition-colors cursor-pointer">
+                          <div className="flex items-center gap-3">
+                            <Icon name="trees" className="w-5 h-5 text-emerald-600 group-hover:text-white" />
+                            <span className="font-bold text-emerald-800 group-hover:text-white">Eje: Bosques y Paisajes Sostenibles</span>
+                          </div>
+                          <Icon name="arrow-right" className="w-4 h-4 text-emerald-600 group-hover:text-white group-hover:translate-x-1 transition-transform" />
+                        </a>
+                        
+                        <div className="flex items-center justify-between p-3 rounded-lg border border-slate-200 bg-slate-50 opacity-70 cursor-not-allowed" title="Módulo en desarrollo">
+                          <div className="flex items-center gap-3">
+                            <Icon name="droplets" className="w-5 h-5 text-slate-400" />
+                            <span className="font-bold text-slate-600">Eje: Gestión de Recursos Hídricos</span>
+                          </div>
+                          <span className="text-xs font-bold text-slate-400 bg-slate-200 px-2 py-0.5 rounded">Próximamente</span>
+                        </div>
+
+                        <div className="flex items-center justify-between p-3 rounded-lg border border-slate-200 bg-slate-50 opacity-70 cursor-not-allowed" title="Módulo en desarrollo">
+                          <div className="flex items-center gap-3">
+                            <Icon name="thermometer-sun" className="w-5 h-5 text-slate-400" />
+                            <span className="font-bold text-slate-600">Eje: Cambio Climático y Riesgo</span>
+                          </div>
+                          <span className="text-xs font-bold text-slate-400 bg-slate-200 px-2 py-0.5 rounded">Próximamente</span>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              {/* SECCIÓN EXPLICATIVA EXHAUSTIVA */}
+              <main className="flex-1 bg-white border-t border-slate-200 py-16">
+                <div className="max-w-6xl mx-auto px-4">
+                  
+                  <div className="text-center mb-16 max-w-3xl mx-auto">
+                    <h2 className="text-3xl font-black text-slate-800 mb-4">Comprendiendo el Modelo de Monitoreo Dual</h2>
+                    <p className="text-slate-600 text-lg">
+                      Un sistema moderno de evaluación no puede medir únicamente el desempeño de un proyecto, ni depender solo de datos globales. Para tener una visión completa, el SICA opera bajo un modelo de <strong>monitoreo en dos niveles</strong> complementarios.
+                    </p>
+                  </div>
+
+                  {/* TABS DE EXPLICACIÓN */}
+                  <div className="flex flex-wrap justify-center gap-4 mb-12 border-b border-slate-200 pb-4">
+                    <button 
+                      onClick={() => setActiveTab('estrategico')}
+                      className={`px-6 py-3 rounded-full text-sm font-bold flex items-center gap-2 transition-all duration-300 ${activeTab === 'estrategico' ? 'bg-indigo-600 text-white shadow-lg scale-105' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+                    >
+                      <Icon name="globe-2" className="w-4 h-4" /> 1. El Nivel Estratégico (Global)
+                    </button>
+                    <button 
+                      onClick={() => setActiveTab('operativo')}
+                      className={`px-6 py-3 rounded-full text-sm font-bold flex items-center gap-2 transition-all duration-300 ${activeTab === 'operativo' ? 'bg-emerald-600 text-white shadow-lg scale-105' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+                    >
+                      <Icon name="layout-dashboard" className="w-4 h-4" /> 2. El Nivel Operativo (ERAM)
+                    </button>
+                  </div>
+
+                  {/* CONTENIDO DE LAS TABS */}
+                  <div className="max-w-5xl mx-auto">
+                    
+                    {/* TAB 1: ESTRATÉGICO */}
+                    {activeTab === 'estrategico' && (
+                      <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        <div className="bg-indigo-50 border border-indigo-100 rounded-2xl p-8 sm:p-10">
+                          <div className="flex items-center gap-4 mb-6">
+                            <div className="bg-indigo-600 p-3 rounded-xl shadow-md">
+                              <Icon name="network" className="w-8 h-8 text-white" /> 
+                            </div>
+                            <h3 className="text-2xl sm:text-3xl font-black text-indigo-900">
+                              Monitoreo Estratégico Multiconvención
+                            </h3>
+                          </div>
+                          
+                          <div className="prose max-w-none text-slate-700 leading-relaxed mb-8">
+                            <p className="text-lg">
+                              El <strong>Monitoreo Estratégico</strong> tiene como objetivo responder a la pregunta fundamental: <em>¿Está mejorando o empeorando el estado de los ecosistemas en nuestra región?</em> 
+                            </p>
+                            <p>
+                              Para evitar que los países dupliquen esfuerzos llenando distintos informes, este tablero <strong>toma como marco base los 23 objetivos y metas del Marco Mundial de Biodiversidad de Kunming-Montreal (GBF)</strong>. Sin embargo, su diseño técnico va mucho más allá.
+                            </p>
+                          </div>
+
+                          <div className="bg-white p-6 rounded-xl shadow-sm border border-indigo-200 mb-8">
+                            <h4 className="font-black text-indigo-900 mb-4 text-lg flex items-center gap-2">
+                              <Icon name="git-merge" className="w-5 h-5" /> Sinergia con las Tres Convenciones de Río
+                            </h4>
+                            <p className="text-slate-600 mb-4">
+                              Los indicadores geoespaciales y biofísicos de este nivel se extraen de Sistemas de Contabilidad Ambiental (SEEA) e imágenes satelitales. Al medir un mismo "píxel" en el territorio, el tablero alimenta simultáneamente los compromisos de las tres agendas globales:
+                            </p>
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                              <div className="bg-emerald-50 p-4 rounded-lg border border-emerald-100">
+                                <span className="font-bold text-emerald-800 block mb-1">CDB (Biodiversidad)</span>
+                                <span className="text-xs text-slate-600">Al reportar la retención de ecosistemas intactos y la conectividad ecológica (Meta 1 y 2 del GBF).</span>
+                              </div>
+                              <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                                <span className="font-bold text-blue-800 block mb-1">CMNUCC (Clima)</span>
+                                <span className="text-xs text-slate-600">Al traducir el cambio de uso de la tierra en inventarios de Gases de Efecto Invernadero y biomasa retenida.</span>
+                              </div>
+                              <div className="bg-amber-50 p-4 rounded-lg border border-amber-100">
+                                <span className="font-bold text-amber-800 block mb-1">CNULD (Desertificación)</span>
+                                <span className="text-xs text-slate-600">Al utilizar la dinámica de cobertura del suelo como proxy para la Neutralidad de Degradación de Tierras (LDN).</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex items-start gap-4 p-4 bg-indigo-100/50 rounded-lg text-sm text-indigo-900 border border-indigo-200">
+                            <Icon name="info" className="w-6 h-6 shrink-0 text-indigo-600" />
+                            <p><strong>Naturaleza de la Métrica:</strong> Son métricas de largo plazo. Miden el estado biofísico de la región independientemente de los proyectos políticos en curso, asegurando que las decisiones se basen en la realidad científica del territorio.</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* TAB 2: OPERATIVO */}
+                    {activeTab === 'operativo' && (
+                      <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-8">
+                        
+                        <div className="bg-emerald-50 border border-emerald-100 rounded-2xl p-8 sm:p-10">
+                          <div className="flex items-center gap-4 mb-6">
+                            <div className="bg-emerald-600 p-3 rounded-xl shadow-md">
+                              <Icon name="gavel" className="w-8 h-8 text-white" /> 
+                            </div>
+                            <h3 className="text-2xl sm:text-3xl font-black text-emerald-900">
+                              Monitoreo Operativo de la ERAM
+                            </h3>
+                          </div>
+                          
+                          <div className="prose max-w-none text-slate-700 leading-relaxed mb-8">
+                            <p className="text-lg">
+                              El <strong>Monitoreo Operativo</strong> rastrea y audita la ejecución técnica en el corto y mediano plazo. Responde de manera directa a los <strong>Ejes Estratégicos de la Estrategia Regional Ambiental Marco (ERAM)</strong>, evaluando el desempeño de los gobiernos e instituciones en la implementación de sus mandatos.
+                            </p>
+                            <p>
+                              A diferencia de un indicador global que puede medir "cuánto bosque existe", este nivel mide <em>"qué acciones concretas están tomando los países hoy"</em> para proteger ese bosque. Para garantizar precisión, este monitoreo se divide estrictamente en dos tipologías:
+                            </p>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
+                            {/* SUB-TIPO A: GESTIÓN */}
+                            <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden">
+                              <div className="absolute top-0 left-0 w-2 h-full bg-slate-500"></div>
+                              <h4 className="text-xl font-black text-slate-800 mb-3 flex items-center gap-2">
+                                <Icon name="clipboard-list" className="w-6 h-6 text-slate-500" /> 
+                                Indicadores de Gestión Institucional
+                              </h4>
+                              <p className="text-slate-600 text-sm mb-4">
+                                Evalúan la creación del <strong>ambiente habilitador</strong>. Se comportan como una "lista de verificación" para auditar si los países de la región cuentan con el marco normativo necesario para actuar.
+                              </p>
+                              <ul className="space-y-2 text-sm text-slate-500 bg-slate-50 p-3 rounded border border-slate-100">
+                                <li className="flex items-start gap-2"><Icon name="check-square" className="w-4 h-4 shrink-0 mt-0.5" /> Aprobación de Leyes y Decretos.</li>
+                                <li className="flex items-start gap-2"><Icon name="check-square" className="w-4 h-4 shrink-0 mt-0.5" /> Establecimiento de Comités o SAT.</li>
+                                <li className="flex items-start gap-2"><Icon name="check-square" className="w-4 h-4 shrink-0 mt-0.5" /> Asignación de Presupuestos (Fondos).</li>
+                              </ul>
+                            </div>
+
+                            {/* SUB-TIPO B: IMPACTO */}
+                            <div className="bg-white p-6 rounded-xl border border-blue-200 shadow-sm relative overflow-hidden">
+                              <div className="absolute top-0 left-0 w-2 h-full bg-blue-500"></div>
+                              <h4 className="text-xl font-black text-blue-900 mb-3 flex items-center gap-2">
+                                <Icon name="target" className="w-6 h-6 text-blue-600" /> 
+                                Indicadores de Impacto Operativo
+                              </h4>
+                              <p className="text-slate-600 text-sm mb-4">
+                                Evalúan la <strong>transformación física o socioeconómica en el territorio</strong>. Miden el volumen acumulado de resultados tangibles derivados de las acciones de gestión previamente habilitadas.
+                              </p>
+                              <ul className="space-y-2 text-sm text-slate-500 bg-blue-50/50 p-3 rounded border border-blue-100">
+                                <li className="flex items-start gap-2"><Icon name="bar-chart" className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" /> Hectáreas físicas restauradas o bajo manejo.</li>
+                                <li className="flex items-start gap-2"><Icon name="bar-chart" className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" /> Empleos formales o ingresos generados (MIPYMES).</li>
+                                <li className="flex items-start gap-2"><Icon name="bar-chart" className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" /> Toneladas de CO2 mitigadas en el sector AFOLU.</li>
+                              </ul>
+                            </div>
+                          </div>
+
+                          <div className="flex items-start gap-4 p-4 bg-emerald-100/50 rounded-lg text-sm text-emerald-900 border border-emerald-200">
+                            <Icon name="folder-check" className="w-6 h-6 shrink-0 text-emerald-600" />
+                            <p><strong>El Rol de la Auditoría:</strong> El tablero operativo no confía ciegamente en los números. Cada porcentaje de avance reportado en la plataforma requiere que el país cargue "Medios de Verificación" (PDFs, Bases de Datos, Polígonos SIG) que respalden legal y técnicamente el progreso.</p>
+                          </div>
+
+                        </div>
+                      </div>
+                    )}
+
+                  </div>
+                </div>
+              </main>
+
+              {/* FOOTER */}
+              <footer className="bg-slate-900 text-slate-400 py-10 border-t-4 border-emerald-600">
+                <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    <Icon name="trees" className="w-6 h-6 text-emerald-500" />
+                    <span className="font-bold text-white">Sistema de la Integración Centroamericana (SICA)</span>
+                  </div>
+                  <div className="text-sm text-slate-500">
+                    Comisión Centroamericana de Ambiente y Desarrollo (CCAD)
+                  </div>
+                </div>
+              </footer>
+
+            </div>
+          );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
