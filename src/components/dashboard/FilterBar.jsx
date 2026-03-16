@@ -1,5 +1,5 @@
 import React from 'react';
-import { COUNTRIES, ZONES } from '../../api/mockData';
+import { COUNTRIES, ZONES } from '../../data/mockData';
 import { Card } from '../ui/Shared';
 import { Calendar, Layers, MapPin } from 'lucide-react';
 

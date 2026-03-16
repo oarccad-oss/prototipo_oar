@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from '../ui/Shared';
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { TREND_DATA, EMISSION_DATA } from '../../api/mockData';
+import { TREND_DATA, EMISSION_DATA } from '../../data/mockData';
 
 export const Charts = () => {
     return (

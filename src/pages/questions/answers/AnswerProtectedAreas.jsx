@@ -4,7 +4,7 @@ import { Shield, Mountain, Anchor, ArrowLeft, ArrowDown, Share2, Download, Trend
 import { Card, Badge, Button, DataSourceModal, ShareButton } from '../../../components/ui/Shared';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { MiniMap } from '../../../components/map/MiniMap';
-import { SICA_COORDINATES, SICA_COUNTRIES } from '../../../api/constants';
+import { SICA_COORDINATES, SICA_COUNTRIES } from '../../../data/constants';
 
 // Datos Simulados Enriquecidos (Mock WDPA API)
 const WDPA_DATA = {

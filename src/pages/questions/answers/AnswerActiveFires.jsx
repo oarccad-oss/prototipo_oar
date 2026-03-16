@@ -10,7 +10,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 
 
 import { MiniMap } from '../../../components/map/MiniMap';
-import { SICA_COORDINATES } from '../../../api/constants';
+import { SICA_COORDINATES } from '../../../data/constants';
 
 // Datos Simulados de Incendios (Ubicación aprox.)
 const FIRE_POINTS = [

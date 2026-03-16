@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Search, Map, FileText, BarChart2, X, ArrowRight } from 'lucide-react';
 import { Card } from './Shared';
-import { MAP_LAYERS, DOCUMENTS, KPI_DATA } from '../../api/mockData';
+import { MAP_LAYERS, DOCUMENTS, KPI_DATA } from '../../data/mockData';
 import { useNavigate } from 'react-router-dom';
 
 export const GlobalSearch = ({ isOpen, onClose }) => {

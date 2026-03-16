@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Trees, LayoutDashboard, BarChart3, AlertCircle, Target, ClipboardList, Zap, CheckCircle, Clock, AlertTriangle, FileText, Link as LinkIcon, Map as MapIcon, Database, File, X, MapPin, FolderCheck, ChevronRight, HelpCircle, Info, Scale, Activity, Globe, TrendingUp } from 'lucide-react';
-import { eramForestData } from '../../data/monitoring/eramForest';
+import { eramForestData } from '../../data/eramForest';
 import { Card, Button, Badge, Input } from '../../components/ui/Shared';
 
 const getProgressColor = (progress) => {

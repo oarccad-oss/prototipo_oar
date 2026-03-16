@@ -1,7 +1,7 @@
 import {
     Trees, Shield, Flame, Footprints, CloudRain, Anchor, Droplet, Map as MapIcon, Database
 } from 'lucide-react';
-import { getAxisColor } from '../../lib/eram';
+import { getAxisColor } from '../lib/eram';
 
 export const QUESTIONS_DATA = [
     {

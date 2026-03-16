@@ -1,5 +1,5 @@
 import * as LucideIcons from 'lucide-react';
-import axesData from '../data/eram/axes.json';
+import axesData from '../data/axes.json';
 
 /**
  * Utility to get axes data with actual Lucide Icon components

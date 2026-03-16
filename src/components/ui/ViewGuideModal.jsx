@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, Info, CheckCircle2, Database, ExternalLink, Lightbulb } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { cn } from '../../lib/utils';
-import guidesData from '../../data/guides/viewGuides.json';
+import guidesData from '../../data/viewGuides.json';
 import { Card, Button } from './Shared';
 
 export const ViewGuideModal = ({ isOpen, onClose }) => {

@@ -3,7 +3,7 @@ import { Card, Button, Badge, DataSourceModal, ShareButton } from '../../../comp
 import { Anchor, ThermometerSun, ArrowLeft, ArrowDown, Share2, Download, TrendingUp, Fish, Waves, HelpCircle } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { MiniMap } from '../../../components/map/MiniMap';
-import { SICA_COORDINATES } from '../../../api/constants';
+import { SICA_COORDINATES } from '../../../data/constants';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, AreaChart, Area } from 'recharts';
 
 // Eliminadas constantes locales para usar fetch remoto

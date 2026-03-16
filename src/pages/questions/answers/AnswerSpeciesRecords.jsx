@@ -5,7 +5,7 @@ import { Card, Badge, Button, DataSourceModal, ShareButton } from '../../../comp
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { MiniMap } from '../../../components/map/MiniMap';
-import { SICA_COORDINATES, SICA_COUNTRIES } from '../../../api/constants';
+import { SICA_COORDINATES, SICA_COUNTRIES } from '../../../data/constants';
 
 const StatCard = ({ title, value, unit, colorClass, subtitle, icon: Icon }) => (
     <div className={`bg-white p-6 border-t-4 ${colorClass} shadow-sm hover:shadow-md transition-shadow relative`}>

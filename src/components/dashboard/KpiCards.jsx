@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Card } from '../ui/Shared';
-import { KPI_DATA } from '../../api/mockData';
+import { KPI_DATA } from '../../data/mockData';
 import { Trees, CloudFog, Flame, ArrowUpRight, ArrowDownRight, Info, AlertOctagon, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { cn } from '../../lib/utils';
 

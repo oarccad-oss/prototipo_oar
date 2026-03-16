@@ -14,7 +14,7 @@ import {
     Globe,
     Activity
 } from 'lucide-react';
-import CIFRAS_DATA from '../../data/cifras/cifras.json';
+import CIFRAS_DATA from '../../data/cifras.json';
 import { getEramAxes, getAxisColor } from '../../lib/eram';
 import { cn } from '../../lib/utils';
 
@@ -43,41 +43,33 @@ export const CifrasCenter = () => {
     const [selectedCountries, setSelectedCountries] = useState([]);
     const [selectedAxes, setSelectedAxes] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [isInitialView, setIsInitialView] = useState(true);
     
     const ITEMS_PER_PAGE = 20;
 
     // Derived metadata
-    const countries = useMemo(() => Array.from(new Set(CIFRAS_DATA.map(i => i.pais))).sort(), []);
+    const countries = useMemo(() => 
+        Array.from(new Set(CIFRAS_DATA.map(i => i.pais)))
+            .filter(c => c !== 'Regional')
+            .sort(), 
+    []);
     const axes = useMemo(() => Array.from(new Set(CIFRAS_DATA.map(i => i.eje_tematico))).sort(), []);
 
     // Filter logic
     const filteredData = useMemo(() => {
-        const hasFilters = searchTerm || selectedCountries.length > 0 || selectedAxes.length > 0;
-        
-        if (!hasFilters && isInitialView) {
-            // Initial view: show a subset of random items (simulated with a fixed shuffle based on data)
-            return [...CIFRAS_DATA].slice(0, 10);
-        }
-
         return CIFRAS_DATA.filter(item => {
             const matchesSearch = searchTerm === '' || 
                 item.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 item.bajada.toLowerCase().includes(searchTerm.toLowerCase());
             
-            const matchesCountry = selectedCountries.length === 0 || selectedCountries.includes(item.pais);
+            // Default to Regional if no countries selected
+            const matchesCountry = selectedCountries.length === 0 
+                ? item.pais === 'Regional' 
+                : selectedCountries.includes(item.pais);
+
             const matchesAxis = selectedAxes.length === 0 || selectedAxes.includes(item.eje_tematico);
             
             return matchesSearch && matchesCountry && matchesAxis;
         });
-    }, [searchTerm, selectedCountries, selectedAxes, isInitialView]);
-
-    // Update initial view state
-    useEffect(() => {
-        const hasFilters = searchTerm || selectedCountries.length > 0 || selectedAxes.length > 0;
-        if (hasFilters) {
-            setIsInitialView(false);
-        }
     }, [searchTerm, selectedCountries, selectedAxes]);
 
     // Reset all
@@ -86,7 +78,6 @@ export const CifrasCenter = () => {
         setSelectedCountries([]);
         setSelectedAxes([]);
         setCurrentPage(1);
-        setIsInitialView(true);
     };
 
     // Pagination
@@ -251,7 +242,7 @@ export const CifrasCenter = () => {
                                 </div>
                                 <div>
                                     <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">
-                                        {isInitialView ? 'Selección del día' : 'Resultados del filtro'}
+                                        {selectedCountries.length === 0 ? 'Cifras Regionales' : 'Resultados del filtro'}
                                     </p>
                                     <p className="text-slate-900 font-black">
                                         {filteredData.length} registros encontrados

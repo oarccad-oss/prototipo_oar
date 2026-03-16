@@ -12,7 +12,7 @@ import { cn } from '../../lib/utils';
 import { QUESTIONS_DATA } from '../../data/questions';
 import { getEramAxes } from '../../lib/eram';
 import { Card, Button, Badge } from '../../components/ui/Shared';
-import VIEW_GUIDES from '../../data/guides/viewGuides.json';
+import VIEW_GUIDES from '../../data/viewGuides.json';
 
 const LEVEL_STYLES = {
     1: { bg: 'bg-indigo-700', text: 'text-indigo-50', border: 'border-indigo-800', badge: 'bg-indigo-900 text-indigo-100', icon: 'text-indigo-200' },
@@ -600,12 +600,6 @@ export const SitemapIndependent = () => {
                 </div>
             </div>
 
-            <style dangerouslySetInnerHTML={{ __html: `
-                ::-webkit-scrollbar { width: 8px; height: 8px; }
-                ::-webkit-scrollbar-track { background: #f8fafc; }
-                ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
-                ::-webkit-scrollbar-thumb:hover { background: #c3dafe; }
-            ` }} />
         </div>
     );
 };

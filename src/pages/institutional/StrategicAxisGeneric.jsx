@@ -47,17 +47,43 @@ const ModuleCardDisabled = ({ icon: Icon, title, description, colorClass, delay 
     );
 };
 
+const COLOR_MAPS = {
+    blue: {
+        bg: 'bg-blue-50/50',
+        badge: 'bg-blue-100 text-blue-700',
+        border: 'border-blue-100'
+    },
+    cyan: {
+        bg: 'bg-cyan-50/50',
+        badge: 'bg-cyan-100 text-cyan-700',
+        border: 'border-cyan-100'
+    },
+    purple: {
+        bg: 'bg-purple-50/50',
+        badge: 'bg-purple-100 text-purple-700',
+        border: 'border-purple-100'
+    },
+    emerald: {
+        bg: 'bg-emerald-50/50',
+        badge: 'bg-emerald-100 text-emerald-700',
+        border: 'border-emerald-100'
+    }
+};
+
 export const StrategicAxisGeneric = ({ axisTitle, subtitle, axisIcon: AxisIcon, axisColor, axisLine, description }) => {
+    const colors = COLOR_MAPS[axisColor] || COLOR_MAPS.blue;
+
     return (
         <div className="min-h-full bg-slate-50 font-sans">
             {/* Hero Section */}
             <div className="relative pt-16 pb-24 px-8 overflow-hidden">
-                <div className={`absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-${axisColor}-50/50 to-transparent -z-10`}></div>
+                <div className={`absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-white via-transparent to-transparent -z-10`} />
+                <div className={`absolute inset-0 ${colors.bg} -z-20`} />
                 
                 <div className="max-w-7xl mx-auto">
                     <div className="flex flex-col lg:flex-row gap-12 items-center">
                         <div className="flex-1 space-y-6">
-                            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full bg-${axisColor}-100 text-${axisColor}-700 text-xs font-black uppercase tracking-wider`}>
+                            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${colors.badge} text-xs font-black uppercase tracking-wider`}>
                                 <AxisIcon className="h-3 w-3" /> ERAM: Línea Estratégica {axisLine}
                             </div>
                             <h1 className="text-5xl md:text-6xl font-serif font-black text-slate-900 leading-tight">

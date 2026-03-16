@@ -5,7 +5,7 @@ import { Shield, Leaf, AlertCircle, Info, ArrowLeft, ArrowDown, Share2, Download
 import { Card, Badge, Button, DataSourceModal, ShareButton } from '../../../components/ui/Shared';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { MiniMap } from '../../../components/map/MiniMap';
-import { SICA_COORDINATES } from '../../../api/constants';
+import { SICA_COORDINATES } from '../../../data/constants';
 
 // Eliminadas constantes locales para usar fetch remoto
 

@@ -7,7 +7,7 @@ import { ArrowDown, Share2, Download, Leaf, AlertTriangle, TrendingUp, MapPin, A
 import { Card, Button, Badge, DataSourceModal, ShareButton } from '../../../components/ui/Shared';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { MiniMap } from '../../../components/map/MiniMap';
-import { SICA_COORDINATES } from '../../../api/constants';
+import { SICA_COORDINATES } from '../../../data/constants';
 // La carga de datos se realiza ahora vía fetch desde el repositorio remoto
 
 // Mapeo de códigos ISO para el selector
