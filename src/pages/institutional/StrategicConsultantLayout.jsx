@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
-import { QUESTIONS_DATA } from '../questions/questions';
+import { QUESTIONS_DATA } from '../../data/questions';
 
 export const StrategicConsultantLayout = () => {
     const navigate = useNavigate();

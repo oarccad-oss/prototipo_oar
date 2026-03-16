@@ -9,7 +9,7 @@ import {
     Target, Settings, Droplets, CloudRain, ShieldAlert, Briefcase
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
-import { QUESTIONS_DATA } from '../questions/questions';
+import { QUESTIONS_DATA } from '../../data/questions';
 import { getEramAxes } from '../../lib/eram';
 import { Card, Button, Badge } from '../../components/ui/Shared';
 import VIEW_GUIDES from '../../data/guides/viewGuides.json';

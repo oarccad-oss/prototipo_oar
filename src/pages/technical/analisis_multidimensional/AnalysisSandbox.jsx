@@ -27,7 +27,7 @@ import {
 } from 'lucide-react';
 import { Card, Button, Badge } from '../../../components/ui/Shared';
 import { useNavigate } from 'react-router-dom';
-import { DATASETS_CONFIG } from './datasets.config';
+import { DATASETS_CONFIG } from '../../../data/datasets.config';
 
 // --- UTILS ---
 

@@ -6,7 +6,7 @@ import { getEramAxes } from '../../lib/eram';
 import { cn } from '../../lib/utils';
 import { MapViewer } from '../../components/map/MapViewer';
 
-import { QUESTIONS_DATA } from '../questions/questions';
+import { QUESTIONS_DATA } from '../../data/questions';
 import CIFRAS_DATA from '../../data/cifras/cifras.json';
 
 export const Home = () => {

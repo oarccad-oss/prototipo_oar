@@ -6,7 +6,7 @@ import {
     Layers, Target, Droplets, Wind, FileText, Settings, Folder, Briefcase
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
-import { QUESTIONS_DATA } from '../../pages/questions/questions';
+import { QUESTIONS_DATA } from '../../data/questions';
 import { getEramAxes } from '../../lib/eram';
 import { Card } from '../ui/Shared';
 

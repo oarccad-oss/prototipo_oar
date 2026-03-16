@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import { Card, Button } from '../../components/ui/Shared';
 
-import { QUESTIONS_DATA } from './questions';
+import { QUESTIONS_DATA } from '../../data/questions';
 
 const QuestionCard = ({ icon: Icon, question, path, color, description }) => {
     const navigate = useNavigate();

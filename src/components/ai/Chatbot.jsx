@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageSquare, X, Send, Bot, User, Search, HelpCircle, Database, ChevronUp, ChevronDown, Lightbulb } from 'lucide-react';
 import { Card, Button, ViewGuideModal } from '../ui/Shared';
-import { AI_RESPONSES } from '../../api/mockData';
+import { AI_RESPONSES } from '../../data/mockData';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { cn } from '../../lib/utils';
 
