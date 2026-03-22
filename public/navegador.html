@@ -840,64 +840,97 @@
         let scrollProgress = 0; // Tracks progress through the spheres [0 to totalNodes-1]
         
         let resetTimeout = null;
+        
+        // Helper for the progress-based navigation gate
+        function handleStep(isDown) {
+            if (isDown) {
+                if (scrollProgress < totalNodes - 1) {
+                    if (resetTimeout) clearTimeout(resetTimeout);
+                    scrollProgress++;
+                    const currentActive = getActiveIndex();
+                    if (currentActive !== scrollProgress) {
+                        let diff = scrollProgress - currentActive;
+                        if (diff > totalNodes/2) diff -= totalNodes;
+                        if (diff < -totalNodes/2) diff += totalNodes;
+                        logicalIndex += diff; targetRotation = logicalIndex * angleStep; 
+                        playSound('tick');
+                        updateUI(getActiveIndex());
+                    } else {
+                        goToNext();
+                    }
+                } else {
+                    window.parent.postMessage('oar-scroll-down', '*');
+                    if (!resetTimeout) {
+                        resetTimeout = setTimeout(() => {
+                            scrollProgress = 0; logicalIndex = 0; targetRotation = 0; updateUI(0);
+                            resetTimeout = null;
+                        }, 800);
+                    }
+                }
+            } else {
+                if (scrollProgress > 0) {
+                    if (resetTimeout) clearTimeout(resetTimeout);
+                    scrollProgress--;
+                    const currentActive = getActiveIndex();
+                    if (currentActive !== scrollProgress) {
+                        let diff = scrollProgress - currentActive;
+                        if (diff > totalNodes/2) diff -= totalNodes;
+                        if (diff < -totalNodes/2) diff += totalNodes;
+                        logicalIndex += diff; targetRotation = logicalIndex * angleStep; 
+                        playSound('tick');
+                        updateUI(getActiveIndex());
+                    } else {
+                        goToPrev();
+                    }
+                } else {
+                    // At progress 0: Rotate anyway but keep progress at 0
+                    goToPrev();
+                    window.parent.postMessage('oar-scroll-up', '*');
+                }
+            }
+        }
+
+        // --- MOUSE WHEEL ---
         window.addEventListener('wheel', (e) => {
             if (isDashboardOpen) return;
             if (Math.abs(e.deltaY) > 10) {
-                if (e.deltaY > 0) {
-                    // Scrolling down: Move through the sequence
-                    if (scrollProgress < totalNodes - 1) {
-                        e.preventDefault();
-                        if (resetTimeout) clearTimeout(resetTimeout);
-                        scrollProgress++;
-                        const currentActive = getActiveIndex();
-                        if (currentActive !== scrollProgress) {
-                            let diff = scrollProgress - currentActive;
-                            if (diff > totalNodes / 2) diff -= totalNodes;
-                            if (diff < -totalNodes / 2) diff += totalNodes;
-                            logicalIndex += diff; targetRotation = logicalIndex * angleStep; 
-                            playSound('tick');
-                            updateUI(getActiveIndex());
-                        } else {
-                            goToNext();
-                        }
-                    } else {
-                        // Reached the end of the sequence: release to parent
-                        window.parent.postMessage('oar-scroll-down', '*');
-                        // Reset to Bosques after a short delay so it's ready for the next visit
-                        if (!resetTimeout) {
-                            resetTimeout = setTimeout(() => {
-                                scrollProgress = 0; logicalIndex = 0; targetRotation = 0; updateUI(0);
-                                resetTimeout = null;
-                            }, 800);
-                        }
-                    }
-                } else {
-                    // Scrolling up: Always ALLOW ROTATION (Infinite reverse loop)
+                if (e.deltaY > 0) handleStep(true);
+                else handleStep(false);
+                // We always preventDefault for wheel inside the iframe to avoid jitter
+                // unless we want native scroll to take over (handled in handleStep)
+                if ((e.deltaY > 0 && scrollProgress < totalNodes - 1) || (e.deltaY < 0 && scrollProgress > 0)) {
                     e.preventDefault();
-                    if (resetTimeout) clearTimeout(resetTimeout);
-                    
-                    if (scrollProgress > 0) {
-                        scrollProgress--;
-                        const currentActive = getActiveIndex();
-                        if (currentActive !== scrollProgress) {
-                            let diff = scrollProgress - currentActive;
-                            if (diff > totalNodes / 2) diff -= totalNodes;
-                            if (diff < -totalNodes / 2) diff += totalNodes;
-                            logicalIndex += diff; targetRotation = logicalIndex * angleStep; 
-                            playSound('tick');
-                            updateUI(getActiveIndex());
-                        } else {
-                            goToPrev();
-                        }
-                    } else {
-                        // At progress 0: Rotate anyway but keep progress at 0
-                        goToPrev();
-                        // Signal parent to scroll to top
-                        window.parent.postMessage('oar-scroll-up', '*');
-                    }
                 }
             }
         }, { passive: false });
+
+        // --- TOUCH NAVIGATION ---
+        let touchStartX = 0;
+        let touchStartY = 0;
+        window.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+
+        window.addEventListener('touchend', (e) => {
+            if (isDashboardOpen) return;
+            const touchEndX = e.changedTouches[0].screenX;
+            const touchEndY = e.changedTouches[0].screenY;
+            const dx = touchEndX - touchStartX;
+            const dy = touchEndY - touchStartY;
+
+            if (Math.abs(dx) > 40 || Math.abs(dy) > 40) {
+                if (Math.abs(dx) > Math.abs(dy)) {
+                    // Horizontal swipe: Rotate spheres (doesn't affect gate directly)
+                    if (dx > 0) goToPrev();
+                    else goToNext();
+                } else {
+                    // Vertical swipe: Use same logic as wheel
+                    if (dy < 0) handleStep(true); // Swipe Up -> Next
+                    else handleStep(false); // Swipe Down -> Prev
+                }
+            }
+        }, { passive: true });
 
         function onInteraction(e) {
             if (isDashboardOpen) return;
