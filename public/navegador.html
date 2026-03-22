@@ -828,10 +828,11 @@
                         }
                     }
                 } else {
-                    // Scrolling up: Move backwards through the sequence
+                    // Scrolling up: Always ALLOW ROTATION (Infinite reverse loop)
+                    e.preventDefault();
+                    if (resetTimeout) clearTimeout(resetTimeout);
+                    
                     if (scrollProgress > 0) {
-                        e.preventDefault();
-                        if (resetTimeout) clearTimeout(resetTimeout);
                         scrollProgress--;
                         const currentActive = getActiveIndex();
                         if (currentActive !== scrollProgress) {
@@ -845,7 +846,9 @@
                             goToPrev();
                         }
                     } else {
-                        // At the start: allow scroll to top
+                        // At progress 0: Rotate anyway but keep progress at 0
+                        goToPrev();
+                        // Signal parent to scroll to top
                         window.parent.postMessage('oar-scroll-up', '*');
                     }
                 }
