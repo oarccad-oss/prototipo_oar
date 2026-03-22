@@ -10,8 +10,6 @@ import { QUESTIONS_DATA } from '../../data/questions';
 import CIFRAS_DATA from '../../data/cifras.json';
 import { DOCUMENTATION_DATA } from '../../data/documentation';
 
-import { Hero3D } from '../../components/home/Hero3D';
-
 export const Home = () => {
     const navigate = useNavigate();
     const [activeRole, setActiveRole] = useState('decision'); // 'decision', 'tech', 'citizen'
@@ -63,9 +61,13 @@ export const Home = () => {
                 </div>
             )}
 
-            {/* SECCIÓN HERO 3D (Substituye al mapa satelital inicial) */}
-            <div className="relative z-10 w-full h-screen">
-                <Hero3D axes={axes} />
+            {/* SECCIÓN NAVIGATOR 3D (Iframe estático) */}
+            <div className="relative z-10 w-full h-screen overflow-hidden bg-[#021226]">
+                <iframe 
+                    src="/navegador.html" 
+                    className="w-full h-full border-none"
+                    title="OAR 3D Navigator"
+                />
                 <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[90] hidden md:flex animate-bounce text-white/50 flex-col items-center gap-2 pointer-events-none">
                     <span className="text-[9px] uppercase tracking-widest font-bold">Descubrir Portal</span>
                     <ChevronRight className="rotate-90" />
@@ -75,67 +77,66 @@ export const Home = () => {
             {/* CONTENIDO DEL PORTAL INSTITUCIONAL (Hacia abajo) */}
             <div className="relative bg-white pt-24 z-20">
                 {/* --- SECCIÓN 1: Preguntas Estratégicas --- */}
-                <div id="preguntas" className="max-w-7xl mx-auto">
-                            <div className="text-center mb-10">
-                                <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white shadow-2xl text-emerald-700 text-[10px] font-black uppercase tracking-[0.2em] border border-emerald-100">
-                                    <HelpCircle className="h-3.5 w-3.5" /> Respuestas a Desafíos Regionales
-                                </div>
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
-                                {homeQuestions.map((q) => (
-                                    <div 
-                                        key={q.id}
-                                        className="group [perspective:1000px] h-[250px]"
-                                        onClick={() => navigate(q.path)}
-                                    >
-                                        <Card
-                                            className="relative h-full w-full transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] cursor-pointer bg-white/85 backdrop-blur-xl border-white/20 rounded-xl overflow-hidden shadow-md flex flex-col"
-                                            style={{ borderTop: `4px solid ${q.color}` }}
-                                        >
-                                            {/* Front */}
-                                            <div className="absolute inset-0 [backface-visibility:hidden] p-6 flex flex-col h-full">
-                                                <div className="flex justify-between items-start mb-4">
-                                                    <div className="p-2.5 rounded-full transition-colors group-hover:bg-opacity-30" style={{ backgroundColor: `${q.color}15` }}>
-                                                        <q.icon className="h-5 w-5" style={{ color: q.color }} />
-                                                    </div>
-                                                    <ArrowRight className="h-4 w-4 text-slate-300 group-hover:text-slate-400 group-hover:translate-x-1 transition-all" />
-                                                </div>
-
-                                                <h3 className="text-lg font-bold text-slate-900 mb-3 leading-tight group-hover:text-brand-primary transition-colors">
-                                                    {q.shortQuestion || q.question}
-                                                </h3>
-
-                                                {q.highlight && (
-                                                    <div
-                                                        className="text-[13px] text-slate-500 leading-snug"
-                                                        dangerouslySetInnerHTML={{ __html: q.highlight }}
-                                                    />
-                                                )}
-                                            </div>
-
-                                            {/* Back */}
-                                            <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] bg-slate-900 p-8 flex flex-col justify-center items-center text-center">
-                                                <h4 className="text-white font-bold mb-4">Consulta datos sobre {q.id.replace('-', ' ')}</h4>
-                                                <Button size="sm" className="bg-emerald-500 hover:bg-emerald-600 rounded-full">
-                                                    Ver Análisis Completo
-                                                </Button>
-                                            </div>
-                                        </Card>
-                                    </div>
-                                ))}
-                            </div>
+                <div id="preguntas" className="max-w-7xl mx-auto px-4">
+                    <div className="text-center mb-10">
+                        <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white shadow-2xl text-emerald-700 text-[10px] font-black uppercase tracking-[0.2em] border border-emerald-100">
+                            <HelpCircle className="h-3.5 w-3.5" /> Respuestas a Desafíos Regionales
                         </div>
                     </div>
-
-                        <div className="mt-12 text-center">
-                            <Button
-                                variant="outline"
-                                className="rounded-full px-8 py-6 border-white/20 text-white hover:bg-white/10 font-bold backdrop-blur-md"
-                                onClick={() => navigate('/strategic-questions')}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
+                        {homeQuestions.map((q) => (
+                            <div 
+                                key={q.id}
+                                className="group [perspective:1000px] h-[250px]"
+                                onClick={() => navigate(q.path)}
                             >
-                                Consulta más datos importantes de la región <ChevronRight className="ml-2 h-4 w-4" />
-                            </Button>
-                        </div>
+                                <Card
+                                    className="relative h-full w-full transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] cursor-pointer bg-white/85 backdrop-blur-xl border-white/20 rounded-xl overflow-hidden shadow-md flex flex-col"
+                                    style={{ borderTop: `4px solid ${q.color}` }}
+                                >
+                                    {/* Front */}
+                                    <div className="absolute inset-0 [backface-visibility:hidden] p-6 flex flex-col h-full">
+                                        <div className="flex justify-between items-start mb-4">
+                                            <div className="p-2.5 rounded-full transition-colors group-hover:bg-opacity-30" style={{ backgroundColor: `${q.color}15` }}>
+                                                <q.icon className="h-5 w-5" style={{ color: q.color }} />
+                                            </div>
+                                            <ArrowRight className="h-4 w-4 text-slate-300 group-hover:text-slate-400 group-hover:translate-x-1 transition-all" />
+                                        </div>
+
+                                        <h3 className="text-lg font-bold text-slate-900 mb-3 leading-tight group-hover:text-brand-primary transition-colors">
+                                            {q.shortQuestion || q.question}
+                                        </h3>
+
+                                        {q.highlight && (
+                                            <div
+                                                className="text-[13px] text-slate-500 leading-snug"
+                                                dangerouslySetInnerHTML={{ __html: q.highlight }}
+                                            />
+                                        )}
+                                    </div>
+
+                                    {/* Back */}
+                                    <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] bg-slate-900 p-8 flex flex-col justify-center items-center text-center">
+                                        <h4 className="text-white font-bold mb-4">Consulta datos sobre {q.id.replace('-', ' ')}</h4>
+                                        <Button size="sm" className="bg-emerald-500 hover:bg-emerald-600 rounded-full">
+                                            Ver Análisis Completo
+                                        </Button>
+                                    </div>
+                                </Card>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="mt-12 text-center">
+                        <Button
+                            variant="outline"
+                            className="rounded-full px-8 py-6 border-slate-200 text-slate-600 hover:bg-slate-50 font-bold"
+                            onClick={() => navigate('/strategic-questions')}
+                        >
+                            Consulta más datos importantes de la región <ChevronRight className="ml-2 h-4 w-4" />
+                        </Button>
+                    </div>
+                </div>
+            </div>
 
             {/* --- SECCIÓN 2: Cifras de Impacto (Indicadores Clave) --- */}
             <section id="cifras" className="py-20 bg-slate-50/50">
@@ -267,9 +268,6 @@ export const Home = () => {
                 </div>
             </section>
 
-
-
-
             {/* --- SECCIÓN 3: Ejes Estratégicos ERAM (Explorar por ejes) --- */}
             <section id="ejes" className="py-24 bg-white border-t border-slate-100">
                 <div className="container mx-auto px-4">
@@ -284,7 +282,7 @@ export const Home = () => {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                        {getEramAxes().map((axis) => (
+                        {axes.map((axis) => (
                             <Card
                                 key={axis.id}
                                 className={cn(
@@ -313,10 +311,6 @@ export const Home = () => {
                     </div>
                 </div>
             </section>
-
-
-
-
 
             {/* Reportes Temáticos - Premium Edition */}
             <section id="reportes" className="py-24 bg-gradient-to-b from-white to-slate-50">
@@ -445,8 +439,6 @@ export const Home = () => {
                     </div>
                 </div>
             </section>
-
-
 
             {/* --- SECCIÓN 2: Intelligence & Analytics (Análisis Multidimensional) --- */}
             <section id="analitica" className="mt-32 py-24 bg-gradient-to-b from-white via-slate-50 to-slate-100 overflow-hidden relative border-t border-slate-100">
@@ -797,7 +789,6 @@ export const Home = () => {
 
                         <div className="order-1 md:order-2">
                             <div className="aspect-square md:aspect-[4/3] bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200 relative group">
-                                {/* Role based Mockup Image */}
                                 <img
                                     src={
                                         activeRole === 'decision' ? "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1000" :
@@ -814,9 +805,6 @@ export const Home = () => {
                 </div>
             </section>
 
-
-
-
             {/* Footer Divider / Context */}
             <div className="max-w-7xl mx-auto px-8 pb-4 mt-6 mb-4">
                 <div className="border-t border-slate-200 py-4 text-center text-slate-400 text-[10px] font-black uppercase tracking-[0.2em]">
@@ -826,4 +814,3 @@ export const Home = () => {
         </div>
     );
 };
-
