@@ -647,7 +647,12 @@
                 uniform float opacity;
                 varying vec2 vUv;
                 void main() {
-                    vec4 tex = texture2D(tDiffuse, vUv);
+                    // Crop the texture to fit 4:1 aspect without distortion
+                    // Plane is 4x wider than tall, so we take 1/4 of the V (y) axis
+                    vec2 uv = vUv;
+                    uv.y = vUv.y * 0.25 + 0.375; 
+                    
+                    vec4 tex = texture2D(tDiffuse, uv);
                     // full-range smooth mask for maximum linear feel: 0 to 1 over the whole width
                     float centerX = abs(vUv.x - 0.5) * 2.0;
                     float mask = smoothstep(0.0, 1.0, centerX); 
