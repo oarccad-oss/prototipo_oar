@@ -792,6 +792,7 @@
         function goToNext() { logicalIndex++; targetRotation = logicalIndex * angleStep; playSound('tick'); updateUI(getActiveIndex()); }
         function goToPrev() { logicalIndex--; targetRotation = logicalIndex * angleStep; playSound('tick'); updateUI(getActiveIndex()); }
 
+        let resetTimeout = null;
         window.addEventListener('wheel', (e) => {
             if (isDashboardOpen) return;
             if (Math.abs(e.deltaY) > 10) {
@@ -801,17 +802,25 @@
                     if (currentIndex < totalNodes - 1) {
                         e.preventDefault();
                         goToNext();
+                        if (resetTimeout) clearTimeout(resetTimeout);
                     } else {
                         // At Aire: Trigger parent scroll down
                         window.parent.postMessage('oar-scroll-down', '*');
+                        // Reset to Bosques after a short delay so it's ready for the next visit
+                        if (!resetTimeout) {
+                            resetTimeout = setTimeout(() => {
+                                logicalIndex = 0; targetRotation = 0; updateUI(0);
+                                resetTimeout = null;
+                            }, 800);
+                        }
                     }
                 } else {
                     // Scrolling up: Always rotate (Infinite reverse loop)
-                    // This allows "rotating left" from Bosques back to Aire
                     e.preventDefault();
                     goToPrev();
+                    if (resetTimeout) clearTimeout(resetTimeout);
                     
-                    // Signal parent to scroll to top just in case they are coming from a section
+                    // Signal parent to scroll to top at the start point
                     if (currentIndex === 0) {
                         window.parent.postMessage('oar-scroll-up', '*');
                     }
