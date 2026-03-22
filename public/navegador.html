@@ -820,11 +820,37 @@
         function goToNext() { logicalIndex++; targetRotation = logicalIndex * angleStep; playSound('tick'); updateUI(getActiveIndex()); }
         function goToPrev() { logicalIndex--; targetRotation = logicalIndex * angleStep; playSound('tick'); updateUI(getActiveIndex()); }
 
+        let resetTimeout = null;
         window.addEventListener('wheel', (e) => {
-            if (!isDashboardOpen && Math.abs(e.deltaY) > 20) {
-                if (e.deltaY > 0) goToNext(); else goToPrev();
+            if (isDashboardOpen) return;
+            if (Math.abs(e.deltaY) > 10) {
+                const currentIndex = getActiveIndex();
+                if (e.deltaY > 0) {
+                    if (currentIndex < totalNodes - 1) {
+                        e.preventDefault();
+                        goToNext();
+                        if (resetTimeout) clearTimeout(resetTimeout);
+                    } else {
+                        // At Aire: allow parent scroll, but don't loop here
+                        window.parent.postMessage('oar-scroll-down', '*');
+                        // Reset to Bosques after a delay so it's ready for the next visit
+                        if (!resetTimeout) {
+                            resetTimeout = setTimeout(() => {
+                                logicalIndex = 0; targetRotation = 0; updateUI(0);
+                                resetTimeout = null;
+                            }, 1000);
+                        }
+                    }
+                } else {
+                    if (currentIndex > 0) {
+                        e.preventDefault();
+                        goToPrev();
+                    } else {
+                        window.parent.postMessage('oar-scroll-up', '*');
+                    }
+                }
             }
-        });
+        }, { passive: false });
 
         function onInteraction(e) {
             if (isDashboardOpen) return;

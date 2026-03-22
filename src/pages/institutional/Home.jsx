@@ -36,6 +36,11 @@ export const Home = () => {
         const handleMessage = (event) => {
             if (event.data === 'oar-open-guide') {
                 setIsGuideOpen(true);
+            } else if (event.data === 'oar-scroll-down') {
+                const content = document.getElementById('preguntas');
+                if (content) content.scrollIntoView({ behavior: 'smooth' });
+            } else if (event.data === 'oar-scroll-up') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         };
         window.addEventListener('message', handleMessage);
