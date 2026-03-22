@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageSquare, X, Send, Bot, User, Search, HelpCircle, Database, ChevronUp, ChevronDown, Lightbulb } from 'lucide-react';
+import { MessageSquare, X, Send, Bot, User, Search, HelpCircle, Database, ChevronUp, ChevronDown, Lightbulb, Wrench, Info } from 'lucide-react';
 import { Card, Button, ViewGuideModal } from '../ui/Shared';
 import { AI_RESPONSES } from '../../data/mockData';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -145,19 +145,18 @@ export const Chatbot = () => {
                     ))}
                 </div>
 
-                {/* Main Trigger Button (Chatbot Style) */}
+                {/* Main Trigger Button (Tools Style) */}
                 <button
                     onClick={() => {
                         if (isChatOpen) setIsChatOpen(false);
                         else setIsMenuOpen(!isMenuOpen);
                     }}
                     className={cn(
-                        "p-4 text-white rounded-full shadow-2xl transition-all hover:scale-110 flex items-center gap-2",
+                        "p-4 text-white rounded-full shadow-2xl transition-all hover:scale-110 flex items-center justify-center",
                         isChatOpen || isMenuOpen ? "bg-slate-800" : "bg-brand-primary"
                     )}
                 >
-                    {isChatOpen || isMenuOpen ? <X className="h-6 w-6" /> : <Bot className="h-6 w-6" />}
-                    {!isChatOpen && !isMenuOpen && <span className="font-bold hidden md:inline ml-1">Centro de Ayuda</span>}
+                    {isChatOpen || isMenuOpen ? <X className="h-6 w-6" /> : <Info className="h-6 w-6" />}
                 </button>
             </div>
 

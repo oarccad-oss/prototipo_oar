@@ -164,6 +164,19 @@ export const StrategicMonitoring = () => {
             </header>
 
             <main className="max-w-7xl mx-auto px-4 py-8">
+                {/* NARRATIVE ORIENTATION */}
+                <div className="mb-10 p-8 bg-indigo-50/50 rounded-[2rem] border border-indigo-100 flex gap-6 items-start">
+                    <div className="p-4 bg-indigo-600 rounded-2xl text-white shadow-lg shrink-0">
+                        <Info className="w-6 h-6" />
+                    </div>
+                    <div className="text-left">
+                        <h3 className="text-xl font-bold text-indigo-900 mb-2 font-serif">Sobre el Monitoreo Estratégico</h3>
+                        <p className="text-slate-600 leading-relaxed font-light">
+                            En esta vista, usted encontrará los **Indicadores de Impacto** que miden el estado real del medio ambiente en la región centroamericana (ej. cobertura forestal, biodiversidad, GEI). Estos datos están alineados con las **Convenciones de Río** y reflejan el éxito de las políticas regionales a largo plazo.
+                        </p>
+                    </div>
+                </div>
+
                 {/* FILTROS */}
                 <div className="mb-10 flex flex-col md:flex-row gap-8 items-start md:items-center bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm">
                     <div className="flex flex-col gap-3 flex-1">

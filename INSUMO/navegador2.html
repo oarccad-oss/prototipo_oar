@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Observatorio Ambiental Regional</title>
+    <!-- Importamos Three.js y Phosphor Icons para la UI -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --sky-blue: #4A90E2;
+            --forest-green: #2ecc71;
+            --ocean-blue: #0984e3;
+            --text-light: #e8f5f0;
+            --bg-top: #0f2847;
+            --bg-mid: #0a221a;
+            --bg-bot: #021226;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            overflow: hidden; 
+            font-family: 'Montserrat', sans-serif; color: #fff;
+            user-select: none; touch-action: none;
+            background: #021226;
+        }
+
+        #background-layer {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;
+            background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 40%, var(--bg-mid) 60%, var(--bg-bot) 100%);
+        }
+
+        #canvas-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+        #ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; transition: opacity 0.5s ease; }
+
+        /* --- PANTALLA DE INICIO --- */
+        #intro-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 40%, var(--bg-mid) 60%, var(--bg-bot) 100%);
+            z-index: 9999; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            transition: opacity 1.5s ease-in-out; pointer-events: auto; text-align: center;
+        }
+
+        #intro-screen h1 { 
+            font-weight: 700; font-size: 32px; margin: 0 0 10px 0; letter-spacing: 4px; 
+            line-height: 1.4; text-transform: uppercase; max-width: 800px;
+        }
+
+        .subtitle-text {
+            font-size: 18px; font-weight: 500; color: rgba(255, 255, 255, 0.95);
+            letter-spacing: 3px; text-transform: uppercase; margin-bottom: 35px;
+            text-align: center; padding: 0 15px;
+        }
+
+        .story-text {
+            font-size: 15px; font-weight: 300; color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 45px; max-width: 650px; line-height: 1.7;
+            letter-spacing: 0.5px; text-align: center; padding: 0 15px;
+        }
+
+        .btn-enter {
+            font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600; color: #fff;
+            background: #0a221a; border: 1px solid var(--forest-green); border-radius: 30px;
+            padding: 16px 50px; cursor: pointer; text-transform: uppercase; letter-spacing: 3px;
+            transition: all 0.3s ease;
+        }
+        .btn-enter:hover {
+            background: var(--forest-green); color: #021226; box-shadow: 0 0 20px rgba(46, 204, 113, 0.4);
+        }
+
+        /* --- UI OVERLAY --- */
+        .header {
+            position: absolute; top: 0; left: 0; width: 100%;
+            padding: 30px 20px; display: flex; justify-content: center; align-items: center; 
+            pointer-events: auto; box-sizing: border-box; text-align: center; 
+        }
+        .header-title {
+            font-size: 24px; font-weight: 700; letter-spacing: 5px; color: rgba(255,255,255,0.95);
+            text-transform: uppercase; text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+        }
+
+        #core-display {
+            position: absolute; top: 16%; left: 50%; transform: translateX(-50%);
+            width: 80%; max-width: 650px; text-align: center; opacity: 0;
+            transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+            pointer-events: none; display: flex; flex-direction: column; align-items: center;
+        }
+        #core-display.visible { opacity: 1; }
+        #core-desc {
+            font-size: 14px; color: var(--text-light); line-height: 1.6; font-weight: 300; margin: 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9), 0 0 15px rgba(0,0,0,0.6); letter-spacing: 0.5px;
+        }
+
+        .node-label {
+            position: absolute; transform: translate(-50%, -50%);
+            font-size: 11px; font-weight: 600; color: rgba(255, 255, 255, 0.6);
+            pointer-events: none; text-align: center; transition: all 0.4s ease;
+            text-shadow: 0px 2px 6px rgba(0,0,0,0.9); will-change: transform, left, top; letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .node-label.active {
+            color: #fff; font-size: 24px; font-weight: 700; letter-spacing: 6px; 
+            text-shadow: 0 0 20px rgba(255,255,255,0.4), 0 4px 12px rgba(0,0,0,0.9);
+        }
+
+        #organic-pulse {
+            position: absolute; transform: translate(-50%, -50%);
+            width: 60px; height: 60px; pointer-events: none; opacity: 0;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.3s ease; will-change: left, top, opacity;
+        }
+        .pulse-ring, .pulse-ring-2 {
+            position: absolute; width: 100%; height: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 50%;
+            animation: ripple 2.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+        .pulse-ring-2 { border-color: rgba(255, 255, 255, 0.2); animation-delay: 1.25s; }
+
+        @keyframes ripple {
+            0% { transform: scale(0.1); opacity: 1; border-width: 2px; }
+            100% { transform: scale(1.3); opacity: 0; border-width: 0px; }
+        }
+
+        #action-container {
+            position: absolute; transform: translate(-50%, 0);
+            display: flex; align-items: center; gap: 15px;
+            pointer-events: none; opacity: 0;
+            transition: transform 0.2s, opacity 0.15s ease;
+        }
+
+        #btn-opciones {
+            padding: 12px 35px; background: rgba(10, 34, 26, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 30px;
+            color: #fff; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600;
+            letter-spacing: 2px; text-transform: uppercase; backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); pointer-events: auto; cursor: pointer;
+            transition: all 0.3s ease; width: max-content;
+        }
+        #btn-opciones:hover { background: #fff; color: #0a221a; }
+
+        #btn-mute {
+            position: absolute; bottom: 30px; left: 30px;
+            width: 42px; height: 42px; border-radius: 50%;
+            background: rgba(10, 34, 26, 0.5); border: 1px solid rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.5); font-size: 18px;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; pointer-events: auto; backdrop-filter: blur(5px);
+            transition: all 0.3s ease; z-index: 100;
+        }
+        #btn-mute:hover { color: #fff; background: rgba(255, 255, 255, 0.1); }
+
+        .nav-arrow {
+            position: absolute; transform: translateY(-50%);
+            width: 45px; height: 45px; border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.05); 
+            color: rgba(255, 255, 255, 0.15); 
+            display: flex; justify-content: center; align-items: center;
+            font-size: 22px; cursor: pointer; pointer-events: auto;
+            backdrop-filter: blur(2px); transition: all 0.4s ease; z-index: 15;
+        }
+        .nav-arrow:hover { color: #fff; border-color: rgba(255, 255, 255, 0.3); }
+        #nav-arrow-left { left: 6%; }
+        #nav-arrow-right { right: 6%; }
+
+        #modal-opciones {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(3, 14, 10, 0.85); backdrop-filter: blur(15px);
+            z-index: 2000; opacity: 0; pointer-events: none;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.4s ease;
+        }
+        #modal-opciones.visible { opacity: 1; pointer-events: auto; }
+        
+        .modal-content {
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(46, 204, 113, 0.3);
+            border-radius: 20px; padding: 40px; width: 90%; max-width: 400px;
+            text-align: center; position: relative; transform: translateY(20px); transition: transform 0.4s;
+        }
+        #modal-opciones.visible .modal-content { transform: translateY(0); }
+
+        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 32px; color: rgba(255,255,255,0.5); background: none; border: none; cursor: pointer; }
+
+        .modal-list { list-style: none; padding: 0; margin: 0; }
+        .modal-list a {
+            display: flex; align-items: center; gap: 15px; padding: 15px 25px; border-radius: 12px;
+            text-decoration: none; color: #fff; font-size: 14px; background: rgba(255,255,255,0.03);
+            transition: all 0.3s ease; margin-bottom: 10px;
+        }
+        .modal-list a:hover { background: rgba(255, 255, 255, 0.1); transform: translateX(5px); }
+        .color-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+
+        /* --- DASHBOARD --- */
+        #dashboard-view {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(15, 40, 71, 0.95) 0%, rgba(10, 34, 26, 0.95) 50%, rgba(2, 18, 38, 0.95) 100%);
+            backdrop-filter: blur(20px); z-index: 1000; opacity: 0; pointer-events: none;
+            transition: opacity 0.5s ease; overflow-y: auto; color: #fff;
+        }
+        #dashboard-view.active { opacity: 1; pointer-events: auto; }
+
+        .dash-nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background: rgba(4, 20, 25, 0.4); border-bottom: 1px solid var(--glass-border); position: sticky; top: 0; z-index: 101; }
+        .btn-back { display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 14px; cursor: pointer; }
+        .btn-back:hover { color: var(--forest-green); }
+        .dash-main { padding: 40px; max-width: 1400px; margin: 0 auto; }
+        .dash-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; }
+        .glass-panel { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 20px; padding: 24px; }
+        .kpi-card { grid-column: span 4; }
+        .map-card { grid-column: span 8; grid-row: span 2; min-height: 450px; overflow: hidden; position: relative; }
+        .alerts-card { grid-column: span 4; grid-row: span 2; }
+        .kpi-value { font-size: 42px; font-weight: 300; margin-bottom: 5px; color: var(--forest-green); }
+
+        @media (max-width: 768px) { 
+            .kpi-card { grid-column: span 12; } 
+            #intro-screen h1 { font-size: 22px; }
+            .subtitle-text { font-size: 13px; }
+            .story-text { font-size: 14px; }
+            #core-display { top: 110px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="background-layer"></div>
+
+    <div id="intro-screen">
+        <h1>OBSERVATORIO AMBIENTAL REGIONAL</h1>
+        <div class="subtitle-text">Centroamérica y República Dominicana</div>
+        <p class="story-text">
+            Nuestra región está viva y su latido se siente en cada bosque, río y océano. La Comisión Centroamericana de Ambiente y Desarrollo (CCAD) te da la bienvenida al nuevo OAR, tu espacio interactivo para explorar, comprender y tomar el pulso de los ecosistemas que compartimos.
+        </p>
+        <button class="btn-enter" id="btn-enter">Iniciar Conexión</button>
+    </div>
+
+    <div id="canvas-container"></div>
+
+    <div id="ui-layer">
+        <div class="header"><div class="header-title">OBSERVATORIO AMBIENTAL REGIONAL</div></div>
+        <div id="core-display"><div class="ambient-glow"></div><p id="core-desc">Iniciando sistemas...</p></div>
+        <div id="organic-pulse"><div class="pulse-ring"></div><div class="pulse-ring-2"></div></div>
+        <div id="action-container"><div id="btn-opciones">MÁS OPCIONES</div></div>
+        <div id="btn-mute"><i class="ph ph-speaker-high"></i></div>
+        <div id="nav-arrow-left" class="nav-arrow"><i class="ph ph-caret-left"></i></div>
+        <div id="nav-arrow-right" class="nav-arrow"><i class="ph ph-caret-right"></i></div>
+        <div id="labels-container"></div>
+    </div>
+
+    <div id="modal-opciones">
+        <div class="modal-content">
+            <button class="modal-close" id="btn-close-modal">&times;</button>
+            <div style="font-size:14px; letter-spacing:3px; margin-bottom:25px; text-transform:uppercase;">Accesos Rápidos</div>
+            <ul class="modal-list" id="modal-list-container"></ul>
+        </div>
+    </div>
+
+    <div id="dashboard-view">
+        <div class="dash-nav">
+            <div class="dash-nav-left"><a id="btn-back-menu" class="btn-back"><i class="ph ph-arrow-left"></i> Regresar</a></div>
+            <div style="font-weight:600; letter-spacing:2px;">OBSERVATORIO <span style="color:var(--forest-green)">AMBIENTAL</span></div>
+            <div style="display:flex; gap:20px; opacity:0.6;"><i class="ph ph-bell"></i><i class="ph ph-list"></i></div>
+        </div>
+        <div class="dash-main">
+            <div style="margin-bottom:40px;">
+                <h1 id="dash-title" style="font-size:32px; letter-spacing:3px; margin-bottom:10px;">TITULO</h1>
+                <p id="dash-desc" style="opacity:0.7; max-width:800px; line-height:1.6;">Descripción.</p>
+            </div>
+            <div class="dash-grid">
+                <div class="glass-panel kpi-card"><div id="dash-kpi1-title" style="font-size:11px; margin-bottom:15px; opacity:0.6;">METRICA</div><div class="kpi-value" id="dash-kpi1-val">0</div><div id="dash-kpi1-sub" style="font-size:12px; opacity:0.6;">Dato</div></div>
+                <div class="glass-panel kpi-card"><div id="dash-kpi2-title" style="font-size:11px; margin-bottom:15px; opacity:0.6;">ESTADO</div><div class="kpi-value" id="dash-kpi2-val">0</div><div id="dash-kpi2-sub" style="font-size:12px; opacity:0.6;">Dato</div></div>
+                <div class="glass-panel kpi-card"><div id="dash-kpi3-title" style="font-size:11px; margin-bottom:15px; opacity:0.6;">NOTAS</div><div class="kpi-value" id="dash-kpi3-val">0</div><div id="dash-kpi3-sub" style="font-size:12px; opacity:0.6;">Dato</div></div>
+                <div class="glass-panel map-card" style="background:rgba(0,0,0,0.3);"><div style="display:flex; justify-content:center; align-items:center; height:100%; opacity:0.3; font-size:12px; letter-spacing:2px;">VISUALIZACIÓN ESPACIAL</div></div>
+                <div class="glass-panel alerts-card"><div style="font-size:11px; margin-bottom:15px; opacity:0.6;">EVENTOS RECIENTES</div><div id="dash-alerts-container"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const menuData = [
+            { id: 0, title: "BOSQUES", color: 0x00b894, desc: "Monitoreo de cobertura forestal y prevención de deforestación." },
+            { id: 1, title: "BIODIVERSIDAD", color: 0x55efc4, desc: "Seguimiento de especies y conservación de ecosistemas." },
+            { id: 2, title: "CLIMA", color: 0x74b9ff, desc: "Análisis atmosférico y alertas meteorológicas regionales." },
+            { id: 3, title: "AGUA", color: 0x0984e3, desc: "Gestión de cuencas hídricas y calidad del recurso." },
+            { id: 4, title: "COSTAS", color: 0x00cec9, desc: "Monitoreo de litorales y salud arrecifal." },
+            { id: 5, title: "MARES", color: 0x1e3799, desc: "Corrientes oceánicas y biodiversidad pelágica." },
+            { id: 6, title: "AIRE", color: 0xdfe6e9, desc: "Calidad del aire e inventario de emisiones." }
+        ];
+
+        let audioCtx; let isMuted = false;
+        function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); if (audioCtx.state === 'suspended') audioCtx.resume(); }
+        function playSound(type) {
+            if (!audioCtx || isMuted) return;
+            const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
+            osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+            const now = audioCtx.currentTime;
+            if (type === 'tick') {
+                osc.type = 'sine'; osc.frequency.setValueAtTime(600, now); osc.frequency.exponentialRampToValueAtTime(150, now + 0.15);
+                gainNode.gain.setValueAtTime(0.05, now); gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+                osc.start(now); osc.stop(now + 0.15);
+            }
+        }
+
+        const dashboardView = document.getElementById('dashboard-view');
+        const uiLayer = document.getElementById('ui-layer');
+        let isDashboardOpen = false;
+
+        function openDashboard(index) {
+            isDashboardOpen = true; playSound('tick');
+            const data = menuData[index];
+            document.getElementById('dash-title').innerText = data.title;
+            document.getElementById('dash-desc').innerText = data.desc;
+            uiLayer.style.opacity = '0'; uiLayer.style.pointerEvents = 'none';
+            setTimeout(() => { dashboardView.classList.add('active'); }, 200);
+        }
+
+        document.getElementById('btn-back-menu').onclick = () => {
+            isDashboardOpen = false; playSound('tick');
+            dashboardView.classList.remove('active');
+            setTimeout(() => { uiLayer.style.opacity = '1'; uiLayer.style.pointerEvents = 'auto'; }, 300);
+        };
+
+        const container = document.getElementById('canvas-container');
+        const labelsContainer = document.getElementById('labels-container');
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.Fog(0x133e36, 100, 220); 
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 35, 130); camera.lookAt(0, -10, 0);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); 
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(renderer.domElement);
+
+        const hemiLight = new THREE.HemisphereLight(0x87CEEB, 0x0984e3, 0.7); scene.add(hemiLight);
+        const sunLight = new THREE.DirectionalLight(0xfff5e6, 0.8); sunLight.position.set(30, 100, 30); scene.add(sunLight);
+        const activeLight = new THREE.PointLight(0xffffff, 2.5, 120); activeLight.position.set(0, -10, 80); scene.add(activeLight);
+
+        const carouselGroup = new THREE.Group(); carouselGroup.position.y = -10; carouselGroup.rotation.x = Math.PI / 2.3; scene.add(carouselGroup);
+        const radius = 55; const nodes = []; const labels = []; const totalNodes = menuData.length; const angleStep = (Math.PI * 2) / totalNodes;
+        const nodeGeometry = new THREE.SphereGeometry(4.5, 32, 32);
+
+        const orbitLineGroup = new THREE.Group(); carouselGroup.add(orbitLineGroup);
+        const torusMat = new THREE.MeshBasicMaterial({ color: 0x2ecc71, transparent: true, opacity: 0.15 });
+        orbitLineGroup.add(new THREE.Mesh(new THREE.TorusGeometry(radius, 0.05, 16, 128), torusMat));
+
+        function createLightBeam(colorHex) {
+            const beamGroup = new THREE.Group(); const trailCount = 35; 
+            for(let i=0; i<trailCount; i++) {
+                const size = 0.15 * Math.pow((1 - i/trailCount), 1.5); const op = 0.6 * (1 - i/trailCount);
+                const mat = new THREE.MeshBasicMaterial({ color: colorHex, transparent: true, opacity: op, blending: THREE.AdditiveBlending, depthWrite: false });
+                const mesh = new THREE.Mesh(new THREE.SphereGeometry(size, 8, 8), mat);
+                const ang = -(i / trailCount) * (Math.PI / 2.5); mesh.position.set(Math.cos(ang)*radius, Math.sin(ang)*radius, 0);
+                beamGroup.add(mesh);
+            }
+            return beamGroup;
+        }
+        orbitLineGroup.add(createLightBeam(0xa8e6cf));
+        const beam2 = createLightBeam(0xa8e6cf); beam2.rotation.z = Math.PI; orbitLineGroup.add(beam2);
+
+        // --- FÁBRICA DE ELEMENTOS ANIMADOS (Visibles y Sutiles) ---
+        function createElementAnimation(id) {
+            const group = new THREE.Group();
+            // Aumentamos opacidad al 0.15 para que sea visible pero elegante
+            const mat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.15, blending: THREE.AdditiveBlending });
+            
+            if (id === 0) { // Bosques: Polen
+                for(let i=0; i<15; i++) {
+                    const m = new THREE.Mesh(new THREE.SphereGeometry(0.12, 4, 4), mat);
+                    m.position.set((Math.random()-0.5)*6, (Math.random()-0.5)*6, (Math.random()-0.5)*6);
+                    m.userData.vel = new THREE.Vector3((Math.random()-0.5)*0.015, (Math.random()-0.5)*0.015, (Math.random()-0.5)*0.015);
+                    group.add(m);
+                }
+            } else if (id === 1) { // Biodiversidad: Enjambre
+                for(let i=0; i<12; i++) {
+                    const m = new THREE.Mesh(new THREE.SphereGeometry(0.1, 4, 4), mat);
+                    m.userData.angle = Math.random() * Math.PI * 2;
+                    m.userData.dist = 1 + Math.random() * 2.5;
+                    group.add(m);
+                }
+            } else if (id === 2) { // Clima: Vórtice
+                const torusKnot = new THREE.Mesh(new THREE.TorusKnotGeometry(1.8, 0.04, 64, 8), new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, transparent: true, opacity: 0.08, blending: THREE.AdditiveBlending }));
+                group.add(torusKnot);
+            } else if (id === 3) { // Agua: Burbujas
+                for(let i=0; i<12; i++) {
+                    const m = new THREE.Mesh(new THREE.SphereGeometry(0.25, 8, 8), mat);
+                    m.position.set((Math.random()-0.5)*5, -4 + Math.random()*8, (Math.random()-0.5)*5);
+                    m.userData.vY = 0.02 + Math.random()*0.04;
+                    group.add(m);
+                }
+            } else if (id === 4) { // Costas: Ripple
+                for(let i=0; i<3; i++) {
+                    const r = new THREE.Mesh(new THREE.TorusGeometry(0.8 + i*1.4, 0.04, 8, 32), mat);
+                    r.rotation.x = Math.PI/2; r.userData.phase = i * 2;
+                    group.add(r);
+                }
+            } else if (id === 5) { // Mares: Olas
+                const plane = new THREE.Mesh(new THREE.PlaneGeometry(6, 6, 8, 8), new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, transparent: true, opacity: 0.1, side: THREE.DoubleSide }));
+                plane.rotation.x = -Math.PI/2; group.add(plane);
+            } else if (id === 6) { // Aire: Nubes
+                for(let i=0; i<5; i++) {
+                    const c = new THREE.Mesh(new THREE.SphereGeometry(0.6 + Math.random()*0.6, 8, 8), mat);
+                    c.position.set((Math.random()-0.5)*6, (Math.random()-0.5)*4, (Math.random()-0.5)*4);
+                    c.userData.vX = 0.008 + Math.random()*0.015;
+                    group.add(c);
+                }
+            }
+            group.userData.elemId = id; return group;
+        }
+
+        // --- MATERIALES DE CRISTAL TIPO GEMA (RESTAURADOS) ---
+        const nodeMaterials = menuData.map(item => new THREE.MeshPhysicalMaterial({ 
+            color: 0xffffff, metalness: 0.1, roughness: 0.1, transmission: 0.8, thickness: 1.5, ior: 1.33,
+            emissive: item.color, emissiveIntensity: 0.05, transparent: true, opacity: 0.4 
+        }));
+
+        menuData.forEach((item, i) => {
+            const angle = (Math.PI / 2) - (i * angleStep);
+            const mesh = new THREE.Mesh(nodeGeometry, nodeMaterials[i]);
+            mesh.position.set(Math.cos(angle)*radius, Math.sin(angle)*radius, 0);
+            
+            // AGREGAR ANIMACIÓN INTERNA
+            mesh.add(createElementAnimation(i));
+            
+            carouselGroup.add(mesh); nodes.push(mesh);
+            const label = document.createElement('div'); label.className = 'node-label'; label.innerText = item.title;
+            document.getElementById('labels-container').appendChild(label); labels.push({ element: label, mesh: mesh });
+        });
+
+        let logicalIndex = 0; let targetRotation = 0; let currentRotation = 0; let isMoving = false;
+        function getActiveIndex() { return ((logicalIndex % totalNodes) + totalNodes) % totalNodes; }
+        
+        function updateUI(index) {
+            document.getElementById('core-display').classList.remove('visible'); 
+            document.getElementById('organic-pulse').style.opacity = '0';
+            setTimeout(() => { 
+                document.getElementById('core-desc').innerText = menuData[index].desc; 
+                document.getElementById('core-display').classList.add('visible'); 
+            }, 150);
+            labels.forEach((l, i) => { 
+                l.element.classList.toggle('active', i === index); 
+                l.element.style.color = i === index ? '#fff' : 'rgba(255,255,255,0.4)';
+            });
+            nodes.forEach((n, i) => {
+                if (i === index) {
+                    n.material.color.setHex(0x0a221a); n.material.transmission = 0.5;
+                    n.material.opacity = 0.8; n.material.emissiveIntensity = 0.45;
+                    activeLight.color.setHex(menuData[i].color);
+                } else {
+                    n.material.color.setHex(0xffffff); n.material.transmission = 0.8;
+                    n.material.opacity = 0.4; n.material.emissiveIntensity = 0.1;
+                }
+            });
+        }
+
+        function goToNext() { logicalIndex++; targetRotation = logicalIndex * angleStep; playSound('tick'); updateUI(getActiveIndex()); }
+        function goToPrev() { logicalIndex--; targetRotation = logicalIndex * angleStep; playSound('tick'); updateUI(getActiveIndex()); }
+        
+        window.addEventListener('wheel', (e) => { if(!isDashboardOpen && Math.abs(e.deltaY) > 20) { if(e.deltaY > 0) goToNext(); else goToPrev(); } });
+        document.addEventListener('click', (e) => {
+            if (document.getElementById('intro-screen').style.display !== 'none' || isDashboardOpen) return;
+            const mouseVec = new THREE.Vector2((e.clientX/window.innerWidth)*2-1, -(e.clientY/window.innerHeight)*2+1);
+            const ray = new THREE.Raycaster(); ray.setFromCamera(mouseVec, camera);
+            const hits = ray.intersectObjects(nodes);
+            if(hits.length > 0) {
+                const idx = nodes.indexOf(hits[0].object);
+                if(idx !== getActiveIndex()) {
+                    let diff = idx - getActiveIndex();
+                    if (diff > totalNodes/2) diff -= totalNodes; if (diff < -totalNodes/2) diff += totalNodes;
+                    logicalIndex += diff; targetRotation = logicalIndex * angleStep; playSound('tick'); updateUI(getActiveIndex());
+                } else openDashboard(idx);
+            }
+        });
+
+        function updateHUD() {
+            const activePos = new THREE.Vector3(); const center3D = new THREE.Vector3(0,-10,0).project(camera);
+            const cX = (center3D.x*.5+.5)*window.innerWidth; const cY = (center3D.y*-.5+.5)*window.innerHeight;
+            const rest3D = new THREE.Vector3(0, Math.cos(Math.PI/2.3)*55-10, Math.sin(Math.PI/2.3)*55).project(camera);
+            const rX = (rest3D.x*.5+.5)*window.innerWidth; const rY = (rest3D.y*-.5+.5)*window.innerHeight;
+            labels.forEach((l, i) => {
+                const v = new THREE.Vector3(); l.mesh.getWorldPosition(v);
+                v.project(camera); const x = (v.x*.5+.5)*window.innerWidth; const y = (v.y*-.5+.5)*window.innerHeight;
+                if(i === getActiveIndex()) { l.element.style.left = cX+'px'; l.element.style.top = (cY-85)+'px'; activePos.set(x,y,0); }
+                else { l.element.style.left = x+'px'; l.element.style.top = (y-35)+'px'; }
+            });
+            if(!isMoving && !isDashboardOpen) { 
+                const p = document.getElementById('organic-pulse');
+                p.style.left = activePos.x+'px'; p.style.top = activePos.y+'px'; p.style.opacity = '1'; 
+            } else document.getElementById('organic-pulse').style.opacity = '0';
+            const acts = document.getElementById('action-container');
+            if(!isDashboardOpen) { acts.style.left = rX+'px'; acts.style.top = (rY+130)+'px'; acts.style.opacity = '1'; acts.style.transform = 'translate(-50%,0) scale(1)'; }
+            else acts.style.opacity = '0';
+            document.getElementById('nav-arrow-left').style.top = activePos.y+'px';
+            document.getElementById('nav-arrow-right').style.top = activePos.y+'px';
+        }
+
+        const clock = new THREE.Clock();
+        function animate() {
+            requestAnimationFrame(animate); const delta = clock.getDelta(); const time = clock.elapsedTime;
+            currentRotation += (targetRotation - currentRotation) * 0.15; carouselGroup.rotation.z = currentRotation;
+            isMoving = Math.abs(targetRotation - currentRotation) > 0.01;
+            nodes.forEach((node, i) => {
+                node.rotation.x += delta*0.2; node.rotation.y += delta*0.2;
+                
+                // ACTUALIZAR ANIMACIONES INTERNAS
+                const elem = node.children[0];
+                if(elem && elem.children && elem.children.length > 0) {
+                    const id = elem.userData.elemId;
+                    if(id === 0) { // Bosques
+                        elem.children.forEach(p => { p.position.add(p.userData.vel); if(p.position.length()>3) p.position.set(0,0,0); });
+                    } else if(id === 1) { // Biodiversidad
+                        elem.children.forEach((p, j) => { p.userData.angle += delta; p.position.set(Math.cos(p.userData.angle+j)*p.userData.dist, Math.sin(p.userData.angle*1.5+j)*0.8, Math.sin(p.userData.angle+j)*p.userData.dist); });
+                    } else if(id === 2) { // Clima
+                        elem.rotation.y += delta * 0.5; elem.scale.setScalar(1 + Math.sin(time)*0.1);
+                    } else if(id === 3) { // Agua
+                        elem.children.forEach(b => { b.position.y += b.userData.vY; if(b.position.y > 3) b.position.y = -3; });
+                    } else if(id === 4) { // Costas
+                        elem.children.forEach(r => { r.scale.setScalar(0.5 + (Math.sin(time*2 + r.userData.phase)+1)*0.5); });
+                    } else if(id === 5) { // Mares
+                        elem.children[0].rotation.z += delta * 0.2;
+                    } else if(id === 6) { // Aire
+                        elem.children.forEach(c => { c.position.x += c.userData.vX; if(c.position.x > 5) c.position.x = -5; });
+                    }
+                }
+                
+                const targetScale = (i === getActiveIndex()) ? 1.9 : 1;
+                node.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.15);
+            });
+            updateHUD(); renderer.render(scene, camera);
+        }
+
+        document.getElementById('btn-enter').addEventListener('click', () => {
+            initAudio(); playSound('tick'); document.getElementById('intro-screen').style.opacity = '0';
+            setTimeout(() => { document.getElementById('intro-screen').style.display = 'none'; updateUI(0); }, 1500);
+        });
+
+        document.getElementById('btn-mute').onclick = (e) => {
+            isMuted = !isMuted; e.currentTarget.querySelector('i').className = isMuted ? 'ph ph-speaker-slash' : 'ph ph-speaker-high';
+        };
+
+        const modalCont = document.getElementById('modal-list-container');
+        menuData.forEach((d, i) => {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="#"><span class="color-dot" style="background-color:#${d.color.toString(16)}"></span> ${d.title}</a>`;
+            li.onclick = () => { openDashboard(i); document.getElementById('modal-opciones').classList.remove('visible'); };
+            modalCont.appendChild(li);
+        });
+
+        document.getElementById('btn-opciones').onclick = () => { document.getElementById('modal-opciones').classList.add('visible'); playSound('tick'); };
+        document.getElementById('btn-close-modal').onclick = () => document.getElementById('modal-opciones').classList.remove('visible');
+        document.getElementById('nav-arrow-left').onclick = goToPrev;
+        document.getElementById('nav-arrow-right').onclick = goToNext;
+
+        animate();
+    </script>
+</body>
+</html>

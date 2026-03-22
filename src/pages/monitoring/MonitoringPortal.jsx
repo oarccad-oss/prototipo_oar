@@ -89,6 +89,19 @@ export const MonitoringPortal = () => {
             {/* MAIN CONTENT AREA WITH TABS */}
             <main className="flex-1 bg-white border-t border-slate-200 py-20 -mt-10 relative z-20 rounded-t-[3rem] shadow-[0_-20px_50px_-12px_rgba(0,0,0,0.1)]">
                 <div className="max-w-7xl mx-auto px-4">
+                    {/* NARRATIVE ORIENTATION */}
+                    <div className="max-w-4xl mx-auto mb-16 p-8 bg-blue-50/50 rounded-[2rem] border border-blue-100 flex gap-6 items-start">
+                        <div className="p-4 bg-blue-600 rounded-2xl text-white shadow-lg shrink-0">
+                            <Info className="w-6 h-6" />
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-bold text-blue-900 mb-2 font-serif">¿Cómo navegar en este portal?</h3>
+                            <p className="text-slate-600 leading-relaxed font-light">
+                                Este centro de monitoreo se divide en dos grandes dimensiones: el **Nivel Estratégico** permite ver el cumplimiento de metas globales (Convenciones de Río), mientras que el **Nivel Operativo** audita el avance técnico de los ejes temáticos de la ERAM. Seleccione una pestaña para profundizar.
+                            </p>
+                        </div>
+                    </div>
+
                     {/* TABS SELECTOR */}
                     <div className="flex flex-wrap justify-center gap-4 mb-20">
                         <button 

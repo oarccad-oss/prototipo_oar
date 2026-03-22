@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Observatorio Ambiental Regional</title>
+    <!-- Importamos Three.js y Phosphor Icons para la UI -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --sky-blue: #4A90E2;
+            --forest-green: #2ecc71;
+            --ocean-blue: #0984e3;
+            --text-light: #e8f5f0;
+            --bg-top: #0f2847;
+            --bg-mid: #0a221a;
+            --bg-bot: #021226;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            overflow: hidden; 
+            font-family: 'Montserrat', sans-serif; color: #fff;
+            user-select: none; touch-action: none;
+            background: #021226; /* Fallback */
+        }
+
+        /* FONDO ESTRATIFICADO: Atmósfera -> Bosque -> Océano */
+        #background-layer {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;
+            background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 40%, var(--bg-mid) 60%, var(--bg-bot) 100%);
+        }
+
+        #canvas-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+
+        #ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; transition: opacity 0.5s ease; }
+
+        /* --- PANTALLA DE INICIO --- */
+        #intro-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            /* Utilizamos exactamente el mismo fondo de la escena 3D para una inmersión perfecta */
+            background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 40%, var(--bg-mid) 60%, var(--bg-bot) 100%);
+            z-index: 9999; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            transition: opacity 1.5s ease-in-out; pointer-events: auto; text-align: center;
+        }
+
+        #intro-screen h1 { 
+            font-weight: 700; font-size: 32px; margin: 0 0 10px 0; letter-spacing: 4px; 
+            line-height: 1.4; text-transform: uppercase; max-width: 800px;
+        }
+
+        .subtitle-text {
+            font-size: 18px; font-weight: 500; color: rgba(255, 255, 255, 0.95);
+            letter-spacing: 3px; text-transform: uppercase; margin-bottom: 35px;
+            text-align: center; padding: 0 15px;
+        }
+
+        .story-text {
+            font-size: 15px; font-weight: 300; color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 45px; max-width: 650px; line-height: 1.7;
+            letter-spacing: 0.5px; text-align: center; padding: 0 15px;
+        }
+
+        .btn-enter {
+            font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600; color: #fff;
+            background: #0a221a; border: 1px solid var(--forest-green); border-radius: 30px;
+            padding: 16px 50px; cursor: pointer; text-transform: uppercase; letter-spacing: 3px;
+            transition: all 0.3s ease;
+        }
+        .btn-enter:hover {
+            background: var(--forest-green); color: #021226; box-shadow: 0 0 20px rgba(46, 204, 113, 0.4);
+        }
+
+        /* --- HEADER INSTITUCIONAL MINIMALISTA --- */
+        .header {
+            position: absolute; top: 0; left: 0; width: 100%;
+            padding: 30px 20px; display: flex; justify-content: center; align-items: center; 
+            pointer-events: auto; box-sizing: border-box; text-align: center; 
+        }
+        .header-title {
+            font-size: 24px; font-weight: 700; letter-spacing: 5px; color: rgba(255,255,255,0.95);
+            text-transform: uppercase; text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+        }
+
+        /* --- TEXTO DESCRIPTIVO SUPERIOR --- */
+        #core-display {
+            position: absolute; top: 16%; left: 50%; transform: translateX(-50%);
+            width: 80%; max-width: 650px; text-align: center; opacity: 0;
+            transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+            pointer-events: none; display: flex; flex-direction: column; align-items: center;
+        }
+        #core-display.visible { opacity: 1; }
+        #core-desc {
+            font-size: 14px; color: var(--text-light); line-height: 1.6; font-weight: 300; margin: 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9), 0 0 15px rgba(0,0,0,0.6); letter-spacing: 0.5px;
+        }
+
+        .ambient-glow {
+            position: absolute; top: 15%; left: 50%; transform: translate(-50%, -50%);
+            width: 700px; height: 200px; border-radius: 50%;
+            background: radial-gradient(ellipse, rgba(74, 144, 226, 0.15) 0%, transparent 60%);
+            pointer-events: none; z-index: -1;
+        }
+
+        /* --- ETIQUETAS 3D DE TÍTULOS --- */
+        .node-label {
+            position: absolute; transform: translate(-50%, -50%);
+            font-size: 11px; font-weight: 600; color: rgba(255, 255, 255, 0.6);
+            pointer-events: none; text-align: center; transition: all 0.4s ease;
+            text-shadow: 0px 2px 6px rgba(0,0,0,0.9); will-change: transform, left, top; letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .node-label.active {
+            color: #fff; font-size: 24px; font-weight: 700; letter-spacing: 6px; 
+            text-shadow: 0 0 20px rgba(255,255,255,0.4), 0 4px 12px rgba(0,0,0,0.9);
+        }
+
+        /* --- ONDA EXPANSIVA ORGÁNICA --- */
+        #organic-pulse {
+            position: absolute; transform: translate(-50%, -50%);
+            width: 60px; height: 60px; pointer-events: none; opacity: 0;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.3s ease; will-change: left, top, opacity;
+        }
+        .pulse-ring {
+            position: absolute; width: 100%; height: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 50%;
+            animation: ripple 2.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+        .pulse-ring-2 {
+            position: absolute; width: 100%; height: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 50%;
+            animation: ripple 2.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+            animation-delay: 1.25s; 
+        }
+
+        @keyframes ripple {
+            0% { transform: scale(0.1); opacity: 1; border-width: 2px; }
+            100% { transform: scale(1.3); opacity: 0; border-width: 0px; }
+        }
+
+        /* --- CONTENEDOR DE ACCIONES (Más opciones) --- */
+        #action-container {
+            position: absolute; transform: translate(-50%, 0);
+            display: flex; align-items: center; gap: 15px;
+            pointer-events: none; opacity: 0;
+            transition: transform 0.2s, opacity 0.15s ease;
+        }
+
+        /* --- BOTÓN MÁS OPCIONES --- */
+        #btn-opciones {
+            padding: 12px 35px; background: rgba(10, 34, 26, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 30px;
+            color: #fff; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600;
+            letter-spacing: 2px; text-transform: uppercase; backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); pointer-events: auto; cursor: pointer;
+            transition: background 0.3s, border-color 0.3s, box-shadow 0.3s ease;
+            display: flex; justify-content: center; align-items: center; text-align: center; width: max-content;
+        }
+        #btn-opciones:hover {
+            background: rgba(255, 255, 255, 0.95); color: #0a221a; border-color: #fff; box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+        }
+
+        /* --- BOTÓN SILENCIAR --- */
+        #btn-mute {
+            position: absolute; bottom: 30px; left: 30px;
+            width: 42px; height: 42px; border-radius: 50%;
+            background: rgba(10, 34, 26, 0.5); border: 1px solid rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.5); font-size: 18px;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; pointer-events: auto; backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        #btn-mute:hover {
+            color: #fff; border-color: rgba(255, 255, 255, 0.5); background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* --- FLECHAS DE NAVEGACIÓN --- */
+        .nav-arrow {
+            position: absolute; transform: translateY(-50%);
+            width: 45px; height: 45px; border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.05); 
+            color: rgba(255, 255, 255, 0.15); 
+            display: flex; justify-content: center; align-items: center;
+            font-size: 22px; cursor: pointer; pointer-events: auto;
+            backdrop-filter: blur(2px); transition: all 0.4s ease;
+            z-index: 15;
+        }
+        .nav-arrow:hover {
+            color: rgba(255, 255, 255, 0.8); border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.05); box-shadow: 0 0 15px rgba(255,255,255,0.05);
+        }
+        #nav-arrow-left { left: 6%; }
+        #nav-arrow-right { right: 6%; }
+
+        /* --- VENTANA EMERGENTE (MODAL) --- */
+        #modal-opciones {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(3, 14, 10, 0.85); backdrop-filter: blur(15px);
+            z-index: 2000; opacity: 0; pointer-events: none;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.4s ease;
+        }
+        #modal-opciones.visible { opacity: 1; pointer-events: auto; }
+        
+        .modal-content {
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(46, 204, 113, 0.3);
+            border-radius: 20px; padding: 40px; width: 90%; max-width: 400px;
+            text-align: center; position: relative; box-shadow: 0 15px 50px rgba(0,0,0,0.6);
+            transform: translateY(20px); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        #modal-opciones.visible .modal-content { transform: translateY(0); }
+
+        .modal-close {
+            position: absolute; top: 15px; right: 20px; font-size: 32px; color: rgba(255,255,255,0.5);
+            background: none; border: none; cursor: pointer; transition: color 0.3s; padding: 0; line-height: 1;
+        }
+        .modal-close:hover { color: var(--forest-green); }
+
+        .modal-title {
+            font-size: 16px; font-weight: 600; color: rgba(255,255,255,0.9); letter-spacing: 3px; margin-bottom: 25px;
+            text-transform: uppercase;
+        }
+
+        .modal-list { list-style: none; padding: 0; margin: 0; }
+        .modal-list li { margin-bottom: 12px; }
+        .modal-list a {
+            display: flex; align-items: center; justify-content: flex-start; gap: 15px;
+            padding: 15px 25px; border-radius: 12px; text-decoration: none;
+            color: #fff; font-size: 14px; font-weight: 500; letter-spacing: 1px;
+            background: rgba(255,255,255,0.03); border: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .modal-list a:hover {
+            background: rgba(255, 255, 255, 0.1); border-color: rgba(255,255,255,0.3);
+            transform: translateX(5px);
+        }
+        .color-dot { width: 12px; height: 12px; border-radius: 50%; display: block; flex-shrink: 0; box-shadow: 0 0 10px currentColor; }
+
+        /* =========================================
+           DASHBOARD DEL MÓDULO INTERNO (SPA)
+           ========================================= */
+        #dashboard-view {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(15, 40, 71, 0.95) 0%, rgba(10, 34, 26, 0.95) 50%, rgba(2, 18, 38, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            z-index: 1000; opacity: 0; pointer-events: none;
+            transition: opacity 0.5s ease;
+            overflow-y: auto; overflow-x: hidden;
+            color: #fff;
+        }
+
+        #dashboard-view.active { opacity: 1; pointer-events: auto; }
+
+        .dash-nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 40px; background: rgba(4, 20, 25, 0.4);
+            border-bottom: 1px solid var(--glass-border); position: sticky; top: 0; z-index: 101;
+        }
+
+        .btn-back {
+            display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.6);
+            text-decoration: none; font-weight: 500; font-size: 14px; cursor: pointer; transition: color 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .btn-back:hover { color: var(--forest-green); }
+
+        .dash-nav-title { font-size: 16px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; }
+        .dash-nav-title span { color: var(--forest-green); }
+        .dash-nav-right { display: flex; gap: 20px; font-size: 20px; color: rgba(255,255,255,0.6); }
+        .dash-nav-right i { cursor: pointer; transition: color 0.3s; }
+        .dash-nav-right i:hover { color: #fff; }
+
+        .dash-main { padding: 40px; max-width: 1400px; margin: 0 auto; }
+
+        .dash-header { margin-bottom: 40px; animation: fadeInDown 0.8s ease-out; }
+        .dash-header h1 { font-size: 36px; font-weight: 700; letter-spacing: 4px; margin-bottom: 10px; text-transform: uppercase; }
+        .dash-header p { font-size: 16px; font-weight: 300; color: rgba(255,255,255,0.7); max-width: 700px; line-height: 1.6; }
+
+        .dash-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; }
+
+        .glass-panel {
+            background: var(--glass-bg); backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border); border-radius: 20px;
+            padding: 24px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            display: flex; flex-direction: column;
+        }
+
+        .panel-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: rgba(255,255,255,0.6); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .kpi-card { grid-column: span 4; }
+        .kpi-value { font-size: 42px; font-weight: 300; margin-bottom: 5px; color: var(--forest-green); }
+        .kpi-subtext { font-size: 13px; font-weight: 400; color: rgba(255,255,255,0.6); }
+
+        .map-card { grid-column: span 8; grid-row: span 2; min-height: 450px; padding: 0; overflow: hidden; position: relative; }
+        .map-placeholder {
+            width: 100%; height: 100%; position: relative;
+            background: radial-gradient(circle at center, transparent 0%, rgba(2, 18, 38, 0.8) 100%),
+                url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h100v100H0z" fill="%230a221a" /><path d="M20 20c15 0 25 15 40 10s20-25 30-10M10 80c20-10 30 10 50 0s20-30 30-10" stroke="rgba(46,204,113,0.1)" stroke-width="2" fill="none"/></svg>');
+            background-size: cover, 100px 100px;
+        }
+        .map-overlay-text { position: absolute; bottom: 24px; left: 24px; }
+        .hotspot { position: absolute; width: 12px; height: 12px; background: #ff4757; border-radius: 50%; box-shadow: 0 0 15px #ff4757; }
+        .hotspot::after { content: ''; position: absolute; top: -4px; left: -4px; right: -4px; bottom: -4px; border: 2px solid #ff4757; border-radius: 50%; animation: ping 2s infinite; }
+        .hotspot-1 { top: 40%; left: 30%; }
+        .hotspot-2 { top: 60%; left: 70%; background: var(--forest-green); box-shadow: 0 0 15px var(--forest-green); }
+        .hotspot-2::after { border-color: var(--forest-green); }
+
+        .alerts-card { grid-column: span 4; grid-row: span 2; }
+        .alert-item { display: flex; align-items: flex-start; gap: 15px; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .alert-item:last-child { border-bottom: none; }
+        .alert-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 18px; flex-shrink: 0; }
+        .alert-icon.danger { background: rgba(255, 71, 87, 0.15); color: #ff4757; }
+        .alert-icon.warning { background: rgba(253, 203, 110, 0.15); color: #fdcb6e; }
+        .alert-icon.info { background: rgba(46, 204, 113, 0.15); color: var(--forest-green); }
+        .alert-content h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+        .alert-content p { font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.4; }
+        .alert-time { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 6px; display: block; }
+
+        @keyframes ping { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(2.5); opacity: 0; } }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 1024px) { .kpi-card { grid-column: span 4; } .map-card { grid-column: span 12; } .alerts-card { grid-column: span 12; } }
+        @media (max-width: 768px) { 
+            .kpi-card { grid-column: span 12; } 
+            .dash-nav { padding: 15px 20px; } 
+            .dash-main { padding: 20px; } 
+            .header { padding: 20px 10px; }
+            .header-title { font-size: 16px; letter-spacing: 2px; line-height: 1.4; }
+            #core-display { top: 110px; width: 92%; }
+            #core-desc { font-size: 13px; }
+            .node-label.active { font-size: 20px; letter-spacing: 4px; }
+            
+            #intro-screen h1 { font-size: 22px; letter-spacing: 2px; padding: 0 15px; margin-bottom: 5px; }
+            .subtitle-text { font-size: 13px; letter-spacing: 2px; margin-bottom: 25px; }
+            .story-text { font-size: 14px; padding: 0 20px; margin-bottom: 35px; line-height: 1.6; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="background-layer"></div>
+
+    <!-- PANTALLA DE INICIO -->
+    <div id="intro-screen">
+        <h1>OBSERVATORIO AMBIENTAL REGIONAL</h1>
+        <div class="subtitle-text">Centroamérica y República Dominicana</div>
+        <p class="story-text">
+            Nuestra región está viva y su latido se siente en cada bosque, río y océano. La Comisión Centroamericana de Ambiente y Desarrollo (CCAD) te da la bienvenida al nuevo OAR, tu espacio interactivo para explorar, comprender y tomar el pulso de los ecosistemas que compartimos.
+        </p>
+        <button class="btn-enter" id="btn-enter">Iniciar Conexión</button>
+    </div>
+
+    <!-- CANVAS 3D DEL MENÚ PRINCIPAL -->
+    <div id="canvas-container"></div>
+
+    <!-- INTERFAZ 2D DEL MENÚ PRINCIPAL -->
+    <div id="ui-layer">
+        
+        <div class="header">
+            <div class="header-title">OBSERVATORIO AMBIENTAL REGIONAL</div>
+        </div>
+
+        <div id="core-display">
+            <div class="ambient-glow"></div>
+            <p id="core-desc">Cargando datos espaciales...</p>
+        </div>
+
+        <!-- Onda Expansiva Orgánica -->
+        <div id="organic-pulse">
+            <div class="pulse-ring"></div>
+            <div class="pulse-ring-2"></div>
+        </div>
+
+        <!-- Controles de Acción Centrales -->
+        <div id="action-container">
+            <div id="btn-opciones">MÁS OPCIONES</div>
+        </div>
+        
+        <!-- Botón de Silencio Fijo Inferior Izquierdo -->
+        <div id="btn-mute"><i class="ph ph-speaker-high"></i></div>
+        
+        <!-- Flechas de Navegación -->
+        <div id="nav-arrow-left" class="nav-arrow"><i class="ph ph-caret-left"></i></div>
+        <div id="nav-arrow-right" class="nav-arrow"><i class="ph ph-caret-right"></i></div>
+        
+        <div id="labels-container"></div>
+    </div>
+
+    <!-- VENTANA EMERGENTE (MODAL) MÁS OPCIONES -->
+    <div id="modal-opciones">
+        <div class="modal-content">
+            <button class="modal-close" id="btn-close-modal">&times;</button>
+            <div class="modal-title">Accesos Rápidos</div>
+            <ul class="modal-list" id="modal-list-container">
+                <!-- Se inyecta dinámicamente -->
+            </ul>
+        </div>
+    </div>
+
+    <!-- ================================================== -->
+    <!-- DASHBOARD INTERNO (MÓDULO DE ATERRIZAJE) -->
+    <!-- ================================================== -->
+    <div id="dashboard-view">
+        <div class="dash-nav">
+            <div class="dash-nav-left">
+                <a id="btn-back-menu" class="btn-back">
+                    <i class="ph ph-arrow-left"></i> Regresar al Inicio
+                </a>
+            </div>
+            <div class="dash-nav-title">
+                OBSERVATORIO <span>AMBIENTAL</span>
+            </div>
+            <div class="dash-nav-right">
+                <i class="ph ph-bell"></i>
+                <i class="ph ph-list"></i>
+            </div>
+        </div>
+
+        <div class="dash-main">
+            <div class="dash-header">
+                <h1 id="dash-title">TÍTULO DINÁMICO</h1>
+                <p id="dash-desc">Descripción dinámica.</p>
+            </div>
+
+            <div class="dash-grid">
+                
+                <!-- KPI 1 -->
+                <div class="glass-panel kpi-card">
+                    <div class="panel-title" id="dash-kpi1-title"><i class="ph ph-tree"></i> Métrica</div>
+                    <div class="kpi-value" id="dash-kpi1-val">0</div>
+                    <div class="kpi-subtext" id="dash-kpi1-sub">Cargando datos...</div>
+                </div>
+
+                <!-- KPI 2 -->
+                <div class="glass-panel kpi-card">
+                    <div class="panel-title" id="dash-kpi2-title"><i class="ph ph-fire"></i> Métrica</div>
+                    <div class="kpi-value" id="dash-kpi2-val">0</div>
+                    <div class="kpi-subtext" id="dash-kpi2-sub">Cargando datos...</div>
+                </div>
+
+                <!-- KPI 3 -->
+                <div class="glass-panel kpi-card">
+                    <div class="panel-title" id="dash-kpi3-title"><i class="ph ph-leaf"></i> Métrica</div>
+                    <div class="kpi-value" id="dash-kpi3-val">0</div>
+                    <div class="kpi-subtext" id="dash-kpi3-sub">Cargando datos...</div>
+                </div>
+
+                <!-- Mapa Visualización -->
+                <div class="glass-panel map-card">
+                    <div class="map-placeholder">
+                        <div class="hotspot hotspot-1"></div>
+                        <div class="hotspot hotspot-2"></div>
+                        <div class="map-overlay-text">
+                            <div class="panel-title" style="color: #fff; margin-bottom: 5px;">
+                                <i class="ph ph-satellite"></i> Transmisión Satelital (En vivo)
+                            </div>
+                            <div class="kpi-subtext">Sincronización de datos geoespaciales completada.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lista de Alertas (AHORA DINÁMICA) -->
+                <div class="glass-panel alerts-card">
+                    <div class="panel-title"><i class="ph ph-warning-circle"></i> Registro de Eventos Recientes</div>
+                    <div id="dash-alerts-container">
+                        <!-- Se inyecta dinámicamente según la esfera elegida -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- ================================================== -->
+
+    <script>
+        // --- DATOS DEL MENÚ Y DASHBOARD (NUEVO ORDEN: Bosques, Biodiversidad, Clima, Agua, Costas, Mares, Aire) ---
+        const menuData = [
+            { 
+                id: 0, title: "BOSQUES", color: 0x00b894, 
+                desc: "Índices de cobertura forestal, detección temprana de incendios y monitoreo de deforestación mediante imágenes satelitales.", 
+                icon1: "ph-tree", val1: "42.8%", sub1: "↓ 0.2% anual", 
+                icon2: "ph-fire", val2: "14", sub2: "Focos de calor hoy", 
+                icon3: "ph-leaf", val3: "12.5k", sub3: "Hectáreas en restauración",
+                alerts: [
+                    { type: "danger", icon: "ph-warning", title: "Alerta de Incendio", desc: "Foco térmico detectado en cuadrante norte. Riesgo de propagación alto.", time: "Hace 12 min" },
+                    { type: "info", icon: "ph-check-circle", title: "Sensores Sincronizados", desc: "Red de telemetría forestal calibrada.", time: "Hace 2 horas" },
+                    { type: "info", icon: "ph-arrows-clockwise", title: "Actualización de Capas", desc: "Nuevos mapas de cobertura procesados.", time: "Ayer, 18:30 hrs" }
+                ]
+            },
+            { 
+                id: 1, title: "BIODIVERSIDAD", color: 0x55efc4, 
+                desc: "Mapeo de ecosistemas, seguimiento de especies endémicas y evaluación constante del estado de conservación de la biósfera.", 
+                icon1: "ph-paw-print", val1: "1.2k", sub1: "Especies monitoreadas", 
+                icon2: "ph-binoculars", val2: "Activo", sub2: "Corredor biológico", 
+                icon3: "ph-shield-check", val3: "Seguro", sub3: "Reservas sin intrusión",
+                alerts: [
+                    { type: "warning", icon: "ph-warning", title: "Movimiento Anómalo", desc: "Desplazamiento inusual detectado en la reserva central.", time: "Hace 45 min" },
+                    { type: "info", icon: "ph-bird", title: "Avistamiento Registrado", desc: "Especie protegida detectada en cámara trampa del sector 4.", time: "Hace 3 horas" },
+                    { type: "info", icon: "ph-check-circle", title: "Estado de Corredor", desc: "Rutas migratorias se mantienen sin obstrucciones.", time: "Ayer, 14:00 hrs" }
+                ]
+            },
+            { 
+                id: 2, title: "CLIMA", color: 0x74b9ff, 
+                desc: "Monitoreo atmosférico y meteorológico. Pronósticos, alertas tempranas y análisis de variabilidad climática interanual en la región.", 
+                icon1: "ph-cloud-rain", val1: "28°", sub1: "Promedio regional hoy", 
+                icon2: "ph-wind", val2: "14 km/h", sub2: "Corrientes estables", 
+                icon3: "ph-thermometer", val3: "Normal", sub3: "Sin frentes anómalos",
+                alerts: [
+                    { type: "warning", icon: "ph-cloud-lightning", title: "Frente Frío Detectado", desc: "Aproximación de masa de aire polar por la franja norte.", time: "Hace 1 hora" },
+                    { type: "info", icon: "ph-check-circle", title: "Radares Operativos", desc: "Calibración de la red meteorológica completada exitosamente.", time: "Hace 5 horas" },
+                    { type: "info", icon: "ph-file-text", title: "Boletín Emitido", desc: "Resumen climático semanal generado y distribuido.", time: "Ayer, 08:00 hrs" }
+                ]
+            },
+            { 
+                id: 3, title: "AGUA", color: 0x0984e3, 
+                desc: "Estado de cuencas hidrográficas, calidad del agua superficial y monitoreo de estrés hídrico en tiempo real para asegurar el abastecimiento.", 
+                icon1: "ph-drop", val1: "78%", sub1: "Capacidad de cuencas", 
+                icon2: "ph-warning", val2: "2", sub2: "Zonas en estrés hídrico", 
+                icon3: "ph-waves", val3: "pH 7.2", sub3: "Calidad superficial óptima",
+                alerts: [
+                    { type: "danger", icon: "ph-warning", title: "Nivel Bajo Detectado", desc: "Caudal hídrico inferior al mínimo histórico en Estación Norte.", time: "Hace 30 min" },
+                    { type: "info", icon: "ph-check-circle", title: "Calidad de Agua", desc: "Muestreo automatizado registra valores dentro de la norma.", time: "Hace 4 horas" },
+                    { type: "info", icon: "ph-wrench", title: "Mantenimiento Preventivo", desc: "Sensores de turbidez limpiados y operando al 100%.", time: "Ayer, 16:15 hrs" }
+                ]
+            },
+            { 
+                id: 4, title: "COSTAS", color: 0x00cec9, 
+                desc: "Temperatura superficial del mar, acidificación oceánica y salud integral de los ecosistemas arrecifales.", 
+                icon1: "ph-waves", val1: "26.5°", sub1: "Temperatura superficial", 
+                icon2: "ph-anchor", val2: "Óptimo", sub2: "Salud del arrecife", 
+                icon3: "ph-drop", val3: "pH 8.1", sub3: "Niveles de acidificación",
+                alerts: [
+                    { type: "warning", icon: "ph-waves", title: "Alerta de Oleaje", desc: "Fenómeno de mar de fondo detectado aproximándose al litoral.", time: "Hace 1 hora" },
+                    { type: "info", icon: "ph-check-circle", title: "Arrecifes Estables", desc: "No se detectan focos de blanqueamiento coralino esta semana.", time: "Hace 5 horas" },
+                    { type: "info", icon: "ph-thermometer", title: "Temperatura Normal", desc: "Parámetros superficiales se mantienen en el rango estacional.", time: "Ayer, 11:30 hrs" }
+                ]
+            },
+            { 
+                id: 5, title: "MARES", color: 0x1e3799, 
+                desc: "Monitoreo de corrientes oceánicas, temperatura de profundidades marinas y análisis de biodiversidad pelágica en aguas territoriales y alta mar.", 
+                icon1: "ph-waves", val1: "1.2 m/s", sub1: "Velocidad corriente ecuatorial", 
+                icon2: "ph-fish", val2: "Estable", sub2: "Índice de biomasa pelágica", 
+                icon3: "ph-thermometer-cold", val3: "18.4°", sub3: "Temperatura a 500m prof.",
+                alerts: [
+                    { type: "danger", icon: "ph-warning-circle", title: "Anomalía Térmica Profunda", desc: "Aumento de 1.2°C sostenido en corrientes profundas ecuatoriales.", time: "Hace 10 min" },
+                    { type: "info", icon: "ph-fish", title: "Migración Registrada", desc: "Movimiento de cardumen masivo cruzando el sector del pacífico.", time: "Hace 3 horas" },
+                    { type: "info", icon: "ph-wifi-high", title: "Boyas Sincronizadas", desc: "Transmisión de la red de boyas oceánicas de alta mar actualizada.", time: "Ayer, 09:45 hrs" }
+                ]
+            },
+            { 
+                id: 6, title: "AIRE", color: 0xdfe6e9, 
+                desc: "Red de sensores de partículas suspendidas e inventario de emisiones de gases de efecto invernadero para el control de la calidad del aire.", 
+                icon1: "ph-wind", val1: "AQI 45", sub1: "Calidad de aire: Buena", 
+                icon2: "ph-factory", val2: "Estable", sub2: "Emisiones controladas", 
+                icon3: "ph-cloud", val3: "PM2.5", sub3: "Niveles bajo la norma",
+                alerts: [
+                    { type: "warning", icon: "ph-warning", title: "Pico de Partículas", desc: "Aumento temporal de PM10 reportado en la zona industrial.", time: "Hace 20 min" },
+                    { type: "info", icon: "ph-check-circle", title: "Dispersión Óptima", desc: "Las condiciones de viento favorecen la limpieza del aire.", time: "Hace 6 horas" },
+                    { type: "info", icon: "ph-arrows-clockwise", title: "Red Sincronizada", desc: "Las 45 estaciones urbanas transmitiendo sin latencia.", time: "Ayer, 21:00 hrs" }
+                ]
+            }
+        ];
+
+        // --- SISTEMA DE AUDIO ---
+        let audioCtx;
+        let isMuted = false;
+
+        function initAudio() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }
+
+        function playSound(type) {
+            if (!audioCtx || isMuted) return;
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            const now = audioCtx.currentTime;
+
+            if (type === 'tick') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(600, now);
+                osc.frequency.exponentialRampToValueAtTime(150, now + 0.15);
+                gainNode.gain.setValueAtTime(0.05, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+                osc.start(now); osc.stop(now + 0.15);
+            }
+        }
+
+        // --- LÓGICA DE LA SPA (SINGLE PAGE APPLICATION) ---
+        const dashboardView = document.getElementById('dashboard-view');
+        const uiLayer = document.getElementById('ui-layer');
+        let isDashboardOpen = false;
+
+        function openDashboard(index) {
+            isDashboardOpen = true;
+            playSound('tick'); 
+            
+            const data = menuData[index];
+            
+            // Llenar datos dinámicos del dashboard
+            document.getElementById('dash-title').innerText = data.title;
+            document.getElementById('dash-desc').innerText = data.desc;
+            
+            document.getElementById('dash-kpi1-title').innerHTML = `<i class="ph ${data.icon1}"></i> Métrica Principal`;
+            document.getElementById('dash-kpi1-val').innerText = data.val1;
+            document.getElementById('dash-kpi1-val').style.color = `#${data.color.toString(16)}`;
+            document.getElementById('dash-kpi1-sub').innerText = data.sub1;
+
+            document.getElementById('dash-kpi2-title').innerHTML = `<i class="ph ${data.icon2}"></i> Estado Actual`;
+            document.getElementById('dash-kpi2-val').innerText = data.val2;
+            document.getElementById('dash-kpi2-val').style.color = (data.val2 === "Estable" || data.val2 === "Normal" || data.val2 === "Óptimo" || data.val2 === "Seguro" || data.val2 === "Verde" || data.val2 === "Activo") ? "var(--forest-green)" : "#ff4757";
+            document.getElementById('dash-kpi2-sub').innerText = data.sub2;
+
+            document.getElementById('dash-kpi3-title').innerHTML = `<i class="ph ${data.icon3}"></i> Observaciones`;
+            document.getElementById('dash-kpi3-val').innerText = data.val3;
+            document.getElementById('dash-kpi3-val').style.color = "var(--sky-blue)";
+            document.getElementById('dash-kpi3-sub').innerText = data.sub3;
+
+            // Llenar Alertas Dinámicas
+            const alertsHTML = data.alerts.map(a => `
+                <div class="alert-item">
+                    <div class="alert-icon ${a.type}"><i class="ph ${a.icon}"></i></div>
+                    <div class="alert-content">
+                        <h4>${a.title}</h4>
+                        <p>${a.desc}</p>
+                        <span class="alert-time">${a.time}</span>
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('dash-alerts-container').innerHTML = alertsHTML;
+
+            // Transición CSS
+            uiLayer.style.opacity = '0';
+            uiLayer.style.pointerEvents = 'none';
+            
+            setTimeout(() => {
+                dashboardView.classList.add('active');
+            }, 200);
+        }
+
+        document.getElementById('btn-back-menu').addEventListener('click', () => {
+            isDashboardOpen = false;
+            playSound('tick'); 
+            
+            dashboardView.classList.remove('active');
+            
+            setTimeout(() => {
+                uiLayer.style.opacity = '1';
+                uiLayer.style.pointerEvents = 'auto';
+            }, 300);
+        });
+
+
+        // --- INICIALIZACIÓN THREE.JS ---
+        const container = document.getElementById('canvas-container');
+        const labelsContainer = document.getElementById('labels-container');
+        const coreDisplay = document.getElementById('core-display');
+        const coreDesc = document.getElementById('core-desc');
+        const btnOpciones = document.getElementById('btn-opciones');
+        const organicPulse = document.getElementById('organic-pulse');
+
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.Fog(0x133e36, 100, 220); 
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 35, 130); 
+        camera.lookAt(0, -10, 0);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); 
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(renderer.domElement);
+
+        const hemiLight = new THREE.HemisphereLight(0x87CEEB, 0x0984e3, 0.7);
+        scene.add(hemiLight);
+
+        const sunLight = new THREE.DirectionalLight(0xfff5e6, 0.8);
+        sunLight.position.set(30, 100, 30);
+        scene.add(sunLight);
+
+        const activeLight = new THREE.PointLight(0xffffff, 2.5, 120);
+        activeLight.position.set(0, -10, 80); 
+        scene.add(activeLight);
+
+        // GEOMETRÍA DE ÓRBITA Y ESFERAS
+        const carouselGroup = new THREE.Group();
+        carouselGroup.position.y = -10; 
+        carouselGroup.rotation.x = Math.PI / 2.3; 
+        scene.add(carouselGroup);
+
+        const radius = 55; 
+        const nodes = [];
+        const labels = [];
+        const totalNodes = menuData.length;
+        const angleStep = (Math.PI * 2) / totalNodes;
+        
+        const nodeGeometry = new THREE.SphereGeometry(4.5, 32, 32);
+
+        const orbitLineGroup = new THREE.Group();
+        orbitLineGroup.position.z = 0; 
+        carouselGroup.add(orbitLineGroup);
+
+        const torusGeo = new THREE.TorusGeometry(radius, 0.05, 16, 128);
+        const torusMat = new THREE.MeshBasicMaterial({ color: 0x2ecc71, transparent: true, opacity: 0.15 });
+        const torus = new THREE.Mesh(torusGeo, torusMat);
+        orbitLineGroup.add(torus);
+
+        function createLightBeam(colorHex) {
+            const beamGroup = new THREE.Group();
+            const trailCount = 35; 
+            for(let i=0; i<trailCount; i++) {
+                const size = 0.15 * Math.pow((1 - i/trailCount), 1.5); 
+                const op = 0.6 * (1 - i/trailCount);
+                const geo = new THREE.SphereGeometry(size, 12, 12);
+                const mat = new THREE.MeshBasicMaterial({ color: colorHex, transparent: true, opacity: op, blending: THREE.AdditiveBlending, depthWrite: false });
+                const mesh = new THREE.Mesh(geo, mat);
+                const ang = -(i / trailCount) * (Math.PI / 2.5); 
+                mesh.position.set(Math.cos(ang)*radius, Math.sin(ang)*radius, 0);
+                beamGroup.add(mesh);
+            }
+            return beamGroup;
+        }
+
+        const beam1 = createLightBeam(0xa8e6cf);
+        const beam2 = createLightBeam(0xa8e6cf);
+        beam2.rotation.z = Math.PI; 
+        orbitLineGroup.add(beam1);
+        orbitLineGroup.add(beam2);
+
+        const nodeMaterials = menuData.map(item => {
+            return new THREE.MeshPhysicalMaterial({
+                color: 0xffffff, metalness: 0.1, roughness: 0.1, transmission: 0.8,
+                thickness: 1.5, ior: 1.33, emissive: item.color, emissiveIntensity: 0.05,
+                transparent: true, opacity: 0.4 
+            });
+        });
+
+        menuData.forEach((item, i) => {
+            const angle = (Math.PI / 2) - (i * angleStep);
+            const mesh = new THREE.Mesh(nodeGeometry, nodeMaterials[i]);
+            mesh.position.x = Math.cos(angle) * radius;
+            mesh.position.y = Math.sin(angle) * radius; 
+            mesh.position.z = 0; 
+            carouselGroup.add(mesh);
+            nodes.push(mesh);
+
+            const label = document.createElement('div');
+            label.className = 'node-label';
+            label.innerText = item.title;
+            labelsContainer.appendChild(label);
+            labels.push({ element: label, mesh: mesh });
+        });
+
+        // SISTEMA DE PARTÍCULAS
+        function createBubbleTexture() {
+            const canvas = document.createElement('canvas'); canvas.width = 16; canvas.height = 16;
+            const ctx = canvas.getContext('2d'); const gradient = ctx.createRadialGradient(8, 8, 0, 8, 8, 8);
+            gradient.addColorStop(0, 'rgba(255,255,255,0.6)'); gradient.addColorStop(0.7, 'rgba(150,200,255,0.2)'); gradient.addColorStop(1, 'rgba(255,255,255,0)');
+            ctx.fillStyle = gradient; ctx.fillRect(0, 0, 16, 16); return new THREE.CanvasTexture(canvas);
+        }
+        const waterGeo = new THREE.BufferGeometry();
+        const waterPos = new Float32Array(100 * 3); const waterSpeeds = [];
+        for(let i = 0; i < 100 * 3; i+=3) {
+            waterPos[i] = (Math.random() - 0.5) * 200; waterPos[i+1] = -120 + Math.random() * 60; waterPos[i+2] = (Math.random() - 0.5) * 150;
+            waterSpeeds.push((Math.random() * 0.1) + 0.05);
+        }
+        waterGeo.setAttribute('position', new THREE.BufferAttribute(waterPos, 3));
+        const waterMat = new THREE.PointsMaterial({ size: 1.5, color: 0x0984e3, transparent: true, opacity: 0.5, map: createBubbleTexture(), depthWrite: false });
+        const waterMesh = new THREE.Points(waterGeo, waterMat);
+        scene.add(waterMesh);
+
+        // --- LÓGICA DE NAVEGACIÓN ---
+        let logicalIndex = 0; 
+        let targetRotation = 0; 
+        let currentRotation = 0; 
+        let isMoving = false;
+        
+        function getActiveIndex() { return ((logicalIndex % totalNodes) + totalNodes) % totalNodes; }
+
+        function updateUI(index) {
+            coreDisplay.classList.remove('visible');
+            organicPulse.style.opacity = '0'; 
+
+            setTimeout(() => {
+                coreDesc.innerText = menuData[index].desc;
+                coreDisplay.classList.add('visible');
+            }, 150);
+
+            labels.forEach((l, i) => {
+                if(i === index) {
+                    l.element.classList.add('active');
+                    l.element.style.color = `#fff`;
+                } else {
+                    l.element.classList.remove('active');
+                    l.element.style.textShadow = `0px 2px 6px rgba(0,0,0,0.9)`;
+                    l.element.style.color = `rgba(255,255,255,0.4)`;
+                }
+            });
+
+            nodes.forEach((node, i) => {
+                if(i === index) {
+                    node.material.color.setHex(0x0a221a); node.material.transmission = 0.5; 
+                    node.material.opacity = 0.8; node.material.roughness = 0.2;
+                    node.material.emissive.setHex(menuData[i].color); node.material.emissiveIntensity = 0.45;
+                    activeLight.color.setHex(menuData[i].color);
+                } else {
+                    node.material.color.setHex(0xffffff); node.material.transmission = 0.8;
+                    node.material.opacity = 0.4; node.material.roughness = 0.1;
+                    node.material.emissive.setHex(menuData[i].color); node.material.emissiveIntensity = 0.1;
+                }
+            });
+        }
+
+        function goToNext() { logicalIndex++; targetRotation = logicalIndex * angleStep; playSound('tick'); updateUI(getActiveIndex()); }
+        function goToPrev() { logicalIndex--; targetRotation = logicalIndex * angleStep; playSound('tick'); updateUI(getActiveIndex()); }
+        function goToSpecificIndex(targetIndex) {
+            let diff = targetIndex - getActiveIndex();
+            if (diff > totalNodes / 2) diff -= totalNodes;
+            if (diff < -totalNodes / 2) diff += totalNodes;
+            logicalIndex += diff; targetRotation = logicalIndex * angleStep;
+            playSound('tick'); updateUI(getActiveIndex());
+        }
+
+        // --- EVENTOS SCROLL Y SWIPE ---
+        let isScrolling = false;
+        window.addEventListener('wheel', (e) => {
+            if(isScrolling || isDashboardOpen) return; 
+            if(Math.abs(e.deltaY) > 15) {
+                isScrolling = true;
+                if(e.deltaY > 0) goToNext(); else goToPrev(); 
+                setTimeout(() => { isScrolling = false; }, 400); 
+            }
+        });
+
+        let touchStartX = 0; let isSwiping = false;
+        function handleDragStart(x) { if(isDashboardOpen) return; touchStartX = x; isSwiping = true; }
+        function handleDragEnd(x) {
+            if(!isSwiping || isDashboardOpen) return;
+            isSwiping = false; let diffX = x - touchStartX;
+            if(diffX > 50) goToPrev(); else if(diffX < -50) goToNext(); 
+        }
+        document.addEventListener('mousedown', e => { if(!e.target.closest('#btn-opciones') && !e.target.closest('.modal-content') && !isDashboardOpen) handleDragStart(e.clientX) });
+        document.addEventListener('mouseup', e => handleDragEnd(e.clientX));
+        document.addEventListener('touchstart', e => { if(!e.target.closest('#btn-opciones') && !e.target.closest('.modal-content') && !isDashboardOpen) handleDragStart(e.touches[0].clientX) }, {passive: false});
+        document.addEventListener('touchend', e => handleDragEnd(e.changedTouches[0].clientX));
+
+        // --- RAYCASTER: CLIC EN ESFERAS ---
+        const raycaster = new THREE.Raycaster(); const mouse = new THREE.Vector2();
+        document.addEventListener('click', (e) => {
+            if (document.getElementById('intro-screen').style.display !== 'none') return;
+            if(isDashboardOpen || e.target.id === 'btn-opciones' || e.target.closest('#modal-opciones') || e.target.closest('#dashboard-view')) return;
+            
+            mouse.x = (e.clientX / window.innerWidth) * 2 - 1; mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+            raycaster.setFromCamera(mouse, camera);
+            
+            const intersects = raycaster.intersectObjects(nodes);
+            if(intersects.length > 0) {
+                const clickedIndex = nodes.indexOf(intersects[0].object);
+                if(clickedIndex !== getActiveIndex()) goToSpecificIndex(clickedIndex); 
+                else openDashboard(clickedIndex); 
+            }
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if(isDashboardOpen) return;
+            mouse.x = (e.clientX / window.innerWidth) * 2 - 1; mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(nodes);
+            document.body.style.cursor = (intersects.length > 0) ? 'pointer' : 'default';
+        });
+
+        // --- ACTUALIZAR UI 2D SOBRE EL 3D ---
+        function updateLabelsPosition() {
+            let activeNodePosition = new THREE.Vector3();
+            let center3D = new THREE.Vector3(0, -10, 0);
+            center3D.project(camera);
+            const centerX = (center3D.x * .5 + .5) * window.innerWidth;
+            const centerY = (center3D.y * -.5 + .5) * window.innerHeight;
+
+            let restingPos3D = new THREE.Vector3(0, Math.cos(Math.PI / 2.3) * 55 - 10, Math.sin(Math.PI / 2.3) * 55);
+            restingPos3D.project(camera);
+            const restingX = (restingPos3D.x * .5 + .5) * window.innerWidth;
+            const restingY = (restingPos3D.y * -.5 + .5) * window.innerHeight;
+
+            const actionContainer = document.getElementById('action-container');
+            const navArrowLeft = document.getElementById('nav-arrow-left');
+            const navArrowRight = document.getElementById('nav-arrow-right');
+
+            labels.forEach((labelData, i) => {
+                const vector = new THREE.Vector3();
+                labelData.mesh.getWorldPosition(vector);
+                
+                if (vector.z < -10) { 
+                    labelData.element.style.opacity = '0.3'; labelData.element.style.transform = 'translate(-50%, -50%) scale(0.7)'; labelData.element.style.zIndex = '1';
+                } else {
+                    labelData.element.style.opacity = i === getActiveIndex() ? '1' : '0.8'; labelData.element.style.transform = 'translate(-50%, -50%) scale(1)'; labelData.element.style.zIndex = '10';
+                }
+
+                vector.project(camera);
+                const x = (vector.x * .5 + .5) * window.innerWidth;
+                const y = (vector.y * -.5 + .5) * window.innerHeight;
+                
+                if(i === getActiveIndex()) {
+                    labelData.element.style.left = `${centerX}px`;
+                    labelData.element.style.top = `${centerY - 85}px`; 
+                    activeNodePosition.set(x, y, 0);
+                } else {
+                    labelData.element.style.left = `${x}px`; labelData.element.style.top = `${y - 35}px`; 
+                }
+            });
+
+            if(!isMoving && !isDashboardOpen) {
+                organicPulse.style.left = `${activeNodePosition.x}px`; organicPulse.style.top = `${activeNodePosition.y}px`; organicPulse.style.opacity = '1';
+            } else {
+                organicPulse.style.opacity = '0';
+            }
+
+            if(!isDashboardOpen) {
+                actionContainer.style.left = `${restingX}px`; 
+                actionContainer.style.top = `${restingY + 130}px`; 
+                actionContainer.style.opacity = '1'; 
+                actionContainer.style.transform = `translate(-50%, 0) scale(1)`;
+            } else {
+                actionContainer.style.opacity = '0'; 
+                actionContainer.style.transform = `translate(-50%, 0) scale(0.8)`;
+            }
+
+            navArrowLeft.style.top = `${activeNodePosition.y}px`;
+            navArrowRight.style.top = `${activeNodePosition.y}px`;
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // --- MODAL DE MÁS OPCIONES ---
+        const modal = document.getElementById('modal-opciones');
+        const modalListContainer = document.getElementById('modal-list-container');
+        menuData.forEach((item, index) => {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="javascript:void(0)" onclick="openDashboard(${index}); document.getElementById('modal-opciones').classList.remove('visible');">
+                    <span class="color-dot" style="background-color: #${item.color.toString(16)}"></span>
+                    ${item.title}
+                </a>`;
+            modalListContainer.appendChild(li);
+        });
+
+        document.getElementById('btn-opciones').addEventListener('click', () => { modal.classList.add('visible'); playSound('tick'); });
+        document.getElementById('btn-close-modal').addEventListener('click', () => { modal.classList.remove('visible'); playSound('tick'); });
+        modal.addEventListener('click', (e) => { if(e.target === modal) modal.classList.remove('visible'); });
+
+        document.getElementById('nav-arrow-left').addEventListener('click', () => { goToPrev(); });
+        document.getElementById('nav-arrow-right').addEventListener('click', () => { goToNext(); });
+
+        document.getElementById('btn-mute').addEventListener('click', (e) => {
+            isMuted = !isMuted;
+            const icon = e.currentTarget.querySelector('i');
+            if(isMuted) {
+                icon.classList.remove('ph-speaker-high');
+                icon.classList.add('ph-speaker-slash');
+            } else {
+                icon.classList.remove('ph-speaker-slash');
+                icon.classList.add('ph-speaker-high');
+                playSound('tick');
+            }
+        });
+
+        // --- BUCLE THREE.JS ---
+        const clock = new THREE.Clock();
+        function animate() {
+            requestAnimationFrame(animate);
+            const delta = clock.getDelta();
+
+            const diff = targetRotation - currentRotation;
+            currentRotation += diff * 0.15; 
+            carouselGroup.rotation.z = currentRotation;
+
+            isMoving = Math.abs(diff) > 0.05;
+            orbitLineGroup.rotation.z -= delta * 0.15;
+
+            nodes.forEach((node, i) => {
+                node.rotation.x += delta * 0.5; node.rotation.y += delta * 0.5;
+                if(i === getActiveIndex()) node.scale.lerp(new THREE.Vector3(1.9, 1.9, 1.9), 0.15); 
+                else node.scale.lerp(new THREE.Vector3(1, 1, 1), 0.1);
+            });
+
+            const wPos = waterMesh.geometry.attributes.position.array;
+            for(let i = 1; i < 100 * 3; i+=3) {
+                wPos[i] += waterSpeeds[Math.floor(i/3)] * delta * 100; 
+                if(wPos[i] > -40) wPos[i] = -120; 
+            }
+            waterMesh.geometry.attributes.position.needsUpdate = true;
+            waterMesh.rotation.y += delta * 0.02;
+
+            updateLabelsPosition();
+            renderer.render(scene, camera);
+        }
+
+        // --- ARRANQUE ---
+        document.getElementById('btn-enter').addEventListener('click', () => {
+            initAudio(); playSound('tick'); 
+            const intro = document.getElementById('intro-screen');
+            intro.style.opacity = '0';
+            
+            isDashboardOpen = false;
+            document.getElementById('dashboard-view').classList.remove('active');
+            document.getElementById('ui-layer').style.opacity = '1';
+            document.getElementById('ui-layer').style.pointerEvents = 'auto';
+            
+            logicalIndex = 0;
+            targetRotation = 0;
+            
+            // Sincronizamos el tiempo de espera con la nueva transición suave de 1.5s
+            setTimeout(() => { 
+                intro.style.display = 'none'; 
+                updateUI(0); 
+            }, 1500);
+        });
+
+        animate();
+
+    </script>
+</body>
+</html>

@@ -5,6 +5,7 @@ import { Navbar } from './components/layout/Navbar';
 import { Sidebar } from './components/layout/Sidebar';
 import { Footer } from './components/layout/Footer';
 import { Home } from './pages/institutional/Home';
+import { QuienesSomos } from './pages/institutional/QuienesSomos';
 import { GrandesBosques } from './pages/institutional/GrandesBosques';
 import { ForestStoryDetail } from './pages/institutional/ForestStoryDetail';
 import { Login } from './pages/auth/Login';
@@ -131,6 +132,7 @@ function App() {
         <Route element={<Layout user={user} sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} onLogout={handleLogout} />}>
           {/* Public Routes */}
           <Route path="/" element={<Home />} />
+          <Route path="/quienes-somos" element={<QuienesSomos />} />
           <Route path="/grandes-bosques" element={<GrandesBosques />} />
           <Route path="/grandes-bosques/historias/:slug" element={<ForestStoryDetail />} />
           <Route path="/auth/login" element={<Login onLogin={handleLogin} />} />

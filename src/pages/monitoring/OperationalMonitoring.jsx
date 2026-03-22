@@ -233,6 +233,19 @@ export const OperationalMonitoring = () => {
             </header>
 
             <main className="max-w-7xl mx-auto px-4 py-8">
+                {/* NARRATIVE ORIENTATION */}
+                <div className="mb-10 p-8 bg-emerald-50/50 rounded-[2rem] border border-emerald-100 flex gap-6 items-start">
+                    <div className="p-4 bg-emerald-600 rounded-2xl text-white shadow-lg shrink-0">
+                        <Info className="w-6 h-6" />
+                    </div>
+                    <div className="text-left">
+                        <h3 className="text-xl font-bold text-emerald-900 mb-2 font-serif">Sobre el Monitoreo Operativo</h3>
+                        <p className="text-slate-600 leading-relaxed font-light">
+                            Esta vista audita la **gestión técnica** y el avance físico de los ejes temáticos de la ERAM. Aquí podrá ver el cumplimiento de metas específicas por país, la documentación de respaldo (evidencia) y el estado de la institucionalidad ambiental regional. Es una herramienta de transparencia y rendición de cuentas operativa.
+                        </p>
+                    </div>
+                </div>
+
                 {/* FILTROS AVANZADOS */}
                 <div className="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm mb-12 space-y-8">
                     <div className="flex flex-col md:flex-row gap-8">

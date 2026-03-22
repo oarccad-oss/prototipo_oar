@@ -71,7 +71,7 @@ export const GlobalSearch = ({ isOpen, onClose }) => {
                     <input
                         autoFocus
                         className="flex-1 outline-none text-lg text-slate-700 placeholder:text-slate-400"
-                        placeholder="Busca mapas, indicadores o documentos (ej. Incendios)..."
+                        placeholder="Buscar..."
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                     />

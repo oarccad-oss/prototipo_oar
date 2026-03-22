@@ -44,7 +44,7 @@ export const Navbar = ({ user, onLogout, toggleSidebar, isSidebarVisible }) => {
                             className="w-full flex items-center gap-2 px-4 py-2 bg-slate-100/50 border border-slate-300 rounded-full text-sm text-slate-500 hover:bg-white hover:shadow-sm transition-all group"
                         >
                             <Search className="h-4 w-4 group-hover:text-brand-primary" />
-                            <span>Buscar mapas, reportes, indicadores...</span>
+                            <span>Buscar...</span>
                             <span className="ml-auto text-xs bg-white border border-slate-200 px-1.5 rounded text-slate-400">Ctrl+K</span>
                         </button>
                     </div>
@@ -60,11 +60,12 @@ export const Navbar = ({ user, onLogout, toggleSidebar, isSidebarVisible }) => {
                     <div className="flex items-center gap-4">
                         <div className="hidden lg:flex items-center gap-6 text-sm font-medium text-slate-600 mr-4">
                             <Link to="/" className="hover:text-brand-primary transition-colors">Inicio</Link>
+                            <Link to="/quienes-somos" className="hover:text-brand-primary transition-colors">Quiénes somos</Link>
 
-                            {/* Ejes ERAM Dropdown */}
+                            {/* Ejes Temáticos Dropdown */}
                             <div className="relative group py-4">
                                 <button className="flex items-center gap-1 hover:text-brand-primary transition-colors cursor-pointer">
-                                    Ejes ERAM <ChevronDown className="h-4 w-4" />
+                                    Ejes Temáticos <ChevronDown className="h-4 w-4" />
                                 </button>
                                 <div className="absolute top-full left-0 w-64 bg-white border border-slate-200 shadow-xl rounded-2xl p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all translate-y-2 group-hover:translate-y-0 z-[100]">
                                     {getEramAxes().map((axis) => (
@@ -76,7 +77,7 @@ export const Navbar = ({ user, onLogout, toggleSidebar, isSidebarVisible }) => {
                                             onMouseEnter={(e) => e.currentTarget.style.color = axis.color}
                                             onMouseLeave={(e) => e.currentTarget.style.color = ''}
                                         >
-                                            Línea {axis.linea}: {axis.text}
+                                            {axis.text}
                                         </Link>
                                     ))}
                                 </div>

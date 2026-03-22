@@ -226,9 +226,9 @@ export const AnalysisSandbox = () => {
                         Intelligence Center
                     </Badge>
                 </div>
-                <h1 className="text-4xl md:text-5xl font-serif font-black text-slate-900 mb-2">Análisis Multidimensional</h1>
+                <h1 className="text-4xl md:text-5xl font-serif font-black text-slate-900 mb-2">Haz tu propia búsqueda</h1>
                 <p className="text-slate-500 max-w-2xl font-light text-lg">
-                    Herramienta avanzada para el cruce de variables ambientales y métricas regionales.
+                    ¿Qué te interesa saber a ti? Explora nuestras bases de datos mediante cruces dinámicos de información regional.
                 </p>
             </div>
 

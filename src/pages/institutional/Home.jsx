@@ -10,10 +10,14 @@ import { QUESTIONS_DATA } from '../../data/questions';
 import CIFRAS_DATA from '../../data/cifras.json';
 import { DOCUMENTATION_DATA } from '../../data/documentation';
 
+import { Hero3D } from '../../components/home/Hero3D';
+
 export const Home = () => {
     const navigate = useNavigate();
     const [activeRole, setActiveRole] = useState('decision'); // 'decision', 'tech', 'citizen'
     const [isActiveMap, setIsActiveMap] = useState(false);
+    const [showIntro, setShowIntro] = useState(true);
+    const axes = getEramAxes();
 
     // Filter questions for the home page cards
     const homeQuestions = QUESTIONS_DATA.filter(q =>
@@ -27,57 +31,101 @@ export const Home = () => {
             .slice(0, 6);
     }, []);
 
+    const handleStartConnection = () => {
+        const introElem = document.getElementById('intro-screen');
+        if (introElem) introElem.style.opacity = '0';
+        setTimeout(() => setShowIntro(false), 1000);
+    };
+
     return (
         <div className="flex flex-col min-h-screen bg-white">
-            {/* Hero Section - Decision Oriented */}
-            <section className="relative min-h-[900px] flex items-start justify-center text-white overflow-hidden pb-24">
-                {/* Background video simulation */}
-                <div className="absolute inset-0 bg-blue-900/40 z-10 mix-blend-multiply"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-20"></div>
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1516214104703-d870798883c5')] bg-cover bg-center"></div>
+            {/* VISTA 1: INTRO SCREEN (Overlay absolute) */}
+            {showIntro && (
+                <div id="intro-screen" className="fixed inset-0 z-[10000] flex flex-col justify-center items-center text-center bg-[#021226] overflow-hidden p-6 transition-opacity duration-1000 pointer-events-auto">
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#0f2847] via-[#0a221a] to-[#021226] opacity-80" />
+                    <div className="relative z-10 space-y-8 max-w-4xl animate-fade-in">
+                        <h1 className="text-3xl md:text-5xl font-black text-white tracking-[0.2em] uppercase leading-tight drop-shadow-2xl">
+                            Observatorio Ambiental Regional
+                        </h1>
+                        <div className="text-xl md:text-2xl font-bold text-emerald-400/90 tracking-[0.3em] uppercase">
+                            Centroamérica y República Dominicana
+                        </div>
+                        <p className="text-white/80 text-lg font-light leading-relaxed max-w-2xl mx-auto border-l-2 border-emerald-500/30 pl-8 text-left">
+                            Nuestra región está viva y su latido se siente en cada bosque, río y océano. La Comisión Centroamericana de Ambiente y Desarrollo (CCAD) te da la bienvenida al nuevo OAR, tu espacio interactivo para explorar, comprender y tomar el pulso de los ecosistemas que compartimos.
+                        </p>
+                        <button 
+                            onClick={handleStartConnection}
+                            className="mt-8 px-14 py-5 bg-transparent hover:bg-emerald-500 text-white hover:text-[#021226] border-2 border-emerald-500 rounded-full font-black text-sm uppercase tracking-[0.4em] transition-all duration-500 hover:shadow-[0_0_40px_rgba(16,185,129,0.4)]"
+                        >
+                            Iniciar Conexión
+                        </button>
+                    </div>
+                </div>
+            )}
 
-                <div className="relative z-30 container mx-auto px-4 text-center space-y-12 pt-24">
-                    <span className="inline-block px-8 py-3 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-400/30 text-emerald-300 text-2xl md:text-4xl font-black tracking-widest uppercase">
-                        Observatorio Ambiental Regional (OAR)
-                    </span>
+            {/* SECCIÓN HERO 3D (Substituye al mapa satelital inicial) */}
+            <div className="relative z-10 w-full h-screen">
+                <Hero3D axes={axes} />
+                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[90] hidden md:flex animate-bounce text-white/50 flex-col items-center gap-2 pointer-events-none">
+                    <span className="text-[9px] uppercase tracking-widest font-bold">Descubrir Portal</span>
+                    <ChevronRight className="rotate-90" />
+                </div>
+            </div>
 
-                    {/* --- SECCIÓN 1: Preguntas Estratégicas (Punto de entrada) --- */}
-                    <div className="max-w-7xl mx-auto">
-                        <div className="text-center mb-10">
-                            <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white shadow-2xl text-emerald-700 text-[10px] font-black uppercase tracking-[0.2em] border border-emerald-100">
-                                <HelpCircle className="h-3.5 w-3.5" /> Respuestas a Desafíos Regionales
+            {/* CONTENIDO DEL PORTAL INSTITUCIONAL (Hacia abajo) */}
+            <div className="relative bg-white pt-24 z-20">
+                {/* --- SECCIÓN 1: Preguntas Estratégicas --- */}
+                <div id="preguntas" className="max-w-7xl mx-auto">
+                            <div className="text-center mb-10">
+                                <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white shadow-2xl text-emerald-700 text-[10px] font-black uppercase tracking-[0.2em] border border-emerald-100">
+                                    <HelpCircle className="h-3.5 w-3.5" /> Respuestas a Desafíos Regionales
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
+                                {homeQuestions.map((q) => (
+                                    <div 
+                                        key={q.id}
+                                        className="group [perspective:1000px] h-[250px]"
+                                        onClick={() => navigate(q.path)}
+                                    >
+                                        <Card
+                                            className="relative h-full w-full transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] cursor-pointer bg-white/85 backdrop-blur-xl border-white/20 rounded-xl overflow-hidden shadow-md flex flex-col"
+                                            style={{ borderTop: `4px solid ${q.color}` }}
+                                        >
+                                            {/* Front */}
+                                            <div className="absolute inset-0 [backface-visibility:hidden] p-6 flex flex-col h-full">
+                                                <div className="flex justify-between items-start mb-4">
+                                                    <div className="p-2.5 rounded-full transition-colors group-hover:bg-opacity-30" style={{ backgroundColor: `${q.color}15` }}>
+                                                        <q.icon className="h-5 w-5" style={{ color: q.color }} />
+                                                    </div>
+                                                    <ArrowRight className="h-4 w-4 text-slate-300 group-hover:text-slate-400 group-hover:translate-x-1 transition-all" />
+                                                </div>
+
+                                                <h3 className="text-lg font-bold text-slate-900 mb-3 leading-tight group-hover:text-brand-primary transition-colors">
+                                                    {q.shortQuestion || q.question}
+                                                </h3>
+
+                                                {q.highlight && (
+                                                    <div
+                                                        className="text-[13px] text-slate-500 leading-snug"
+                                                        dangerouslySetInnerHTML={{ __html: q.highlight }}
+                                                    />
+                                                )}
+                                            </div>
+
+                                            {/* Back */}
+                                            <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] bg-slate-900 p-8 flex flex-col justify-center items-center text-center">
+                                                <h4 className="text-white font-bold mb-4">Consulta datos sobre {q.id.replace('-', ' ')}</h4>
+                                                <Button size="sm" className="bg-emerald-500 hover:bg-emerald-600 rounded-full">
+                                                    Ver Análisis Completo
+                                                </Button>
+                                            </div>
+                                        </Card>
+                                    </div>
+                                ))}
                             </div>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
-                            {homeQuestions.map((q) => (
-                                <Card
-                                    key={q.id}
-                                    className="flex flex-col h-full hover:shadow-2xl transition-all duration-500 border-t-4 group cursor-pointer bg-white/85 backdrop-blur-xl border-white/20 rounded-xl overflow-hidden shadow-md hover:-translate-y-2"
-                                    style={{ borderTopColor: q.color }}
-                                    onClick={() => navigate(q.path)}
-                                >
-                                    <div className="p-6 flex flex-col h-full">
-                                        <div className="flex justify-between items-start mb-4">
-                                            <div className="p-2.5 rounded-full transition-colors group-hover:bg-opacity-30" style={{ backgroundColor: `${q.color}15` }}>
-                                                <q.icon className="h-5 w-5" style={{ color: q.color }} />
-                                            </div>
-                                            <ArrowRight className="h-4 w-4 text-slate-300 group-hover:text-slate-400 group-hover:translate-x-1 transition-all" />
-                                        </div>
-
-                                        <h3 className="text-lg font-bold text-slate-900 mb-3 leading-tight group-hover:text-brand-primary transition-colors">
-                                            {q.shortQuestion || q.question}
-                                        </h3>
-
-                                        {q.highlight && (
-                                            <div
-                                                className="text-[13px] text-slate-500 leading-snug"
-                                                dangerouslySetInnerHTML={{ __html: q.highlight }}
-                                            />
-                                        )}
-                                    </div>
-                                </Card>
-                            ))}
-                        </div>
+                    </div>
 
                         <div className="mt-12 text-center">
                             <Button
@@ -85,15 +133,12 @@ export const Home = () => {
                                 className="rounded-full px-8 py-6 border-white/20 text-white hover:bg-white/10 font-bold backdrop-blur-md"
                                 onClick={() => navigate('/strategic-questions')}
                             >
-                                Ver todas las preguntas estratégicas <ChevronRight className="ml-2 h-4 w-4" />
+                                Consulta más datos importantes de la región <ChevronRight className="ml-2 h-4 w-4" />
                             </Button>
                         </div>
-                    </div>
-                </div>
-            </section>
 
             {/* --- SECCIÓN 2: Cifras de Impacto (Indicadores Clave) --- */}
-            <section className="py-20 bg-slate-50/50">
+            <section id="cifras" className="py-20 bg-slate-50/50">
                 <div className="container mx-auto px-4">
                     <div className="flex items-center justify-between mb-12">
                         <div>
@@ -159,7 +204,7 @@ export const Home = () => {
             </section>
 
             {/* --- SECCIÓN SIME: Sistema Integrado de Seguimiento Ambiental --- */}
-            <section className="py-24 bg-slate-900 relative overflow-hidden">
+            <section id="monitoreo" className="py-24 bg-slate-900 relative overflow-hidden">
                 <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] bg-[length:24px_24px]"></div>
                 <div className="container mx-auto px-4 relative z-10">
                     <div className="text-center mb-16">
@@ -226,15 +271,15 @@ export const Home = () => {
 
 
             {/* --- SECCIÓN 3: Ejes Estratégicos ERAM (Explorar por ejes) --- */}
-            <section className="py-24 bg-white border-t border-slate-100">
+            <section id="ejes" className="py-24 bg-white border-t border-slate-100">
                 <div className="container mx-auto px-4">
                     <div className="text-center max-w-3xl mx-auto mb-16">
                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-[10px] font-black uppercase tracking-widest mb-6">
                             <Globe className="h-3 w-3" /> Marco Estratégico
                         </div>
-                        <h2 className="text-3xl md:text-5xl font-serif font-black text-slate-900 leading-tight mb-6">Explorar por <span className="text-emerald-600 font-serif">ejes ERAM</span></h2>
+                        <h2 className="text-3xl md:text-5xl font-serif font-black text-slate-900 leading-tight mb-6">Explorar por <span className="text-emerald-600 font-serif">ejes temáticos</span></h2>
                         <p className="text-slate-500 text-lg font-light leading-relaxed">
-                            Seleccione un eje temático para acceder a sus portales dedicados, bibliotecas y herramientas especializadas.
+                            Seleccione un área de trabajo para acceder a sus portales dedicados, bibliotecas y herramientas especializadas.
                         </p>
                     </div>
 
@@ -274,7 +319,7 @@ export const Home = () => {
 
 
             {/* Reportes Temáticos - Premium Edition */}
-            <section className="py-24 bg-gradient-to-b from-white to-slate-50">
+            <section id="reportes" className="py-24 bg-gradient-to-b from-white to-slate-50">
                 <div className="container mx-auto px-4">
                     <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
                         <div className="max-w-4xl text-left">
@@ -404,7 +449,7 @@ export const Home = () => {
 
 
             {/* --- SECCIÓN 2: Intelligence & Analytics (Análisis Multidimensional) --- */}
-            <section className="mt-32 py-24 bg-gradient-to-b from-white via-slate-50 to-slate-100 overflow-hidden relative border-t border-slate-100">
+            <section id="analitica" className="mt-32 py-24 bg-gradient-to-b from-white via-slate-50 to-slate-100 overflow-hidden relative border-t border-slate-100">
                 <div className="absolute top-0 right-0 w-1/3 h-full bg-brand-primary/5 blur-[120px] rounded-full"></div>
 
                 <div className="container mx-auto px-4 relative z-10">
@@ -414,11 +459,11 @@ export const Home = () => {
                                 <Database className="h-3.5 w-3.5" /> Intelligence Center
                             </div>
                             <h2 className="text-4xl md:text-6xl font-serif font-black leading-tight text-slate-900">
-                                Análisis <br />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-emerald-600">Multidimensional</span>
+                                Haz tu propia <br />
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-emerald-600">búsqueda</span>
                             </h2>
                             <p className="text-slate-600 text-lg md:text-xl font-light leading-relaxed max-w-xl">
-                                Explore nuestras bases de datos mediante cruces dinámicos de variables. Herramienta global disponible para todos los ejes estratégicos.
+                                ¿Qué te interesa saber a ti? Explore nuestras bases de datos mediante cruces dinámicos de variables.
                             </p>
                             <div className="flex flex-wrap gap-6 pt-4">
                                 <Button
@@ -449,7 +494,7 @@ export const Home = () => {
             </section>
 
             {/* --- SECCIÓN 4: Laboratorio de Análisis Geoespacial --- */}
-            <section className="py-24 bg-slate-50 relative overflow-hidden">
+            <section id="geo" className="py-24 bg-slate-50 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-full h-full opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
 
                 <div className="container mx-auto px-4 relative z-10">
@@ -526,7 +571,7 @@ export const Home = () => {
             </section>
 
             {/* Visor de Mapas Regional */}
-            <section className="py-24 bg-slate-900 text-white overflow-hidden">
+            <section id="visor" className="py-24 bg-slate-900 text-white overflow-hidden">
                 <div className="container mx-auto px-4 mb-20 text-center">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-[10px] font-black uppercase tracking-widest mb-6">
                         <Map className="h-3 w-3" /> Infraestructura de Datos
@@ -575,7 +620,7 @@ export const Home = () => {
             </section>
 
             {/* CENTRO DE DOCUMENTACION */}
-            <section className="py-24 bg-white overflow-hidden">
+            <section id="docs" className="py-24 bg-white overflow-hidden">
                 <div className="container mx-auto px-4">
                     <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
                         <div className="max-w-2xl text-left">
