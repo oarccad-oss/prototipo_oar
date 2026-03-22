@@ -283,37 +283,35 @@
         }
 
         #btn-guia {
-            padding: 12px 35px;
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
             background: var(--ocean-blue);
             border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 30px;
+            border-radius: 50%;
             color: #fff;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            pointer-events: auto;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: max-content;
-            z-index: 100;
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            pointer-events: auto;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 100;
         }
 
         #btn-guia:hover {
             background: #fff;
             color: var(--ocean-blue);
-            transform: translateY(-2px);
+            transform: scale(1.1);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
         }
 
         #btn-guia i {
-            font-size: 16px;
+            font-size: 20px;
         }
 
         #modal-opciones {
@@ -531,6 +529,7 @@
 
         <div id="nav-arrow-left" class="nav-arrow"><i class="ph ph-caret-left"></i></div>
         <div id="nav-arrow-right" class="nav-arrow"><i class="ph ph-caret-right"></i></div>
+        <div id="btn-guia"><i class="ph ph-info"></i></div>
         <div id="labels-container"></div>
     </div>
 
@@ -947,14 +946,16 @@
             modalCont.appendChild(li);
         });
 
-        document.getElementById('btn-opciones').onclick = () => { document.getElementById('modal-opciones').classList.add('visible'); playSound('tick'); };
-        document.getElementById('btn-close-modal').onclick = () => document.getElementById('modal-opciones').classList.remove('visible');
-        document.getElementById('btn-guia').onclick = () => {
-            window.parent.postMessage('oar-open-guide', '*');
-            playSound('tick');
-        };
-        document.getElementById('nav-arrow-left').onclick = goToPrev;
-        document.getElementById('nav-arrow-right').onclick = goToNext;
+        if (document.getElementById('btn-opciones')) document.getElementById('btn-opciones').onclick = () => { document.getElementById('modal-opciones').classList.add('visible'); playSound('tick'); };
+        if (document.getElementById('btn-close-modal')) document.getElementById('btn-close-modal').onclick = () => document.getElementById('modal-opciones').classList.remove('visible');
+        if (document.getElementById('btn-guia')) {
+            document.getElementById('btn-guia').onclick = () => {
+                window.parent.postMessage('oar-open-guide', '*');
+                playSound('tick');
+            };
+        }
+        if (document.getElementById('nav-arrow-left')) document.getElementById('nav-arrow-left').onclick = goToPrev;
+        if (document.getElementById('nav-arrow-right')) document.getElementById('nav-arrow-right').onclick = goToNext;
 
     </script>
 </body>
