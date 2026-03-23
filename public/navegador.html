@@ -840,7 +840,7 @@
             }
             return beamGroup;
         }
-        orbitLineGroup.add(createLightBeam(0xa8e6cf));
+        const beam1 = createLightBeam(0xa8e6cf); orbitLineGroup.add(beam1);
         const beam2 = createLightBeam(0xa8e6cf); beam2.rotation.z = Math.PI; orbitLineGroup.add(beam2);
 
         function createElementAnimation(id) {
@@ -1157,6 +1157,11 @@
         const clock = new THREE.Clock();
         function animate() {
             requestAnimationFrame(animate); const delta = clock.getDelta(); const time = clock.elapsedTime;
+            
+            // Animar recorridos de luz en la órbita (rotar sobre su centro Z)
+            if (beam1) beam1.rotation.z -= delta * 0.15;
+            if (beam2) beam2.rotation.z -= delta * 0.15;
+
             currentRotation += (targetRotation - currentRotation) * 0.15; carouselGroup.rotation.z = currentRotation;
             isMoving = Math.abs(targetRotation - currentRotation) > 0.01;
             nodes.forEach((node, i) => {
