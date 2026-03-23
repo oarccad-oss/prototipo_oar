@@ -151,8 +151,15 @@
         }
 
         @keyframes bounceRight {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(3px); }
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            50% {
+                transform: translateX(3px);
+            }
         }
 
         #organic-pulse {
@@ -174,7 +181,8 @@
             font-size: 16px;
             color: white;
             text-shadow: 0 0 15px rgba(255, 255, 255, 0.9), 0 2px 5px rgba(0, 0, 0, 0.9);
-            pointer-events: none; /* Allows sphere clicks */
+            pointer-events: none;
+            /* Allows sphere clicks */
             z-index: 10;
         }
 
@@ -307,25 +315,42 @@
                 font-size: 20px;
                 letter-spacing: 2px;
             }
+
             .core-title {
                 font-size: 28px;
             }
+
             #core-desc {
                 font-size: 14px;
                 max-width: 280px;
             }
+
             .nav-arrow {
                 display: none !important;
             }
         }
 
-        .alerts-card { overflow-y: auto; max-height: 250px; }
-        .alert-item { 
-            display: flex; gap: 10px; padding: 10px; border-radius: 8px; 
-            background: rgba(255,255,255,0.03); margin-bottom: 8px; font-size: 11px; 
-            border-left: 2px solid var(--forest-green); line-height: 1.4;
+        .alerts-card {
+            overflow-y: auto;
+            max-height: 250px;
         }
-        .alert-item i { color: var(--forest-green); font-size: 14px; }
+
+        .alert-item {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            margin-bottom: 8px;
+            font-size: 11px;
+            border-left: 2px solid var(--forest-green);
+            line-height: 1.4;
+        }
+
+        .alert-item i {
+            color: var(--forest-green);
+            font-size: 14px;
+        }
 
         #modal-opciones {
             position: fixed;
@@ -593,208 +618,210 @@
                     <div style="font-size:11px; margin-bottom:15px; opacity:0.6;">EVENTOS RECIENTES</div>
                     <div id="dash-alerts-container"></div>
                 </div>
-            <div style="margin-top:30px; display:flex; justify-content:center;">
-                <a href="pagina_monitoreo/monitoreo_estrategico.html" target="_parent" class="glass-panel" style="padding:12px 25px; font-size:12px; font-weight:700; letter-spacing:2px; color:var(--forest-green); text-decoration:none; border:1px solid rgba(46, 204, 113, 0.3);">VER INDICADORES ESTRATÉGICOS</a>
+                <div style="margin-top:30px; display:flex; justify-content:center;">
+                    <a href="pagina_monitoreo/monitoreo_estrategico.html" target="_parent" class="glass-panel"
+                        style="padding:12px 25px; font-size:12px; font-weight:700; letter-spacing:2px; color:var(--forest-green); text-decoration:none; border:1px solid rgba(46, 204, 113, 0.3);">VER
+                        INDICADORES ESTRATÉGICOS</a>
+                </div>
             </div>
         </div>
-    </div>
 
-    <script>
-        const menuData = [
-            {
-                id: 0, title: "BOSQUES", color: 0x00b894,
-                desc: "Gestión sostenible y monitoreo de la cobertura forestal regional.",
-                kpis: [
-                    { title: "ÁREA NETA", val: "4,250", sub: "Miles ha" },
-                    { title: "COBERTURA", val: "48%", sub: "+1.2% anual" },
-                    { title: "PROTCONN", val: "42", sub: "Índice regional" }
-                ],
-                alerts: ["Recuperación activa en 15,000 ha de pino-encino.", "Consolidación de MRV para REDD+."]
-            },
-            {
-                id: 1, title: "BIODIVERSIDAD", color: 0x78e08f,
-                desc: "Conservación de especies y ecosistemas críticos del hotspot mesoamericano.",
-                kpis: [
-                    { title: "LISTA ROJA", val: "0.78", sub: "Índice" },
-                    { title: "ESPECIES", val: "65%", sub: "Ne > 500" },
-                    { title: "KBAs", val: "242", sub: "Sitios clave" }
-                ],
-                alerts: ["Actualización de KBAs en el Corredor Biológico.", "Monitoreo genético de felinos en marcha."]
-            },
-            {
-                id: 2, title: "CLIMA", color: 0xf1c40f,
-                desc: "Mitigación y adaptación frente a la crisis climática global.",
-                kpis: [
-                    { title: "GEI EMISIONES", val: "8.4M", sub: "tCO2e" },
-                    { title: "NDCs", val: "Activa", sub: "Actualización 2024" },
-                    { title: "RESILIENCIA", val: "Medio", sub: "Índice regional" }
-                ],
-                alerts: ["Actualización de NDCs regionales avanzada.", "Sistema de alerta temprana climática operativo."]
-            },
-            {
-                id: 3, title: "AGUA", color: 0x00cec9,
-                desc: "Seguridad hídrica y manejo integrado de cuencas transfronterizas.",
-                kpis: [
-                    { title: "CALIDAD", val: "82%", sub: "Índice ICA" },
-                    { title: "ESTRÉS", val: "Bajo", sub: "Sostenibilidad" },
-                    { title: "CUENCAS", val: "12", sub: "Transterritoriales" }
-                ],
-                alerts: ["Control de vertidos en cuenca del Río Lempa.", "Nueva red de monitoreo piezométrico."]
-            },
-            {
-                id: 4, title: "COSTAS", color: 0x0984e3,
-                desc: "Manejo costero integrado y protección de infraestructuras naturales.",
-                kpis: [
-                    { title: "MANGLAR", val: "115k", sub: "Hectáreas" },
-                    { title: "RECUPERACIÓN", val: "+5%", sub: "Proyectos activos" },
-                    { title: "MIIC", val: "85", sub: "Manejo Integrado" }
-                ],
-                alerts: ["Dragado sostenible en zonas de anidación.", "Plan de adaptación de municipios costeros."]
-            },
-            {
-                id: 5, title: "MARES", color: 0x1e3799,
-                desc: "Gobernanza de recursos marinos y biodiversidad oceánica.",
-                kpis: [
-                    { title: "PESCA SOST.", val: "74%", sub: "Bajo RMS" },
-                    { title: "ÁREAS MARINAS", val: "12%", sub: "Protección" },
-                    { title: "VIGILANCIA", val: "100%", sub: "VMS Activo" }
-                ],
-                alerts: ["Veda de camarón exitosa en el Pacífico.", "Vigilancia satelital VMS activa."]
-            },
-            {
-                id: 6, title: "AIRE", color: 0xecf0f1,
-                desc: "Monitoreo de calidad del aire y emisiones atmosféricas.",
-                kpis: [
-                    { title: "CALIDAD AIRE", val: "15", sub: "µg/m³ PM2.5" },
-                    { title: "SIST. ALERTA", val: "Regional", sub: "Satélite + Sensores" },
-                    { title: "REDUCCIÓN", val: "-10%", sub: "Quemas agrícolas" }
-                ],
-                alerts: ["Reducción de quemas agrícolas reportada.", "Integración de sensores de bajo costo."]
+        <script>
+            const menuData = [
+                {
+                    id: 0, title: "BOSQUES", color: 0x00b894,
+                    desc: "Gestión sostenible y monitoreo de la cobertura forestal regional.",
+                    kpis: [
+                        { title: "ÁREA NETA", val: "4,250", sub: "Miles ha" },
+                        { title: "COBERTURA", val: "48%", sub: "+1.2% anual" },
+                        { title: "PROTCONN", val: "42", sub: "Índice regional" }
+                    ],
+                    alerts: ["Recuperación activa en 15,000 ha de pino-encino.", "Consolidación de MRV para REDD+."]
+                },
+                {
+                    id: 1, title: "BIODIVERSIDAD", color: 0x78e08f,
+                    desc: "Conservación de especies y ecosistemas críticos del hotspot mesoamericano.",
+                    kpis: [
+                        { title: "LISTA ROJA", val: "0.78", sub: "Índice" },
+                        { title: "ESPECIES", val: "65%", sub: "Ne > 500" },
+                        { title: "KBAs", val: "242", sub: "Sitios clave" }
+                    ],
+                    alerts: ["Actualización de KBAs en el Corredor Biológico.", "Monitoreo genético de felinos en marcha."]
+                },
+                {
+                    id: 2, title: "CLIMA", color: 0xf1c40f,
+                    desc: "Mitigación y adaptación frente a la crisis climática global.",
+                    kpis: [
+                        { title: "GEI EMISIONES", val: "8.4M", sub: "tCO2e" },
+                        { title: "NDCs", val: "Activa", sub: "Actualización 2024" },
+                        { title: "RESILIENCIA", val: "Medio", sub: "Índice regional" }
+                    ],
+                    alerts: ["Actualización de NDCs regionales avanzada.", "Sistema de alerta temprana climática operativo."]
+                },
+                {
+                    id: 3, title: "AGUA", color: 0x00cec9,
+                    desc: "Seguridad hídrica y manejo integrado de cuencas transfronterizas.",
+                    kpis: [
+                        { title: "CALIDAD", val: "82%", sub: "Índice ICA" },
+                        { title: "ESTRÉS", val: "Bajo", sub: "Sostenibilidad" },
+                        { title: "CUENCAS", val: "12", sub: "Transterritoriales" }
+                    ],
+                    alerts: ["Control de vertidos en cuenca del Río Lempa.", "Nueva red de monitoreo piezométrico."]
+                },
+                {
+                    id: 4, title: "COSTAS", color: 0x0984e3,
+                    desc: "Manejo costero integrado y protección de infraestructuras.",
+                    kpis: [
+                        { title: "MANGLAR", val: "115k", sub: "Hectáreas" },
+                        { title: "RECUPERACIÓN", val: "+5%", sub: "Proyectos activos" },
+                        { title: "MIIC", val: "85", sub: "Manejo Integrado" }
+                    ],
+                    alerts: ["Dragado sostenible en zonas de anidación.", "Plan de adaptación de municipios costeros."]
+                },
+                {
+                    id: 5, title: "MARES", color: 0x1e3799,
+                    desc: "Gobernanza de recursos marinos y biodiversidad oceánica.",
+                    kpis: [
+                        { title: "PESCA SOST.", val: "74%", sub: "Bajo RMS" },
+                        { title: "ÁREAS MARINAS", val: "12%", sub: "Protección" },
+                        { title: "VIGILANCIA", val: "100%", sub: "VMS Activo" }
+                    ],
+                    alerts: ["Veda de camarón exitosa en el Pacífico.", "Vigilancia satelital VMS activa."]
+                },
+                {
+                    id: 6, title: "AIRE", color: 0xecf0f1,
+                    desc: "Monitoreo de calidad del aire y emisiones atmosféricas.",
+                    kpis: [
+                        { title: "CALIDAD AIRE", val: "15", sub: "µg/m³ PM2.5" },
+                        { title: "SIST. ALERTA", val: "Regional", sub: "Satélite + Sensores" },
+                        { title: "REDUCCIÓN", val: "-10%", sub: "Quemas agrícolas" }
+                    ],
+                    alerts: ["Reducción de quemas agrícolas reportada.", "Integración de sensores de bajo costo."]
+                }
+            ];
+
+            let audioCtx; let isMuted = false;
+            function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); if (audioCtx.state === 'suspended') audioCtx.resume(); }
+            function playSound(type) {
+                if (!audioCtx || isMuted) return;
+                const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
+                osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+                const now = audioCtx.currentTime;
+                if (type === 'tick') {
+                    osc.type = 'sine'; osc.frequency.setValueAtTime(600, now); osc.frequency.exponentialRampToValueAtTime(150, now + 0.15);
+                    gainNode.gain.setValueAtTime(0.05, now); gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+                    osc.start(now); osc.stop(now + 0.15);
+                }
             }
-        ];
 
-        let audioCtx; let isMuted = false;
-        function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); if (audioCtx.state === 'suspended') audioCtx.resume(); }
-        function playSound(type) {
-            if (!audioCtx || isMuted) return;
-            const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
-            osc.connect(gainNode); gainNode.connect(audioCtx.destination);
-            const now = audioCtx.currentTime;
-            if (type === 'tick') {
-                osc.type = 'sine'; osc.frequency.setValueAtTime(600, now); osc.frequency.exponentialRampToValueAtTime(150, now + 0.15);
-                gainNode.gain.setValueAtTime(0.05, now); gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
-                osc.start(now); osc.stop(now + 0.15);
-            }
-        }
+            const dashboardView = document.getElementById('dashboard-view');
+            const uiLayer = document.getElementById('ui-layer');
+            let isDashboardOpen = false;
 
-        const dashboardView = document.getElementById('dashboard-view');
-        const uiLayer = document.getElementById('ui-layer');
-        let isDashboardOpen = false;
+            function openDashboard(index) {
+                isDashboardOpen = true; playSound('tick');
+                const data = menuData[index];
+                document.getElementById('dash-title').innerText = data.title;
+                document.getElementById('dash-desc').innerText = data.desc;
 
-        function openDashboard(index) {
-            isDashboardOpen = true; playSound('tick');
-            const data = menuData[index];
-            document.getElementById('dash-title').innerText = data.title;
-            document.getElementById('dash-desc').innerText = data.desc;
+                // Populating KPIs
+                data.kpis.forEach((kpi, i) => {
+                    const kIdx = i + 1;
+                    document.getElementById(`dash-kpi${kIdx}-title`).innerText = kpi.title;
+                    document.getElementById(`dash-kpi${kIdx}-val`).innerText = kpi.val;
+                    document.getElementById(`dash-kpi${kIdx}-sub`).innerText = kpi.sub;
+                });
 
-            // Populating KPIs
-            data.kpis.forEach((kpi, i) => {
-                const kIdx = i + 1;
-                document.getElementById(`dash-kpi${kIdx}-title`).innerText = kpi.title;
-                document.getElementById(`dash-kpi${kIdx}-val`).innerText = kpi.val;
-                document.getElementById(`dash-kpi${kIdx}-sub`).innerText = kpi.sub;
-            });
-
-            // Populating Alerts
-            const alertCont = document.getElementById('dash-alerts-container');
-            if (alertCont) {
-                alertCont.innerHTML = data.alerts.map(a => `
+                // Populating Alerts
+                const alertCont = document.getElementById('dash-alerts-container');
+                if (alertCont) {
+                    alertCont.innerHTML = data.alerts.map(a => `
                     <div class="alert-item">
                         <i class="ph ph-warning-circle"></i>
                         <span>${a}</span>
                     </div>
                 `).join('');
+                }
+
+                uiLayer.style.opacity = '0'; uiLayer.style.pointerEvents = 'none';
+                setTimeout(() => { dashboardView.classList.add('active'); }, 200);
             }
 
-            uiLayer.style.opacity = '0'; uiLayer.style.pointerEvents = 'none';
-            setTimeout(() => { dashboardView.classList.add('active'); }, 200);
-        }
+            document.getElementById('btn-back-menu').onclick = () => {
+                isDashboardOpen = false; playSound('tick');
+                dashboardView.classList.remove('active');
+                setTimeout(() => { uiLayer.style.opacity = '1'; uiLayer.style.pointerEvents = 'auto'; }, 300);
+            };
 
-        document.getElementById('btn-back-menu').onclick = () => {
-            isDashboardOpen = false; playSound('tick');
-            dashboardView.classList.remove('active');
-            setTimeout(() => { uiLayer.style.opacity = '1'; uiLayer.style.pointerEvents = 'auto'; }, 300);
-        };
-
-        const container = document.getElementById('canvas-container');
-        const labelsContainer = document.getElementById('labels-container');
-        const scene = new THREE.Scene();
-        scene.fog = new THREE.Fog(0x133e36, 100, 220);
-        window.addEventListener('resize', () => {
+            const container = document.getElementById('canvas-container');
+            const labelsContainer = document.getElementById('labels-container');
+            const scene = new THREE.Scene();
+            scene.fog = new THREE.Fog(0x133e36, 100, 220);
+            window.addEventListener('resize', () => {
+                adjustCamera();
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+            const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+            function adjustCamera() {
+                const aspect = window.innerWidth / window.innerHeight;
+                if (aspect < 1) {
+                    camera.position.z = Math.max(130, 80 / aspect); // Zoom out on mobile
+                    camera.position.y = 35 + (35 / aspect) * 0.2; // Adjust height too
+                } else {
+                    camera.position.z = 130;
+                    camera.position.y = 35;
+                }
+                // Scale fog to match camera distance
+                if (scene.fog) {
+                    scene.fog.near = camera.position.z * 0.8;
+                    scene.fog.far = camera.position.z + 150;
+                }
+            }
             adjustCamera();
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
+            camera.lookAt(0, -10, 0);
+
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-        function adjustCamera() {
-            const aspect = window.innerWidth / window.innerHeight;
-            if (aspect < 1) {
-                camera.position.z = Math.max(130, 80 / aspect); // Zoom out on mobile
-                camera.position.y = 35 + (35 / aspect) * 0.2; // Adjust height too
-            } else {
-                camera.position.z = 130;
-                camera.position.y = 35;
-            }
-            // Scale fog to match camera distance
-            if (scene.fog) {
-                scene.fog.near = camera.position.z * 0.8;
-                scene.fog.far = camera.position.z + 150;
-            }
-        }
-        adjustCamera();
-        camera.lookAt(0, -10, 0);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(renderer.domElement);
 
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        container.appendChild(renderer.domElement);
+            const hemiLight = new THREE.HemisphereLight(0x87CEEB, 0x0984e3, 0.7); scene.add(hemiLight);
+            const sunLight = new THREE.DirectionalLight(0xfff5e6, 0.8); sunLight.position.set(30, 100, 30); scene.add(sunLight);
+            const activeLight = new THREE.PointLight(0xffffff, 2.5, 120); activeLight.position.set(0, 0, 80); scene.add(activeLight);
 
-        const hemiLight = new THREE.HemisphereLight(0x87CEEB, 0x0984e3, 0.7); scene.add(hemiLight);
-        const sunLight = new THREE.DirectionalLight(0xfff5e6, 0.8); sunLight.position.set(30, 100, 30); scene.add(sunLight);
-        const activeLight = new THREE.PointLight(0xffffff, 2.5, 120); activeLight.position.set(0, 0, 80); scene.add(activeLight);
+            const carouselGroup = new THREE.Group(); carouselGroup.position.y = 0; carouselGroup.rotation.x = Math.PI / 2.3; scene.add(carouselGroup);
 
-        const carouselGroup = new THREE.Group(); carouselGroup.position.y = 0; carouselGroup.rotation.x = Math.PI / 2.3; scene.add(carouselGroup);
-        
-        // --- BACKGROUND CONCAVE SCREEN ---
-        const textureLoader = new THREE.TextureLoader();
-        const backgroundTextures = [
-            'assets/navigation/bosques.png',
-            'assets/navigation/biodiversidad.png',
-            'assets/navigation/clima.png',
-            'assets/navigation/agua.png',
-            'assets/navigation/costas.png',
-            'assets/navigation/mares.png',
-            'assets/navigation/aire.png'
-        ].map(url => textureLoader.load(url));
+            // --- BACKGROUND CONCAVE SCREEN ---
+            const textureLoader = new THREE.TextureLoader();
+            const backgroundTextures = [
+                'assets/navigation/bosques.png',
+                'assets/navigation/biodiversidad.png',
+                'assets/navigation/clima.png',
+                'assets/navigation/agua.png',
+                'assets/navigation/costas.png',
+                'assets/navigation/mares.png',
+                'assets/navigation/aire.png'
+            ].map(url => textureLoader.load(url));
 
-        // Full-screen shader background with central transparency belt
-        const bgDist = 200;
-        const bgHeight = 2 * Math.tan(45 * Math.PI / 360) * bgDist;
-        const bgGeometry = new THREE.PlaneGeometry(bgHeight * 4, bgHeight); // wide to cover any aspect ratio
-        const bgMaterial = new THREE.ShaderMaterial({
-            uniforms: {
-                tDiffuse: { value: backgroundTextures[0] },
-                opacity: { value: 0.0 }
-            },
-            vertexShader: `
+            // Full-screen shader background with central transparency belt
+            const bgDist = 200;
+            const bgHeight = 2 * Math.tan(45 * Math.PI / 360) * bgDist;
+            const bgGeometry = new THREE.PlaneGeometry(bgHeight * 4, bgHeight); // wide to cover any aspect ratio
+            const bgMaterial = new THREE.ShaderMaterial({
+                uniforms: {
+                    tDiffuse: { value: backgroundTextures[0] },
+                    opacity: { value: 0.0 }
+                },
+                vertexShader: `
                 varying vec2 vUv;
                 void main() {
                     vUv = uv;
                     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
                 }
             `,
-            fragmentShader: `
+                fragmentShader: `
                 uniform sampler2D tDiffuse;
                 uniform float opacity;
                 varying vec2 vUv;
@@ -811,433 +838,433 @@
                     gl_FragColor = vec4(tex.rgb, tex.a * opacity * mask);
                 }
             `,
-            transparent: true,
-            depthWrite: false,
-            fog: false
-        });
-        const bgMesh = new THREE.Mesh(bgGeometry, bgMaterial);
-        bgMesh.position.set(0, 0, -bgDist);
-        bgMesh.renderOrder = -1;
-        camera.add(bgMesh);
-        scene.add(camera);
-        let targetBgOpacity = 0.4;
-
-        const radius = 55; const nodes = []; const labels = []; const totalNodes = menuData.length; const angleStep = (Math.PI * 2) / totalNodes;
-        const nodeGeometry = new THREE.SphereGeometry(4.5, 32, 32);
-
-        const orbitLineGroup = new THREE.Group(); carouselGroup.add(orbitLineGroup);
-        const torusMat = new THREE.MeshBasicMaterial({ color: 0x2ecc71, transparent: true, opacity: 0.15 });
-        orbitLineGroup.add(new THREE.Mesh(new THREE.TorusGeometry(radius, 0.05, 16, 128), torusMat));
-
-        function createLightBeam(colorHex) {
-            const beamGroup = new THREE.Group(); const trailCount = 35;
-            for (let i = 0; i < trailCount; i++) {
-                const size = 0.15 * Math.pow((1 - i / trailCount), 1.5); const op = 0.6 * (1 - i / trailCount);
-                const mat = new THREE.MeshBasicMaterial({ color: colorHex, transparent: true, opacity: op, blending: THREE.AdditiveBlending, depthWrite: false });
-                const mesh = new THREE.Mesh(new THREE.SphereGeometry(size, 8, 8), mat);
-                const ang = -(i / trailCount) * (Math.PI / 2.5); mesh.position.set(Math.cos(ang) * radius, Math.sin(ang) * radius, 0);
-                beamGroup.add(mesh);
-            }
-            return beamGroup;
-        }
-        const beam1 = createLightBeam(0xa8e6cf); orbitLineGroup.add(beam1);
-        const beam2 = createLightBeam(0xa8e6cf); beam2.rotation.z = Math.PI; orbitLineGroup.add(beam2);
-
-        function createElementAnimation(id) {
-            const group = new THREE.Group();
-            const mat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.15, blending: THREE.AdditiveBlending });
-
-            if (id === 0) { // Bosques
-                for (let i = 0; i < 15; i++) {
-                    const m = new THREE.Mesh(new THREE.SphereGeometry(0.12, 4, 4), mat);
-                    m.position.set((Math.random() - 0.5) * 6, (Math.random() - 0.5) * 6, (Math.random() - 0.5) * 6);
-                    m.userData.vel = new THREE.Vector3((Math.random() - 0.5) * 0.015, (Math.random() - 0.5) * 0.015, (Math.random() - 0.5) * 0.015);
-                    group.add(m);
-                }
-            } else if (id === 1) { // Biodiversidad
-                for (let i = 0; i < 12; i++) {
-                    const m = new THREE.Mesh(new THREE.SphereGeometry(0.1, 4, 4), mat);
-                    m.userData.angle = Math.random() * Math.PI * 2;
-                    m.userData.dist = 1 + Math.random() * 2.5;
-                    group.add(m);
-                }
-            } else if (id === 2) { // Clima
-                const torusKnot = new THREE.Mesh(new THREE.TorusKnotGeometry(1.8, 0.04, 64, 8), new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, transparent: true, opacity: 0.08, blending: THREE.AdditiveBlending }));
-                group.add(torusKnot);
-            } else if (id === 3) { // Agua
-                for (let i = 0; i < 12; i++) {
-                    const m = new THREE.Mesh(new THREE.SphereGeometry(0.25, 8, 8), mat);
-                    m.position.set((Math.random() - 0.5) * 5, -4 + Math.random() * 8, (Math.random() - 0.5) * 5);
-                    m.userData.vY = 0.02 + Math.random() * 0.04;
-                    group.add(m);
-                }
-            } else if (id === 4) { // Costas
-                for (let i = 0; i < 3; i++) {
-                    const r = new THREE.Mesh(new THREE.TorusGeometry(0.8 + i * 1.4, 0.04, 8, 32), mat);
-                    r.rotation.x = Math.PI / 2; r.userData.phase = i * 2;
-                    group.add(r);
-                }
-            } else if (id === 5) { // Mares
-                const plane = new THREE.Mesh(new THREE.PlaneGeometry(6, 6, 8, 8), new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, transparent: true, opacity: 0.1, side: THREE.DoubleSide }));
-                plane.rotation.x = -Math.PI / 2; group.add(plane);
-            } else if (id === 6) { // Aire
-                for (let i = 0; i < 5; i++) {
-                    const c = new THREE.Mesh(new THREE.SphereGeometry(0.6 + Math.random() * 0.6, 8, 8), mat);
-                    c.position.set((Math.random() - 0.5) * 6, (Math.random() - 0.5) * 4, (Math.random() - 0.5) * 4);
-                    c.userData.vX = 0.008 + Math.random() * 0.015;
-                    group.add(c);
-                }
-            }
-            group.userData.elemId = id; return group;
-        }
-
-        const nodeMaterials = menuData.map(item => new THREE.MeshPhysicalMaterial({
-            color: item.color, metalness: 0.1, roughness: 0.1, transmission: 0.7,
-            emissive: item.color, emissiveIntensity: 0.25, transparent: true, opacity: 0.6
-        }));
-
-        // Load Map Silhouette once for all nodes
-        const mapTexture = new THREE.TextureLoader().load('ca_dr_map.svg');
-
-        menuData.forEach((item, i) => {
-            const angle = (Math.PI / 2) - (i * angleStep);
-            const mesh = new THREE.Mesh(nodeGeometry, nodeMaterials[i]);
-            mesh.position.set(Math.cos(angle) * radius, Math.sin(angle) * radius, 0);
-
-            // Añadir el mapa holográfico como un Sprite (siempre mira a la cámara)
-            const mapMat = new THREE.SpriteMaterial({
-                color: item.color,
-                map: mapTexture,
                 transparent: true,
-                opacity: 0.8, // Base, will be overwritten
-                blending: THREE.AdditiveBlending,
                 depthWrite: false,
-                depthTest: false
+                fog: false
             });
-            const mapSprite = new THREE.Sprite(mapMat);
-            mapSprite.scale.set(6, 6, 1);
-            mesh.add(mapSprite);
-            mesh.userData.mapSprite = mapSprite; // Guardamos para modificar brillo luego
+            const bgMesh = new THREE.Mesh(bgGeometry, bgMaterial);
+            bgMesh.position.set(0, 0, -bgDist);
+            bgMesh.renderOrder = -1;
+            camera.add(bgMesh);
+            scene.add(camera);
+            let targetBgOpacity = 0.4;
 
-            mesh.add(createElementAnimation(i));
-            carouselGroup.add(mesh); nodes.push(mesh);
-            const label = document.createElement('div'); label.className = 'node-label'; 
-            label.innerText = item.title;
-            
-            // Add click interaction to the label (acts same as clicking the sphere)
-            label.onclick = (e) => {
-                e.stopPropagation();
-                if (i !== getActiveIndex()) {
-                    let diff = i - getActiveIndex();
-                    if (diff > totalNodes / 2) diff -= totalNodes;
-                    if (diff < -totalNodes / 2) diff += totalNodes;
-                    logicalIndex += diff; targetRotation = logicalIndex * angleStep; playSound('tick'); updateUI(getActiveIndex());
-                } else {
-                    openDashboard(i);
+            const radius = 55; const nodes = []; const labels = []; const totalNodes = menuData.length; const angleStep = (Math.PI * 2) / totalNodes;
+            const nodeGeometry = new THREE.SphereGeometry(4.5, 32, 32);
+
+            const orbitLineGroup = new THREE.Group(); carouselGroup.add(orbitLineGroup);
+            const torusMat = new THREE.MeshBasicMaterial({ color: 0x2ecc71, transparent: true, opacity: 0.15 });
+            orbitLineGroup.add(new THREE.Mesh(new THREE.TorusGeometry(radius, 0.05, 16, 128), torusMat));
+
+            function createLightBeam(colorHex) {
+                const beamGroup = new THREE.Group(); const trailCount = 35;
+                for (let i = 0; i < trailCount; i++) {
+                    const size = 0.15 * Math.pow((1 - i / trailCount), 1.5); const op = 0.6 * (1 - i / trailCount);
+                    const mat = new THREE.MeshBasicMaterial({ color: colorHex, transparent: true, opacity: op, blending: THREE.AdditiveBlending, depthWrite: false });
+                    const mesh = new THREE.Mesh(new THREE.SphereGeometry(size, 8, 8), mat);
+                    const ang = -(i / trailCount) * (Math.PI / 2.5); mesh.position.set(Math.cos(ang) * radius, Math.sin(ang) * radius, 0);
+                    beamGroup.add(mesh);
                 }
-            };
-            
-            document.getElementById('labels-container').appendChild(label); labels.push({ element: label, mesh: mesh });
-        });
+                return beamGroup;
+            }
+            const beam1 = createLightBeam(0xa8e6cf); orbitLineGroup.add(beam1);
+            const beam2 = createLightBeam(0xa8e6cf); beam2.rotation.z = Math.PI; orbitLineGroup.add(beam2);
 
-        let logicalIndex = 0; let targetRotation = 0; let currentRotation = 0; let isMoving = false;
-        function getActiveIndex() { return ((logicalIndex % totalNodes) + totalNodes) % totalNodes; }
+            function createElementAnimation(id) {
+                const group = new THREE.Group();
+                const mat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.15, blending: THREE.AdditiveBlending });
 
-        function updateUI(index) {
-            scrollProgress = index;
-            document.getElementById('core-display').classList.remove('visible');
-            document.getElementById('organic-pulse').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('core-desc').innerText = menuData[index].desc;
-                document.getElementById('core-display').classList.add('visible');
-                
-                // Update background texture with a quick fade
-                targetBgOpacity = 0;
+                if (id === 0) { // Bosques
+                    for (let i = 0; i < 15; i++) {
+                        const m = new THREE.Mesh(new THREE.SphereGeometry(0.12, 4, 4), mat);
+                        m.position.set((Math.random() - 0.5) * 6, (Math.random() - 0.5) * 6, (Math.random() - 0.5) * 6);
+                        m.userData.vel = new THREE.Vector3((Math.random() - 0.5) * 0.015, (Math.random() - 0.5) * 0.015, (Math.random() - 0.5) * 0.015);
+                        group.add(m);
+                    }
+                } else if (id === 1) { // Biodiversidad
+                    for (let i = 0; i < 12; i++) {
+                        const m = new THREE.Mesh(new THREE.SphereGeometry(0.1, 4, 4), mat);
+                        m.userData.angle = Math.random() * Math.PI * 2;
+                        m.userData.dist = 1 + Math.random() * 2.5;
+                        group.add(m);
+                    }
+                } else if (id === 2) { // Clima
+                    const torusKnot = new THREE.Mesh(new THREE.TorusKnotGeometry(1.8, 0.04, 64, 8), new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, transparent: true, opacity: 0.08, blending: THREE.AdditiveBlending }));
+                    group.add(torusKnot);
+                } else if (id === 3) { // Agua
+                    for (let i = 0; i < 12; i++) {
+                        const m = new THREE.Mesh(new THREE.SphereGeometry(0.25, 8, 8), mat);
+                        m.position.set((Math.random() - 0.5) * 5, -4 + Math.random() * 8, (Math.random() - 0.5) * 5);
+                        m.userData.vY = 0.02 + Math.random() * 0.04;
+                        group.add(m);
+                    }
+                } else if (id === 4) { // Costas
+                    for (let i = 0; i < 3; i++) {
+                        const r = new THREE.Mesh(new THREE.TorusGeometry(0.8 + i * 1.4, 0.04, 8, 32), mat);
+                        r.rotation.x = Math.PI / 2; r.userData.phase = i * 2;
+                        group.add(r);
+                    }
+                } else if (id === 5) { // Mares
+                    const plane = new THREE.Mesh(new THREE.PlaneGeometry(6, 6, 8, 8), new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, transparent: true, opacity: 0.1, side: THREE.DoubleSide }));
+                    plane.rotation.x = -Math.PI / 2; group.add(plane);
+                } else if (id === 6) { // Aire
+                    for (let i = 0; i < 5; i++) {
+                        const c = new THREE.Mesh(new THREE.SphereGeometry(0.6 + Math.random() * 0.6, 8, 8), mat);
+                        c.position.set((Math.random() - 0.5) * 6, (Math.random() - 0.5) * 4, (Math.random() - 0.5) * 4);
+                        c.userData.vX = 0.008 + Math.random() * 0.015;
+                        group.add(c);
+                    }
+                }
+                group.userData.elemId = id; return group;
+            }
+
+            const nodeMaterials = menuData.map(item => new THREE.MeshPhysicalMaterial({
+                color: item.color, metalness: 0.1, roughness: 0.1, transmission: 0.7,
+                emissive: item.color, emissiveIntensity: 0.25, transparent: true, opacity: 0.6
+            }));
+
+            // Load Map Silhouette once for all nodes
+            const mapTexture = new THREE.TextureLoader().load('ca_dr_map.svg');
+
+            menuData.forEach((item, i) => {
+                const angle = (Math.PI / 2) - (i * angleStep);
+                const mesh = new THREE.Mesh(nodeGeometry, nodeMaterials[i]);
+                mesh.position.set(Math.cos(angle) * radius, Math.sin(angle) * radius, 0);
+
+                // Añadir el mapa holográfico como un Sprite (siempre mira a la cámara)
+                const mapMat = new THREE.SpriteMaterial({
+                    color: item.color,
+                    map: mapTexture,
+                    transparent: true,
+                    opacity: 0.8, // Base, will be overwritten
+                    blending: THREE.AdditiveBlending,
+                    depthWrite: false,
+                    depthTest: false
+                });
+                const mapSprite = new THREE.Sprite(mapMat);
+                mapSprite.scale.set(6, 6, 1);
+                mesh.add(mapSprite);
+                mesh.userData.mapSprite = mapSprite; // Guardamos para modificar brillo luego
+
+                mesh.add(createElementAnimation(i));
+                carouselGroup.add(mesh); nodes.push(mesh);
+                const label = document.createElement('div'); label.className = 'node-label';
+                label.innerText = item.title;
+
+                // Add click interaction to the label (acts same as clicking the sphere)
+                label.onclick = (e) => {
+                    e.stopPropagation();
+                    if (i !== getActiveIndex()) {
+                        let diff = i - getActiveIndex();
+                        if (diff > totalNodes / 2) diff -= totalNodes;
+                        if (diff < -totalNodes / 2) diff += totalNodes;
+                        logicalIndex += diff; targetRotation = logicalIndex * angleStep; playSound('tick'); updateUI(getActiveIndex());
+                    } else {
+                        openDashboard(i);
+                    }
+                };
+
+                document.getElementById('labels-container').appendChild(label); labels.push({ element: label, mesh: mesh });
+            });
+
+            let logicalIndex = 0; let targetRotation = 0; let currentRotation = 0; let isMoving = false;
+            function getActiveIndex() { return ((logicalIndex % totalNodes) + totalNodes) % totalNodes; }
+
+            function updateUI(index) {
+                scrollProgress = index;
+                document.getElementById('core-display').classList.remove('visible');
+                document.getElementById('organic-pulse').style.opacity = '0';
                 setTimeout(() => {
-                    if (bgMaterial.uniforms) {
-                        bgMaterial.uniforms.tDiffuse.value = backgroundTextures[index];
-                        targetBgOpacity = 0.7;
-                    }
-                }, 200);
-            }, 150);
-            labels.forEach((l, i) => {
-                l.element.classList.toggle('active', i === index);
-                l.element.style.color = i === index ? '#fff' : 'rgba(255,255,255,0.4)';
-            });
-            nodes.forEach((n, i) => {
-                if (i === index) {
-                    n.material.color.setHex(menuData[i].color); 
-                    n.material.transmission = 0.4;
-                    n.material.opacity = 0.9; 
-                    n.material.emissiveIntensity = 0.6;
-                    n.material.roughness = 0.1;
-                    n.material.clearcoat = 1.0;
-                    n.material.clearcoatRoughness = 0.1;
-                    
-                    activeLight.color.setHex(menuData[i].color);
-                    activeLight.position.set(4, 3, 5); // Iluminación lateral para dar volumen 3D
-                    activeLight.intensity = 2.0;
+                    document.getElementById('core-desc').innerText = menuData[index].desc;
+                    document.getElementById('core-display').classList.add('visible');
 
-                    if (n.userData.mapSprite) {
-                        n.userData.mapSprite.material.opacity = 0.45; // Soft hologram 
-                        n.userData.mapSprite.material.color.setHex(menuData[i].color); // Emits core color
+                    // Update background texture with a quick fade
+                    targetBgOpacity = 0;
+                    setTimeout(() => {
+                        if (bgMaterial.uniforms) {
+                            bgMaterial.uniforms.tDiffuse.value = backgroundTextures[index];
+                            targetBgOpacity = 0.7;
+                        }
+                    }, 200);
+                }, 150);
+                labels.forEach((l, i) => {
+                    l.element.classList.toggle('active', i === index);
+                    l.element.style.color = i === index ? '#fff' : 'rgba(255,255,255,0.4)';
+                });
+                nodes.forEach((n, i) => {
+                    if (i === index) {
+                        n.material.color.setHex(menuData[i].color);
+                        n.material.transmission = 0.4;
+                        n.material.opacity = 0.9;
+                        n.material.emissiveIntensity = 0.6;
+                        n.material.roughness = 0.1;
+                        n.material.clearcoat = 1.0;
+                        n.material.clearcoatRoughness = 0.1;
+
+                        activeLight.color.setHex(menuData[i].color);
+                        activeLight.position.set(4, 3, 5); // Iluminación lateral para dar volumen 3D
+                        activeLight.intensity = 2.0;
+
+                        if (n.userData.mapSprite) {
+                            n.userData.mapSprite.material.opacity = 0.45; // Soft hologram 
+                            n.userData.mapSprite.material.color.setHex(menuData[i].color); // Emits core color
+                        }
+                    } else {
+                        n.material.color.setHex(menuData[i].color);
+                        n.material.transmission = 0.7;
+                        n.material.opacity = 0.6;
+                        n.material.emissiveIntensity = 0.25;
+                        n.material.roughness = 0.1;
+                        n.material.clearcoat = 0.0;
+                        if (n.userData.mapSprite) {
+                            n.userData.mapSprite.material.opacity = 0.2;
+                            n.userData.mapSprite.material.color.setHex(menuData[i].color);
+                        }
+                    }
+                });
+            }
+
+            function goToNext() { logicalIndex++; targetRotation = logicalIndex * angleStep; playSound('tick'); updateUI(getActiveIndex()); }
+            function goToPrev() { logicalIndex--; targetRotation = logicalIndex * angleStep; playSound('tick'); updateUI(getActiveIndex()); }
+
+            let scrollProgress = 0; // Tracks progress through the spheres [0 to totalNodes-1]
+
+            let resetTimeout = null;
+
+            // Helper for the progress-based navigation gate
+            function handleStep(isDown) {
+                if (isDown) {
+                    if (scrollProgress < totalNodes - 1) {
+                        if (resetTimeout) clearTimeout(resetTimeout);
+                        scrollProgress++;
+                        const currentActive = getActiveIndex();
+                        if (currentActive !== scrollProgress) {
+                            let diff = scrollProgress - currentActive;
+                            if (diff > totalNodes / 2) diff -= totalNodes;
+                            if (diff < -totalNodes / 2) diff += totalNodes;
+                            logicalIndex += diff; targetRotation = logicalIndex * angleStep;
+                            playSound('tick');
+                            updateUI(getActiveIndex());
+                        } else {
+                            goToNext();
+                        }
+                    } else {
+                        window.parent.postMessage('oar-scroll-down', '*');
+                        if (!resetTimeout) {
+                            resetTimeout = setTimeout(() => {
+                                scrollProgress = 0; logicalIndex = 0; targetRotation = 0; updateUI(0);
+                                resetTimeout = null;
+                            }, 800);
+                        }
                     }
                 } else {
-                    n.material.color.setHex(menuData[i].color); 
-                    n.material.transmission = 0.7;
-                    n.material.opacity = 0.6; 
-                    n.material.emissiveIntensity = 0.25;
-                    n.material.roughness = 0.1;
-                    n.material.clearcoat = 0.0;
-                    if (n.userData.mapSprite) {
-                        n.userData.mapSprite.material.opacity = 0.2;
-                        n.userData.mapSprite.material.color.setHex(menuData[i].color);
-                    }
-                }
-            });
-        }
-
-        function goToNext() { logicalIndex++; targetRotation = logicalIndex * angleStep; playSound('tick'); updateUI(getActiveIndex()); }
-        function goToPrev() { logicalIndex--; targetRotation = logicalIndex * angleStep; playSound('tick'); updateUI(getActiveIndex()); }
-
-        let scrollProgress = 0; // Tracks progress through the spheres [0 to totalNodes-1]
-        
-        let resetTimeout = null;
-        
-        // Helper for the progress-based navigation gate
-        function handleStep(isDown) {
-            if (isDown) {
-                if (scrollProgress < totalNodes - 1) {
-                    if (resetTimeout) clearTimeout(resetTimeout);
-                    scrollProgress++;
-                    const currentActive = getActiveIndex();
-                    if (currentActive !== scrollProgress) {
-                        let diff = scrollProgress - currentActive;
-                        if (diff > totalNodes/2) diff -= totalNodes;
-                        if (diff < -totalNodes/2) diff += totalNodes;
-                        logicalIndex += diff; targetRotation = logicalIndex * angleStep; 
-                        playSound('tick');
-                        updateUI(getActiveIndex());
+                    if (scrollProgress > 0) {
+                        if (resetTimeout) clearTimeout(resetTimeout);
+                        scrollProgress--;
+                        const currentActive = getActiveIndex();
+                        if (currentActive !== scrollProgress) {
+                            let diff = scrollProgress - currentActive;
+                            if (diff > totalNodes / 2) diff -= totalNodes;
+                            if (diff < -totalNodes / 2) diff += totalNodes;
+                            logicalIndex += diff; targetRotation = logicalIndex * angleStep;
+                            playSound('tick');
+                            updateUI(getActiveIndex());
+                        } else {
+                            goToPrev();
+                        }
                     } else {
-                        goToNext();
-                    }
-                } else {
-                    window.parent.postMessage('oar-scroll-down', '*');
-                    if (!resetTimeout) {
-                        resetTimeout = setTimeout(() => {
-                            scrollProgress = 0; logicalIndex = 0; targetRotation = 0; updateUI(0);
-                            resetTimeout = null;
-                        }, 800);
-                    }
-                }
-            } else {
-                if (scrollProgress > 0) {
-                    if (resetTimeout) clearTimeout(resetTimeout);
-                    scrollProgress--;
-                    const currentActive = getActiveIndex();
-                    if (currentActive !== scrollProgress) {
-                        let diff = scrollProgress - currentActive;
-                        if (diff > totalNodes/2) diff -= totalNodes;
-                        if (diff < -totalNodes/2) diff += totalNodes;
-                        logicalIndex += diff; targetRotation = logicalIndex * angleStep; 
-                        playSound('tick');
-                        updateUI(getActiveIndex());
-                    } else {
+                        // At progress 0: Rotate anyway but keep progress at 0
                         goToPrev();
+                        window.parent.postMessage('oar-scroll-up', '*');
                     }
-                } else {
-                    // At progress 0: Rotate anyway but keep progress at 0
-                    goToPrev();
-                    window.parent.postMessage('oar-scroll-up', '*');
                 }
             }
-        }
 
-        // --- MOUSE WHEEL ---
-        window.addEventListener('wheel', (e) => {
-            if (isDashboardOpen) return;
-            if (window.innerWidth <= 768) {
-                // Remove restrictions on mobile, straight up page scroll
-                if (e.deltaY > 0) window.parent.postMessage('oar-scroll-down', '*');
-                else window.parent.postMessage('oar-scroll-up', '*');
-                return;
-            }
-            if (Math.abs(e.deltaY) > 10) {
-                if (e.deltaY > 0) handleStep(true);
-                else handleStep(false);
-                // We always preventDefault for wheel inside the iframe to avoid jitter
-                // unless we want native scroll to take over (handled in handleStep)
-                if ((e.deltaY > 0 && scrollProgress < totalNodes - 1) || (e.deltaY < 0 && scrollProgress > 0)) {
-                    e.preventDefault();
+            // --- MOUSE WHEEL ---
+            window.addEventListener('wheel', (e) => {
+                if (isDashboardOpen) return;
+                if (window.innerWidth <= 768) {
+                    // Remove restrictions on mobile, straight up page scroll
+                    if (e.deltaY > 0) window.parent.postMessage('oar-scroll-down', '*');
+                    else window.parent.postMessage('oar-scroll-up', '*');
+                    return;
                 }
-            }
-        }, { passive: false });
+                if (Math.abs(e.deltaY) > 10) {
+                    if (e.deltaY > 0) handleStep(true);
+                    else handleStep(false);
+                    // We always preventDefault for wheel inside the iframe to avoid jitter
+                    // unless we want native scroll to take over (handled in handleStep)
+                    if ((e.deltaY > 0 && scrollProgress < totalNodes - 1) || (e.deltaY < 0 && scrollProgress > 0)) {
+                        e.preventDefault();
+                    }
+                }
+            }, { passive: false });
 
-        // --- DRAG / SWIPE NAVIGATION (Mouse & Touch) ---
-        let isDragging = false;
-        let dragStartX = 0;
-        let dragStartY = 0;
+            // --- DRAG / SWIPE NAVIGATION (Mouse & Touch) ---
+            let isDragging = false;
+            let dragStartX = 0;
+            let dragStartY = 0;
 
-        window.addEventListener('pointerdown', (e) => {
-            if (isDashboardOpen) return;
-            isDragging = true;
-            dragStartX = e.clientX;
-            dragStartY = e.clientY;
-        }, { passive: true });
+            window.addEventListener('pointerdown', (e) => {
+                if (isDashboardOpen) return;
+                isDragging = true;
+                dragStartX = e.clientX;
+                dragStartY = e.clientY;
+            }, { passive: true });
 
-        window.addEventListener('pointermove', (e) => {
-            // Can be used to make the rotation follow the finger before letting go, 
-            // but for simplicity we rely on the same threshold logic on pointerup
-        }, { passive: true });
+            window.addEventListener('pointermove', (e) => {
+                // Can be used to make the rotation follow the finger before letting go, 
+                // but for simplicity we rely on the same threshold logic on pointerup
+            }, { passive: true });
 
-        window.addEventListener('pointerup', (e) => {
-            if (isDashboardOpen || !isDragging) return;
-            isDragging = false;
-            const dx = e.clientX - dragStartX;
-            const dy = e.clientY - dragStartY;
+            window.addEventListener('pointerup', (e) => {
+                if (isDashboardOpen || !isDragging) return;
+                isDragging = false;
+                const dx = e.clientX - dragStartX;
+                const dy = e.clientY - dragStartY;
 
-            if (Math.abs(dx) > 40 || Math.abs(dy) > 40) {
-                if (Math.abs(dx) > Math.abs(dy)) {
-                    // Horizontal drag: Rotate spheres
-                    if (dx > 0) goToPrev();
-                    else goToNext();
-                } else {
-                    // Vertical drag: scroll parent or handle step
-                    if (window.innerWidth <= 768) {
-                        if (dy < 0) window.parent.postMessage('oar-scroll-down', '*'); 
-                        else window.parent.postMessage('oar-scroll-up', '*'); 
+                if (Math.abs(dx) > 40 || Math.abs(dy) > 40) {
+                    if (Math.abs(dx) > Math.abs(dy)) {
+                        // Horizontal drag: Rotate spheres
+                        if (dx > 0) goToPrev();
+                        else goToNext();
                     } else {
-                        if (dy < 0) handleStep(true); 
-                        else handleStep(false); 
+                        // Vertical drag: scroll parent or handle step
+                        if (window.innerWidth <= 768) {
+                            if (dy < 0) window.parent.postMessage('oar-scroll-down', '*');
+                            else window.parent.postMessage('oar-scroll-up', '*');
+                        } else {
+                            if (dy < 0) handleStep(true);
+                            else handleStep(false);
+                        }
                     }
                 }
-            }
-        }, { passive: true });
+            }, { passive: true });
 
-        window.addEventListener('pointercancel', () => { isDragging = false; });
+            window.addEventListener('pointercancel', () => { isDragging = false; });
 
-        function onInteraction(e) {
-            if (isDashboardOpen) return;
-            const mouseVec = new THREE.Vector2((e.clientX / window.innerWidth) * 2 - 1, -(e.clientY / window.innerHeight) * 2 + 1);
-            const ray = new THREE.Raycaster(); ray.setFromCamera(mouseVec, camera);
-            const hits = ray.intersectObjects(nodes);
-            if (hits.length > 0) {
-                const idx = nodes.indexOf(hits[0].object);
-                if (idx !== getActiveIndex()) {
-                    let diff = idx - getActiveIndex();
-                    if (diff > totalNodes / 2) diff -= totalNodes; if (diff < -totalNodes / 2) diff += totalNodes;
-                    logicalIndex += diff; targetRotation = logicalIndex * angleStep; playSound('tick'); updateUI(getActiveIndex());
-                } else openDashboard(idx);
-            }
-        }
-        document.addEventListener('click', onInteraction);
-
-        function updateHUD() {
-            const activePos = new THREE.Vector3(); const center3D = new THREE.Vector3(0, 0, 0).project(camera);
-            const cX = (center3D.x * .5 + .5) * window.innerWidth; const cY = (center3D.y * -.5 + .5) * window.innerHeight;
-            const rest3D = new THREE.Vector3(0, Math.cos(Math.PI / 2.3) * 55, Math.sin(Math.PI / 2.3) * 55).project(camera);
-            const rX = (rest3D.x * .5 + .5) * window.innerWidth; const rY = (rest3D.y * -.5 + .5) * window.innerHeight;
-            labels.forEach((l, i) => {
-                const v = new THREE.Vector3(); l.mesh.getWorldPosition(v);
-                v.project(camera); const x = (v.x * .5 + .5) * window.innerWidth; const y = (v.y * -.5 + .5) * window.innerHeight;
-                if (i === getActiveIndex()) { 
-                    l.element.style.left = cX + 'px'; 
-                    l.element.style.top = (cY - (window.innerWidth > 768 ? 140 : 85)) + 'px'; 
-                    activePos.set(x, y, 0); 
+            function onInteraction(e) {
+                if (isDashboardOpen) return;
+                const mouseVec = new THREE.Vector2((e.clientX / window.innerWidth) * 2 - 1, -(e.clientY / window.innerHeight) * 2 + 1);
+                const ray = new THREE.Raycaster(); ray.setFromCamera(mouseVec, camera);
+                const hits = ray.intersectObjects(nodes);
+                if (hits.length > 0) {
+                    const idx = nodes.indexOf(hits[0].object);
+                    if (idx !== getActiveIndex()) {
+                        let diff = idx - getActiveIndex();
+                        if (diff > totalNodes / 2) diff -= totalNodes; if (diff < -totalNodes / 2) diff += totalNodes;
+                        logicalIndex += diff; targetRotation = logicalIndex * angleStep; playSound('tick'); updateUI(getActiveIndex());
+                    } else openDashboard(idx);
                 }
-                else { 
-                    l.element.style.left = x + 'px'; 
-                    l.element.style.top = (y - (window.innerWidth > 768 ? 60 : 35)) + 'px'; 
-                }
-            });
-            if (!isMoving && !isDashboardOpen) {
-                const p = document.getElementById('organic-pulse');
-                p.style.left = activePos.x + 'px'; p.style.top = activePos.y + 'px'; p.style.opacity = '1';
-            } else document.getElementById('organic-pulse').style.opacity = '0';
-            const acts = document.getElementById('action-container');
-            if (!isDashboardOpen) { 
-                const yOffset = window.innerWidth > 768 ? 190 : 130;
-                acts.style.left = rX + 'px'; acts.style.top = (rY + yOffset) + 'px'; acts.style.opacity = '1'; acts.style.transform = 'translate(-50%,0) scale(1)'; 
             }
-            else acts.style.opacity = '0';
-            document.getElementById('nav-arrow-left').style.top = activePos.y + 'px';
-            document.getElementById('nav-arrow-right').style.top = activePos.y + 'px';
-        }
+            document.addEventListener('click', onInteraction);
 
-        const clock = new THREE.Clock();
-        function animate() {
-            requestAnimationFrame(animate); const delta = clock.getDelta(); const time = clock.elapsedTime;
-            
-            // Animar recorridos de luz en la órbita (rotar sobre su centro Z)
-            if (beam1) beam1.rotation.z -= delta * 0.15;
-            if (beam2) beam2.rotation.z -= delta * 0.15;
-
-            currentRotation += (targetRotation - currentRotation) * 0.15; carouselGroup.rotation.z = currentRotation;
-            isMoving = Math.abs(targetRotation - currentRotation) > 0.01;
-            nodes.forEach((node, i) => {
-                node.rotation.x += delta * 0.2; node.rotation.y += delta * 0.2;
-                const elem = node.children[0];
-                if (elem && elem.children && elem.children.length > 0) {
-                    const id = elem.userData.elemId;
-                    if (id === 0) { // Bosques
-                        elem.children.forEach(p => { p.position.add(p.userData.vel); if (p.position.length() > 3) p.position.set(0, 0, 0); });
-                    } else if (id === 1) { // Biodiversidad
-                        elem.children.forEach((p, j) => { p.userData.angle += delta; p.position.set(Math.cos(p.userData.angle + j) * p.userData.dist, Math.sin(p.userData.angle * 1.5 + j) * 0.8, Math.sin(p.userData.angle + j) * p.userData.dist); });
-                    } else if (id === 2) { // Clima
-                        elem.rotation.y += delta * 0.5; elem.scale.setScalar(1 + Math.sin(time) * 0.1);
-                    } else if (id === 3) { // Agua
-                        elem.children.forEach(b => { b.position.y += b.userData.vY; if (b.position.y > 3) b.position.y = -3; });
-                    } else if (id === 4) { // Costas
-                        elem.children.forEach(r => { r.scale.setScalar(0.5 + (Math.sin(time * 2 + r.userData.phase) + 1) * 0.5); });
-                    } else if (id === 5) { // Mares
-                        elem.children[0].rotation.z += delta * 0.2;
-                    } else if (id === 6) { // Aire
-                        elem.children.forEach(c => { c.position.x += c.userData.vX; if (c.position.x > 5) c.position.x = -5; });
+            function updateHUD() {
+                const activePos = new THREE.Vector3(); const center3D = new THREE.Vector3(0, 0, 0).project(camera);
+                const cX = (center3D.x * .5 + .5) * window.innerWidth; const cY = (center3D.y * -.5 + .5) * window.innerHeight;
+                const rest3D = new THREE.Vector3(0, Math.cos(Math.PI / 2.3) * 55, Math.sin(Math.PI / 2.3) * 55).project(camera);
+                const rX = (rest3D.x * .5 + .5) * window.innerWidth; const rY = (rest3D.y * -.5 + .5) * window.innerHeight;
+                labels.forEach((l, i) => {
+                    const v = new THREE.Vector3(); l.mesh.getWorldPosition(v);
+                    v.project(camera); const x = (v.x * .5 + .5) * window.innerWidth; const y = (v.y * -.5 + .5) * window.innerHeight;
+                    if (i === getActiveIndex()) {
+                        l.element.style.left = cX + 'px';
+                        l.element.style.top = (cY - (window.innerWidth > 768 ? 140 : 85)) + 'px';
+                        activePos.set(x, y, 0);
                     }
+                    else {
+                        l.element.style.left = x + 'px';
+                        l.element.style.top = (y - (window.innerWidth > 768 ? 60 : 35)) + 'px';
+                    }
+                });
+                if (!isMoving && !isDashboardOpen) {
+                    const p = document.getElementById('organic-pulse');
+                    p.style.left = activePos.x + 'px'; p.style.top = activePos.y + 'px'; p.style.opacity = '1';
+                } else document.getElementById('organic-pulse').style.opacity = '0';
+                const acts = document.getElementById('action-container');
+                if (!isDashboardOpen) {
+                    const yOffset = window.innerWidth > 768 ? 190 : 130;
+                    acts.style.left = rX + 'px'; acts.style.top = (rY + yOffset) + 'px'; acts.style.opacity = '1'; acts.style.transform = 'translate(-50%,0) scale(1)';
                 }
-                const targetScale = (i === getActiveIndex()) ? 1.9 : 1;
-                node.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.15);
-            });
-
-            // Smooth background opacity transition
-            if (bgMaterial.uniforms) {
-                bgMaterial.uniforms.opacity.value += (targetBgOpacity - bgMaterial.uniforms.opacity.value) * 0.1;
+                else acts.style.opacity = '0';
+                document.getElementById('nav-arrow-left').style.top = activePos.y + 'px';
+                document.getElementById('nav-arrow-right').style.top = activePos.y + 'px';
             }
 
-            updateHUD(); renderer.render(scene, camera);
-        }
+            const clock = new THREE.Clock();
+            function animate() {
+                requestAnimationFrame(animate); const delta = clock.getDelta(); const time = clock.elapsedTime;
 
-        // Auto-init systems
-        window.addEventListener('load', () => {
-            initAudio();
-            updateUI(0);
-            animate();
-        });
+                // Animar recorridos de luz en la órbita (rotar sobre su centro Z)
+                if (beam1) beam1.rotation.z -= delta * 0.15;
+                if (beam2) beam2.rotation.z -= delta * 0.15;
 
-        document.getElementById('btn-mute').onclick = (e) => {
-            isMuted = !isMuted; e.currentTarget.querySelector('i').className = isMuted ? 'ph ph-speaker-slash' : 'ph ph-speaker-high';
-        };
+                currentRotation += (targetRotation - currentRotation) * 0.15; carouselGroup.rotation.z = currentRotation;
+                isMoving = Math.abs(targetRotation - currentRotation) > 0.01;
+                nodes.forEach((node, i) => {
+                    node.rotation.x += delta * 0.2; node.rotation.y += delta * 0.2;
+                    const elem = node.children[0];
+                    if (elem && elem.children && elem.children.length > 0) {
+                        const id = elem.userData.elemId;
+                        if (id === 0) { // Bosques
+                            elem.children.forEach(p => { p.position.add(p.userData.vel); if (p.position.length() > 3) p.position.set(0, 0, 0); });
+                        } else if (id === 1) { // Biodiversidad
+                            elem.children.forEach((p, j) => { p.userData.angle += delta; p.position.set(Math.cos(p.userData.angle + j) * p.userData.dist, Math.sin(p.userData.angle * 1.5 + j) * 0.8, Math.sin(p.userData.angle + j) * p.userData.dist); });
+                        } else if (id === 2) { // Clima
+                            elem.rotation.y += delta * 0.5; elem.scale.setScalar(1 + Math.sin(time) * 0.1);
+                        } else if (id === 3) { // Agua
+                            elem.children.forEach(b => { b.position.y += b.userData.vY; if (b.position.y > 3) b.position.y = -3; });
+                        } else if (id === 4) { // Costas
+                            elem.children.forEach(r => { r.scale.setScalar(0.5 + (Math.sin(time * 2 + r.userData.phase) + 1) * 0.5); });
+                        } else if (id === 5) { // Mares
+                            elem.children[0].rotation.z += delta * 0.2;
+                        } else if (id === 6) { // Aire
+                            elem.children.forEach(c => { c.position.x += c.userData.vX; if (c.position.x > 5) c.position.x = -5; });
+                        }
+                    }
+                    const targetScale = (i === getActiveIndex()) ? 1.9 : 1;
+                    node.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.15);
+                });
 
-        const modalCont = document.getElementById('modal-list-container');
-        menuData.forEach((d, i) => {
-            const li = document.createElement('li');
-            li.innerHTML = `<a href="#"><span class="color-dot" style="background-color:#${d.color.toString(16)}"></span> ${d.title}</a>`;
-            li.onclick = () => { openDashboard(i); document.getElementById('modal-opciones').classList.remove('visible'); };
-            modalCont.appendChild(li);
-        });
+                // Smooth background opacity transition
+                if (bgMaterial.uniforms) {
+                    bgMaterial.uniforms.opacity.value += (targetBgOpacity - bgMaterial.uniforms.opacity.value) * 0.1;
+                }
 
-        if (document.getElementById('btn-opciones')) document.getElementById('btn-opciones').onclick = () => { document.getElementById('modal-opciones').classList.add('visible'); playSound('tick'); };
-        if (document.getElementById('btn-close-modal')) document.getElementById('btn-close-modal').onclick = () => document.getElementById('modal-opciones').classList.remove('visible');
-        if (document.getElementById('btn-guia')) {
-            document.getElementById('btn-guia').onclick = () => {
-                window.parent.postMessage('oar-open-guide', '*');
-                playSound('tick');
+                updateHUD(); renderer.render(scene, camera);
+            }
+
+            // Auto-init systems
+            window.addEventListener('load', () => {
+                initAudio();
+                updateUI(0);
+                animate();
+            });
+
+            document.getElementById('btn-mute').onclick = (e) => {
+                isMuted = !isMuted; e.currentTarget.querySelector('i').className = isMuted ? 'ph ph-speaker-slash' : 'ph ph-speaker-high';
             };
-        }
-        if (document.getElementById('nav-arrow-left')) document.getElementById('nav-arrow-left').onclick = goToPrev;
-        if (document.getElementById('nav-arrow-right')) document.getElementById('nav-arrow-right').onclick = goToNext;
 
-    </script>
+            const modalCont = document.getElementById('modal-list-container');
+            menuData.forEach((d, i) => {
+                const li = document.createElement('li');
+                li.innerHTML = `<a href="#"><span class="color-dot" style="background-color:#${d.color.toString(16)}"></span> ${d.title}</a>`;
+                li.onclick = () => { openDashboard(i); document.getElementById('modal-opciones').classList.remove('visible'); };
+                modalCont.appendChild(li);
+            });
+
+            if (document.getElementById('btn-opciones')) document.getElementById('btn-opciones').onclick = () => { document.getElementById('modal-opciones').classList.add('visible'); playSound('tick'); };
+            if (document.getElementById('btn-close-modal')) document.getElementById('btn-close-modal').onclick = () => document.getElementById('modal-opciones').classList.remove('visible');
+            if (document.getElementById('btn-guia')) {
+                document.getElementById('btn-guia').onclick = () => {
+                    window.parent.postMessage('oar-open-guide', '*');
+                    playSound('tick');
+                };
+            }
+            if (document.getElementById('nav-arrow-left')) document.getElementById('nav-arrow-left').onclick = goToPrev;
+            if (document.getElementById('nav-arrow-right')) document.getElementById('nav-arrow-right').onclick = goToNext;
+
+        </script>
 </body>
 
 </html>
