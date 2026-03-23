@@ -1,0 +1,407 @@
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\App.jsx[24m[0m
+[0m  [2m101:27[22m  [31merror[39m  'user' is defined but never used  [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\components\ai\Chatbot.jsx[24m[0m
+[0m   [2m23:9[22m   [31merror[39m  Error: Calling setState synchronously within an effect can trigger cascading renders[0m
+[0m[0m
+[0mEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:[0m
+[0m* Update external systems with the latest state from React.[0m
+[0m* Subscribe for updates from some external system, calling setState in a callback function when external state changes.[0m
+[0m[0m
+[0mCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).[0m
+[0m[0m
+[0m  21 |     // Cerrar menú al navegar[0m
+[0m  22 |     useEffect(() => {[0m
+[0m> 23 |         setIsMenuOpen(false);[0m
+[0m     |         ^^^^^^^^^^^^^ Avoid calling setState() directly within an effect[0m
+[0m  24 |     }, [location.pathname]);[0m
+[0m  25 |[0m
+[0m  26 |     const scrollToBottom = () => {  [2mreact-hooks/set-state-in-effect[22m[0m
+[0m  [2m129:43[22m  [31merror[39m  'idx' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\components\docs\DocSearch.jsx[24m[0m
+[0m  [2m5:10[22m  [31merror[39m  'cn' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\components\home\Hero3D.jsx[24m[0m
+[0m    [2m1:35[22m  [31merror[39m  'useEffect' is defined but never used. Allowed unused vars must match /^[A-Z_]/u          [2mno-unused-vars[22m[0m
+[0m    [2m1:46[22m  [31merror[39m  'useMemo' is defined but never used. Allowed unused vars must match /^[A-Z_]/u            [2mno-unused-vars[22m[0m
+[0m  [2m100:59[22m  [31merror[39m  'setIsDashboardOpen' is defined but never used                                            [2mno-unused-vars[22m[0m
+[0m  [2m100:79[22m  [31merror[39m  'isMuted' is defined but never used                                                       [2mno-unused-vars[22m[0m
+[0m  [2m105:15[22m  [31merror[39m  'state' is defined but never used                                                         [2mno-unused-vars[22m[0m
+[0m  [2m105:22[22m  [31merror[39m  'delta' is defined but never used                                                         [2mno-unused-vars[22m[0m
+[0m  [2m142:11[22m  [31merror[39m  'navigate' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\components\layout\SitemapModal.jsx[24m[0m
+[0m  [2m10:10[22m  [31merror[39m  'getEramAxes' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\components\map\LayerControl.jsx[24m[0m
+[0m  [2m4:10[22m  [31merror[39m  'cn' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\components\monitoring\RegionalChart.jsx[24m[0m
+[0m  [2m5:76[22m  [31merror[39m  'unit' is defined but never used  [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\components\ui\GlobalSearch.jsx[24m[0m
+[0m  [2m13:22[22m  [31merror[39m  Error: Calling setState synchronously within an effect can trigger cascading renders[0m
+[0m[0m
+[0mEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:[0m
+[0m* Update external systems with the latest state from React.[0m
+[0m* Subscribe for updates from some external system, calling setState in a callback function when external state changes.[0m
+[0m[0m
+[0mCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).[0m
+[0m[0m
+[0m  11 |     // Reset query when closed[0m
+[0m  12 |     useEffect(() => {[0m
+[0m> 13 |         if (!isOpen) setQuery("");[0m
+[0m     |                      ^^^^^^^^ Avoid calling setState() directly within an effect[0m
+[0m  14 |     }, [isOpen]);[0m
+[0m  15 |[0m
+[0m  16 |     // Handle Esc and Scroll Lock  [2mreact-hooks/set-state-in-effect[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\components\ui\ViewGuideModal.jsx[24m[0m
+[0m   [2m4:10[22m  [31merror[39m  'cn' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               [2mno-unused-vars[22m[0m
+[0m  [2m20:9[22m   [31merror[39m  Error: Calling setState synchronously within an effect can trigger cascading renders[0m
+[0m[0m
+[0mEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:[0m
+[0m* Update external systems with the latest state from React.[0m
+[0m* Subscribe for updates from some external system, calling setState in a callback function when external state changes.[0m
+[0m[0m
+[0mCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).[0m
+[0m[0m
+[0m  18 |         );[0m
+[0m  19 |         [0m
+[0m> 20 |         setGuide(guidesData[matchedPath] || guidesData['/']);[0m
+[0m     |         ^^^^^^^^ Avoid calling setState() directly within an effect[0m
+[0m  21 |     }, [location.pathname, isOpen]);[0m
+[0m  22 |[0m
+[0m  23 |     if (!isOpen || !guide) return null;  [2mreact-hooks/set-state-in-effect[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\data\CifrasCenter.jsx[24m[0m
+[0m    [2m1:36[22m  [31merror[39m  'useEffect' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                 [2mno-unused-vars[22m[0m
+[0m   [2m18:10[22m  [31merror[39m  'getEramAxes' is defined but never used. Allowed unused vars must match /^[A-Z_]/u               [2mno-unused-vars[22m[0m
+[0m  [2m121:11[22m  [31merror[39m  'toggleSelection' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\institutional\ForestStoryDetail.jsx[24m[0m
+[0m  [2m50:13[22m  [31merror[39m    Error: Calling setState synchronously within an effect can trigger cascading renders[0m
+[0m[0m
+[0mEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:[0m
+[0m* Update external systems with the latest state from React.[0m
+[0m* Subscribe for updates from some external system, calling setState in a callback function when external state changes.[0m
+[0m[0m
+[0mCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).[0m
+[0m[0m
+[0m  48 |         const found = stories.find(s => s.slug === slug);[0m
+[0m  49 |         if (found) {[0m
+[0m> 50 |             setActiveStory(found);[0m
+[0m     |             ^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect[0m
+[0m  51 |         } else {[0m
+[0m  52 |             setActiveStory(stories[0]);[0m
+[0m  53 |         }  [2mreact-hooks/set-state-in-effect[22m[0m
+[0m  [2m55:8[22m   [33mwarning[39m  React Hook useEffect has a missing dependency: 'stories'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              [2mreact-hooks/exhaustive-deps[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\institutional\Home.jsx[24m[0m
+[0m  [2m3:10[22m  [31merror[39m  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\institutional\QuienesSomos.jsx[24m[0m
+[0m  [2m2:10[22m  [31merror[39m  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\institutional\StrategicAxisGeneric.jsx[24m[0m
+[0m   [2m2:10[22m  [31merror[39m  'useNavigate' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  [2mno-unused-vars[22m[0m
+[0m  [2m16:37[22m  [31merror[39m  'Icon' is defined but never used                                                    [2mno-unused-vars[22m[0m
+[0m  [2m16:63[22m  [31merror[39m  'colorClass' is defined but never used                                              [2mno-unused-vars[22m[0m
+[0m  [2m73:51[22m  [31merror[39m  'subtitle' is defined but never used                                                [2mno-unused-vars[22m[0m
+[0m  [2m73:71[22m  [31merror[39m  'AxisIcon' is defined but never used                                                [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\institutional\StrategicAxisHome.jsx[24m[0m
+[0m   [2m3:10[22m  [31merror[39m  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  [2mno-unused-vars[22m[0m
+[0m  [2m34:29[22m  [31merror[39m  'Icon' is defined but never used                                               [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\institutional\sections\AnaliticaSection.jsx[24m[0m
+[0m  [2m3:10[22m  [31merror[39m  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\institutional\sections\AudienceSection.jsx[24m[0m
+[0m  [2m3:10[22m  [31merror[39m  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\institutional\sections\CifrasSection.jsx[24m[0m
+[0m  [2m3:10[22m  [31merror[39m  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\institutional\sections\DocsSection.jsx[24m[0m
+[0m  [2m3:10[22m  [31merror[39m  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\institutional\sections\EjesSection.jsx[24m[0m
+[0m  [2m3:10[22m  [31merror[39m  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\institutional\sections\GeoSection.jsx[24m[0m
+[0m  [2m3:10[22m  [31merror[39m  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\institutional\sections\IntroScreen.jsx[24m[0m
+[0m  [2m2:10[22m  [31merror[39m  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\institutional\sections\MonitoreoSection.jsx[24m[0m
+[0m  [2m3:10[22m  [31merror[39m  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\institutional\sections\NavigatorSection.jsx[24m[0m
+[0m  [2m3:10[22m  [31merror[39m  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\institutional\sections\PreguntasSection.jsx[24m[0m
+[0m  [2m3:10[22m  [31merror[39m  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\institutional\sections\ReportesSection.jsx[24m[0m
+[0m  [2m3:10[22m  [31merror[39m  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\institutional\sections\VisorSection.jsx[24m[0m
+[0m  [2m3:10[22m  [31merror[39m  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\monitoring\MonitoringPortal.jsx[24m[0m
+[0m  [2m15:13[22m  [31merror[39m  Error: Calling setState synchronously within an effect can trigger cascading renders[0m
+[0m[0m
+[0mEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:[0m
+[0m* Update external systems with the latest state from React.[0m
+[0m* Subscribe for updates from some external system, calling setState in a callback function when external state changes.[0m
+[0m[0m
+[0mCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).[0m
+[0m[0m
+[0m  13 |         const level = searchParams.get('level');[0m
+[0m  14 |         if (level === 'estrategico' || level === 'operativo') {[0m
+[0m> 15 |             setActiveTab(level);[0m
+[0m     |             ^^^^^^^^^^^^ Avoid calling setState() directly within an effect[0m
+[0m  16 |         }[0m
+[0m  17 |     }, [searchParams]);[0m
+[0m  18 |     const [selectedEje, setSelectedEje] = useState(4); // Default to Bosques (ID 4)  [2mreact-hooks/set-state-in-effect[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\monitoring\OperationalMonitoring.jsx[24m[0m
+[0m  [2m157:13[22m  [31merror[39m  Error: Calling setState synchronously within an effect can trigger cascading renders[0m
+[0m[0m
+[0mEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:[0m
+[0m* Update external systems with the latest state from React.[0m
+[0m* Subscribe for updates from some external system, calling setState in a callback function when external state changes.[0m
+[0m[0m
+[0mCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).[0m
+[0m[0m
+[0m  155 |     useEffect(() => {[0m
+[0m  156 |         if (!availableResults.includes(selectedResultado)) {[0m
+[0m> 157 |             setSelectedResultado('Todos');[0m
+[0m      |             ^^^^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect[0m
+[0m  158 |         }[0m
+[0m  159 |     }, [availableResults, selectedResultado]);[0m
+[0m  160 |  [2mreact-hooks/set-state-in-effect[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\monitoring\StrategicMonitoring.jsx[24m[0m
+[0m  [2m64:13[22m  [31merror[39m  Error: Calling setState synchronously within an effect can trigger cascading renders[0m
+[0m[0m
+[0mEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:[0m
+[0m* Update external systems with the latest state from React.[0m
+[0m* Subscribe for updates from some external system, calling setState in a callback function when external state changes.[0m
+[0m[0m
+[0mCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).[0m
+[0m[0m
+[0m  62 |     useEffect(() => {[0m
+[0m  63 |         if (!availableCategories.includes(selectedCategory)) {[0m
+[0m> 64 |             setSelectedCategory('Todas');[0m
+[0m     |             ^^^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect[0m
+[0m  65 |         }[0m
+[0m  66 |     }, [availableCategories, selectedCategory]);[0m
+[0m  67 |  [2mreact-hooks/set-state-in-effect[22m[0m
+[0m  [2m70:13[22m  [31merror[39m  Error: Calling setState synchronously within an effect can trigger cascading renders[0m
+[0m[0m
+[0mEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:[0m
+[0m* Update external systems with the latest state from React.[0m
+[0m* Subscribe for updates from some external system, calling setState in a callback function when external state changes.[0m
+[0m[0m
+[0mCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).[0m
+[0m[0m
+[0m  68 |     useEffect(() => {[0m
+[0m  69 |         if (!availableTypes.includes(selectedType)) {[0m
+[0m> 70 |             setSelectedType('Todas');[0m
+[0m     |             ^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect[0m
+[0m  71 |         }[0m
+[0m  72 |     }, [availableTypes, selectedType]);[0m
+[0m  73 |                            [2mreact-hooks/set-state-in-effect[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\questions\QuestionsIndex.jsx[24m[0m
+[0m   [2m3:10[22m  [31merror[39m  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  [2mno-unused-vars[22m[0m
+[0m  [2m12:31[22m  [31merror[39m  'Icon' is defined but never used                                               [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\questions\answers\AnswerActiveFires.jsx[24m[0m
+[0m   [2m2:10[22m  [31merror[39m  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              [2mno-unused-vars[22m[0m
+[0m  [2m56:12[22m  [31merror[39m  'loading' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    [2mno-unused-vars[22m[0m
+[0m  [2m65:9[22m   [31merror[39m  Error: Calling setState synchronously within an effect can trigger cascading renders[0m
+[0m[0m
+[0mEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:[0m
+[0m* Update external systems with the latest state from React.[0m
+[0m* Subscribe for updates from some external system, calling setState in a callback function when external state changes.[0m
+[0m[0m
+[0mCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).[0m
+[0m[0m
+[0m  63 |[0m
+[0m  64 |     useEffect(() => {[0m
+[0m> 65 |         setLoading(true);[0m
+[0m     |         ^^^^^^^^^^ Avoid calling setState() directly within an effect[0m
+[0m  66 |         const remoteUrl = `https://raw.githubusercontent.com/mapgisdev/prototipo_oar/main/public/api/fires_data.json`;[0m
+[0m  67 |[0m
+[0m  68 |         fetch(remoteUrl)  [2mreact-hooks/set-state-in-effect[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\questions\answers\AnswerConservation30x30.jsx[24m[0m
+[0m    [2m2:10[22m  [31merror[39m  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            [2mno-unused-vars[22m[0m
+[0m   [2m44:12[22m  [31merror[39m  'loading' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  [2mno-unused-vars[22m[0m
+[0m   [2m53:9[22m   [31merror[39m  Error: Calling setState synchronously within an effect can trigger cascading renders[0m
+[0m[0m
+[0mEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:[0m
+[0m* Update external systems with the latest state from React.[0m
+[0m* Subscribe for updates from some external system, calling setState in a callback function when external state changes.[0m
+[0m[0m
+[0mCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).[0m
+[0m[0m
+[0m  51 |[0m
+[0m  52 |     useEffect(() => {[0m
+[0m> 53 |         setLoading(true);[0m
+[0m     |         ^^^^^^^^^^ Avoid calling setState() directly within an effect[0m
+[0m  54 |         const remoteUrl = `https://raw.githubusercontent.com/mapgisdev/prototipo_oar/main/public/api/bio_data.json`;[0m
+[0m  55 |[0m
+[0m  56 |         fetch(remoteUrl)  [2mreact-hooks/set-state-in-effect[22m[0m
+[0m  [2m314:70[22m  [31merror[39m  'cn' is not defined                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      [2mno-undef[22m[0m
+[0m  [2m315:71[22m  [31merror[39m  'cn' is not defined                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      [2mno-undef[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\questions\answers\AnswerDroughtRisk.jsx[24m[0m
+[0m   [2m2:10[22m  [31merror[39m  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   [2mno-unused-vars[22m[0m
+[0m  [2m65:9[22m   [31merror[39m  Error: Calling setState synchronously within an effect can trigger cascading renders[0m
+[0m[0m
+[0mEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:[0m
+[0m* Update external systems with the latest state from React.[0m
+[0m* Subscribe for updates from some external system, calling setState in a callback function when external state changes.[0m
+[0m[0m
+[0mCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).[0m
+[0m[0m
+[0m  63 |[0m
+[0m  64 |     useEffect(() => {[0m
+[0m> 65 |         setLoading(true);[0m
+[0m     |         ^^^^^^^^^^ Avoid calling setState() directly within an effect[0m
+[0m  66 |         fetch(`https://api.open-meteo.com/v1/forecast?latitude=${point.lat}&longitude=${point.lon}&daily=temperature_2m_max,precipitation_sum&timezone=auto&past_days=90`)[0m
+[0m  67 |             .then(r => r.json())[0m
+[0m  68 |             .then(d => {  [2mreact-hooks/set-state-in-effect[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\questions\answers\AnswerForestLoss.jsx[24m[0m
+[0m   [2m2:10[22m  [31merror[39m  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               [2mno-unused-vars[22m[0m
+[0m  [2m58:9[22m   [31merror[39m  Error: Calling setState synchronously within an effect can trigger cascading renders[0m
+[0m[0m
+[0mEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:[0m
+[0m* Update external systems with the latest state from React.[0m
+[0m* Subscribe for updates from some external system, calling setState in a callback function when external state changes.[0m
+[0m[0m
+[0mCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).[0m
+[0m[0m
+[0m  56 |[0m
+[0m  57 |     useEffect(() => {[0m
+[0m> 58 |         setLoading(true);[0m
+[0m     |         ^^^^^^^^^^ Avoid calling setState() directly within an effect[0m
+[0m  59 |         const remoteUrl = `https://raw.githubusercontent.com/mapgisdev/prototipo_oar/main/public/api/forest_data.json`;[0m
+[0m  60 |[0m
+[0m  61 |         fetch(remoteUrl)  [2mreact-hooks/set-state-in-effect[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\questions\answers\AnswerForestState.jsx[24m[0m
+[0m  [2m2:10[22m  [31merror[39m  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\questions\answers\AnswerOceanHealth.jsx[24m[0m
+[0m   [2m2:10[22m  [31merror[39m  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              [2mno-unused-vars[22m[0m
+[0m  [2m42:12[22m  [31merror[39m  'loading' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    [2mno-unused-vars[22m[0m
+[0m  [2m46:9[22m   [31merror[39m  Error: Calling setState synchronously within an effect can trigger cascading renders[0m
+[0m[0m
+[0mEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:[0m
+[0m* Update external systems with the latest state from React.[0m
+[0m* Subscribe for updates from some external system, calling setState in a callback function when external state changes.[0m
+[0m[0m
+[0mCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).[0m
+[0m[0m
+[0m  44 |[0m
+[0m  45 |     useEffect(() => {[0m
+[0m> 46 |         setLoading(true);[0m
+[0m     |         ^^^^^^^^^^ Avoid calling setState() directly within an effect[0m
+[0m  47 |         const remoteUrl = `https://raw.githubusercontent.com/mapgisdev/prototipo_oar/main/public/api/ocean_data.json`;[0m
+[0m  48 |[0m
+[0m  49 |         fetch(remoteUrl)  [2mreact-hooks/set-state-in-effect[22m[0m
+[0m  [2m62:11[22m  [31merror[39m  'mapView' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\questions\answers\AnswerProtectedAreas.jsx[24m[0m
+[0m   [2m1:27[22m  [31merror[39m  'useEffect' is defined but never used. Allowed unused vars must match /^[A-Z_]/u         [2mno-unused-vars[22m[0m
+[0m   [2m2:10[22m  [31merror[39m  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u            [2mno-unused-vars[22m[0m
+[0m  [2m54:12[22m  [31merror[39m  'loading' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\questions\answers\AnswerSpeciesRecords.jsx[24m[0m
+[0m   [2m2:10[22m  [31merror[39m  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    [2mno-unused-vars[22m[0m
+[0m  [2m56:9[22m   [31merror[39m  Error: Calling setState synchronously within an effect can trigger cascading renders[0m
+[0m[0m
+[0mEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:[0m
+[0m* Update external systems with the latest state from React.[0m
+[0m* Subscribe for updates from some external system, calling setState in a callback function when external state changes.[0m
+[0m[0m
+[0mCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).[0m
+[0m[0m
+[0m  54 |[0m
+[0m  55 |     useEffect(() => {[0m
+[0m> 56 |         setLoading(true);[0m
+[0m     |         ^^^^^^^^^^ Avoid calling setState() directly within an effect[0m
+[0m  57 |[0m
+[0m  58 |         let queryParams = `country=${country}`;[0m
+[0m  59 |         if (country === 'regional') {  [2mreact-hooks/set-state-in-effect[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\questions\answers\AnswerWaterSecurity.jsx[24m[0m
+[0m   [2m1:27[22m  [31merror[39m  'useEffect' is defined but never used. Allowed unused vars must match /^[A-Z_]/u         [2mno-unused-vars[22m[0m
+[0m   [2m2:10[22m  [31merror[39m  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u            [2mno-unused-vars[22m[0m
+[0m  [2m53:12[22m  [31merror[39m  'loading' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\technical\GeoAnalysisGeneric.jsx[24m[0m
+[0m  [2m26:5[22m   [31merror[39m  'pythonFunction' is defined but never used  [2mno-unused-vars[22m[0m
+[0m  [2m27:11[22m  [31merror[39m  'Icon' is defined but never used            [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\technical\GeoAnalysisHome.jsx[24m[0m
+[0m  [2m18:31[22m  [31merror[39m  'Icon' is defined but never used  [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\technical\MapHub.jsx[24m[0m
+[0m  [2m13:32[22m  [31merror[39m  'Icon' is defined but never used  [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\technical\SitemapIndependent.jsx[24m[0m
+[0m   [2m13:10[22m  [31merror[39m  'getEramAxes' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            [2mno-unused-vars[22m[0m
+[0m  [2m266:27[22m  [31merror[39m  Error: Calling setState synchronously within an effect can trigger cascading renders[0m
+[0m[0m
+[0mEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:[0m
+[0m* Update external systems with the latest state from React.[0m
+[0m* Subscribe for updates from some external system, calling setState in a callback function when external state changes.[0m
+[0m[0m
+[0mCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).[0m
+[0m[0m
+[0m  264 |     useEffect(() => {[0m
+[0m  265 |         const hasSeenTour = localStorage.getItem('oar_sitemap_tour_v4');[0m
+[0m> 266 |         if (!hasSeenTour) setTourStep(0);[0m
+[0m      |                           ^^^^^^^^^^^ Avoid calling setState() directly within an effect[0m
+[0m  267 |     }, []);[0m
+[0m  268 |[0m
+[0m  269 |     const handleCloseTour = () => {  [2mreact-hooks/set-state-in-effect[22m[0m
+[0m[0m
+[0m[4mD:\GitHub\prototipo_oar\src\pages\technical\analisis_multidimensional\AnalysisSandbox.jsx[24m[0m
+[0m   [2m42:46[22m  [31merror[39m  Unnecessary escape character: \(                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   [2mno-useless-escape[22m[0m
+[0m   [2m42:48[22m  [31merror[39m  Unnecessary escape character: \)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   [2mno-useless-escape[22m[0m
+[0m   [2m42:50[22m  [31merror[39m  Unnecessary escape character: \/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   [2mno-useless-escape[22m[0m
+[0m   [2m42:52[22m  [31merror[39m  Unnecessary escape character: \.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   [2mno-useless-escape[22m[0m
+[0m  [2m124:9[22m   [31merror[39m  Error: Calling setState synchronously within an effect can trigger cascading renders[0m
+[0m[0m
+[0mEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:[0m
+[0m* Update external systems with the latest state from React.[0m
+[0m* Subscribe for updates from some external system, calling setState in a callback function when external state changes.[0m
+[0m[0m
+[0mCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).[0m
+[0m[0m
+[0m  122 |     useEffect(() => {[0m
+[0m  123 |         if (!selectedDataset) return;[0m
+[0m> 124 |         setLoading(true);[0m
+[0m      |         ^^^^^^^^^^ Avoid calling setState() directly within an effect[0m
+[0m  125 |         setError(null);[0m
+[0m  126 |[0m
+[0m  127 |         fetch(selectedDataset.src)  [2mreact-hooks/set-state-in-effect[22m[0m
+[0m  [2m141:54[22m  [31merror[39m  Unnecessary escape character: \(                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   [2mno-useless-escape[22m[0m
+[0m  [2m141:56[22m  [31merror[39m  Unnecessary escape character: \)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   [2mno-useless-escape[22m[0m
+[0m  [2m141:58[22m  [31merror[39m  Unnecessary escape character: \/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   [2mno-useless-escape[22m[0m
+[0m  [2m141:60[22m  [31merror[39m  Unnecessary escape character: \.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   [2mno-useless-escape[22m[0m
+[0m  [2m398:40[22m  [31merror[39m  'Icon' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   [2mno-unused-vars[22m[0m
+[0m[0m
+[0m[31m[1m✖ 90 problems (89 errors, 1 warning)[22m[39m[0m
+[0m[31m[1m[22m[39m[0m

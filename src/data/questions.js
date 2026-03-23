@@ -1,7 +1,6 @@
 import {
     Trees, Shield, Flame, Footprints, CloudRain, Anchor, Droplet, Map as MapIcon, Database
 } from 'lucide-react';
-import { getAxisColor } from '../lib/eram';
 
 export const QUESTIONS_DATA = [
     {
@@ -12,8 +11,8 @@ export const QUESTIONS_DATA = [
         description: "Análisis integral del estado de los recursos forestales (Estado de los Bosques).",
         highlight: "Monitoreo integral",
         path: "/preguntas/estado-bosques",
-        color: getAxisColor("Bosques"),
-        category: "Bosques"
+        color: "#059669",
+        categories: ["bosques"]
     },
     {
         id: 'forest-loss',
@@ -23,8 +22,8 @@ export const QUESTIONS_DATA = [
         description: "Análisis anual de pérdida de cobertura arbórea y emisiones asociadas (GFW).",
         highlight: '<p class="text-sm text-slate-600">Más de <span class="font-bold text-[#97BD3D]">7 millones de hectáreas</span> de cobertura arbórea perdidas en el SICA desde 2010.</p>',
         path: "/preguntas/perdida-bosque",
-        color: getAxisColor("Bosques"),
-        category: "Bosques"
+        color: "#059669",
+        categories: ["bosques"]
     },
     {
         id: 'conservation-30x30',
@@ -34,8 +33,8 @@ export const QUESTIONS_DATA = [
         description: "Estado actual de las áreas protegidas y OECMs reportadas.",
         highlight: '<p class="text-sm text-slate-600">La región protege el <span class="font-bold text-[#10B981]">20.4%</span> de su territorio. Falta un 9.6% para alcanzar el objetivo global al 2030.</p>',
         path: "/preguntas/meta-30x30",
-        color: getAxisColor("Biodiversidad"),
-        category: "Biodiversidad"
+        color: "#0891b2",
+        categories: ["mares"]
     },
     {
         id: 'active-fires',
@@ -45,8 +44,8 @@ export const QUESTIONS_DATA = [
         description: "Monitoreo en tiempo casi real de alertas de fuego (VIIRS/MODIS).",
         highlight: '<p class="text-sm text-slate-600">Detectados <span class="font-bold text-[#EF4444]">7,280 focos de calor</span> en las últimas 24h, con alta incidencia en el Petén y Olancho.</p>',
         path: "/preguntas/incendios-activos",
-        color: getAxisColor("Incendios"),
-        category: "Incendios"
+        color: "#059669",
+        categories: ["bosques"]
     },
     {
         id: 'species-records',
@@ -56,8 +55,8 @@ export const QUESTIONS_DATA = [
         description: "Dashboard de biodiversidad basado en observaciones de GBIF.",
         highlight: "Monitorero GBIF en vivo",
         path: "/preguntas/registros-especies",
-        color: getAxisColor("Biodiversidad"),
-        category: "Biodiversidad"
+        color: "#0891b2",
+        categories: ["mares"]
     },
     {
         id: 'drought-risk',
@@ -67,8 +66,8 @@ export const QUESTIONS_DATA = [
         description: "Indicadores climáticos y proyecciones de estrés hídrico.",
         highlight: '<p class="text-sm text-slate-600">Riesgo <span class="font-bold text-[#8B5CF6]">Moderado a Severo</span> debido a un déficit pluviométrico detectado en los últimos 90 días.</p>',
         path: "/preguntas/riesgo-sequia",
-        color: getAxisColor("Clima"),
-        category: "Clima"
+        color: "#9333ea",
+        categories: ["clima", "agua"]
     },
     {
         id: 'ocean-health',
@@ -78,8 +77,8 @@ export const QUESTIONS_DATA = [
         description: "Índice de salud oceánica y áreas marinas protegidas.",
         highlight: '<p class="text-sm text-slate-600">Anomalía térmica de <span class="font-bold text-[#06B6D4]">+0.88°C</span> en aguas regionales, elevando el riesgo de blanqueamiento coralino.</p>',
         path: "/preguntas/salud-oceanos",
-        color: getAxisColor("Mares"),
-        category: "Mares"
+        color: "#0891b2",
+        categories: ["mares"]
     },
     {
         id: 'water-security',
@@ -89,8 +88,8 @@ export const QUESTIONS_DATA = [
         description: "Disponibilidad y extracción de agua dulce (Aqueduct).",
         highlight: '<p class="text-sm text-slate-600">Estrés hídrico <span class="font-bold text-[#3B82F6]">Medio-Alto (2.8/5)</span> en la región, con una cobertura de agua potable del 89%.</p>',
         path: "/preguntas/seguridad-hidrica",
-        color: getAxisColor("Agua"),
-        category: "Agua"
+        color: "#3b82f6",
+        categories: ["agua"]
     },
     {
         id: 'protected-areas',
@@ -100,8 +99,8 @@ export const QUESTIONS_DATA = [
         description: "Base de datos mundial sobre áreas protegidas (Protected Planet).",
         highlight: "Reporte oficial WDPA",
         path: "/preguntas/areas-protegidas",
-        color: getAxisColor("Biodiversidad"),
-        category: "Biodiversidad"
+        color: "#0891b2",
+        categories: ["mares"]
     },
     {
         id: 'analisis-multidimensional',
@@ -112,6 +111,6 @@ export const QUESTIONS_DATA = [
         highlight: "Sandbox Experimental",
         path: "/analisis-multidimensional",
         color: "#1E293B",
-        category: "Herramientas"
+        categories: []
     }
 ];

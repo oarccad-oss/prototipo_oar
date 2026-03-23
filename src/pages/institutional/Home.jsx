@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { initParticlesEngine } from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
 import { ViewGuideModal } from '../../components/ui/Shared';
 import { getEramAxes } from '../../lib/eram';
 
@@ -28,7 +31,16 @@ export const Home = () => {
   const [isActiveMap, setIsActiveMap] = useState(false);
   const [showIntro, setShowIntro] = useState(true);
   const [isGuideOpen, setIsGuideOpen] = useState(false);
+  const [initParticles, setInitParticles] = useState(false);
   const axes = getEramAxes();
+
+  useEffect(() => {
+    initParticlesEngine(async (engine) => {
+      await loadSlim(engine);
+    }).then(() => {
+      setInitParticles(true);
+    });
+  }, []);
 
   // Filter questions for the home page cards
   const homeQuestions = QUESTIONS_DATA.filter(q =>
@@ -66,8 +78,44 @@ export const Home = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-white">
-      <IntroScreen showIntro={showIntro} handleStartConnection={handleStartConnection} />
+    <div className="flex flex-col min-h-screen bg-white selection:bg-emerald-500 selection:text-white">
+      <style>{`
+        @keyframes blob-drift {
+          0%, 100% { transform: translate(0, 0) scale(1) }
+          33% { transform: translate(30px, -50px) scale(1.1) }
+          66% { transform: translate(-20px, 20px) scale(0.9) }
+        }
+        @keyframes mesh-drift {
+          from { background-position: 0% 0% }
+          to { background-position: 100% 100% }
+        }
+        @keyframes glow-pulse {
+          0%, 100% { box-shadow: 0 0 10px rgba(16,185,129,0.2) }
+          50% { box-shadow: 0 0 40px rgba(16,185,129,0.6) }
+        }
+        @keyframes float-slow {
+          0%, 100% { transform: translateY(0) }
+          50% { transform: translateY(-10px) }
+        }
+        @keyframes gradient-move {
+          0% { background-position: 0% 50% }
+          50% { background-position: 100% 50% }
+          100% { background-position: 0% 50% }
+        }
+        .text-glow {
+          text-shadow: 0 0 20px rgba(16,185,129,0.3);
+        }
+      `}</style>
+      <AnimatePresence>
+        {showIntro && (
+          <IntroScreen 
+            key="intro" 
+            showIntro={showIntro} 
+            handleStartConnection={handleStartConnection} 
+            initParticles={initParticles} 
+          />
+        )}
+      </AnimatePresence>
       
       <NavigatorSection />
 
