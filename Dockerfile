@@ -5,6 +5,7 @@
 # 1. Instalación de Dependencias (Capa de Caché)
 FROM node:20-alpine AS deps
 RUN apk add --no-cache libc6-compat
+
 WORKDIR /app
 COPY package.json package-lock.json ./
 # Railway: npm ci es la forma más rápida de instalar dependencias limpias
