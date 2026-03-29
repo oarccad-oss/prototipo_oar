@@ -6,8 +6,8 @@ export const IntroScreen = ({ showIntro, handleStartConnection, initParticles })
   if (!showIntro) return null;
 
   return (
-    <motion.div 
-      id="intro-screen" 
+    <motion.div
+      id="intro-screen"
       exit={{ opacity: 0, transition: { duration: 1 } }}
       className="fixed inset-0 z-[10000] flex flex-col justify-center items-center text-center bg-[#021226] overflow-hidden p-6 transition-opacity duration-1000 pointer-events-auto"
     >
@@ -47,8 +47,8 @@ export const IntroScreen = ({ showIntro, handleStartConnection, initParticles })
         />
       )}
       <div className="absolute inset-0 bg-gradient-to-b from-[#0f2847]/40 via-[#0a221a]/40 to-[#021226] opacity-80" />
-      
-      <motion.div 
+
+      <motion.div
         initial="hidden"
         animate="visible"
         variants={{
@@ -60,17 +60,17 @@ export const IntroScreen = ({ showIntro, handleStartConnection, initParticles })
         }}
         className="relative z-10 space-y-8 max-w-4xl"
       >
-        <motion.h1 
+        <motion.h1
           variants={{
             hidden: { opacity: 0, y: 30 },
             visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
           }}
           className="text-2xl md:text-5xl font-black text-white tracking-[0.2em] uppercase leading-tight drop-shadow-2xl text-glow"
         >
-          Observatorio Ambiental Regional
+          Observatorio Ambiental Regional (OAR)
         </motion.h1>
-        
-        <motion.div 
+
+        <motion.div
           variants={{
             hidden: { opacity: 0, y: 20 },
             visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
@@ -79,18 +79,18 @@ export const IntroScreen = ({ showIntro, handleStartConnection, initParticles })
         >
           Centroamérica y República Dominicana
         </motion.div>
-        
-        <motion.p 
+
+        <motion.p
           variants={{
             hidden: { opacity: 0, y: 20 },
             visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
           }}
           className="text-white/80 text-base md:text-lg font-light leading-relaxed max-w-2xl mx-auto border-l-2 border-emerald-500/30 pl-6 md:pl-8 text-left"
         >
-          Nuestra región está viva y su latido se siente en cada bosque, río y océano. La Comisión Centroamericana de Ambiente y Desarrollo (CCAD) te da la bienvenida al nuevo OAR, tu espacio interactivo para explorar, comprender y tomar el pulso de los ecosistemas que compartimos.
+          Nuestra región está viva y su latido se siente en cada bosque, río y océano. La Comisión Centroamericana de Ambiente y Desarrollo (CCAD) te da la bienvenida al OAR, tu espacio interactivo para explorar, comprender y tomar el pulso de los ecosistemas que compartimos.
         </motion.p>
-        
-        <motion.button 
+
+        <motion.button
           variants={{
             hidden: { opacity: 0, scale: 0.9 },
             visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }

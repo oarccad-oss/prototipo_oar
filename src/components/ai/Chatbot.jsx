@@ -74,27 +74,28 @@ export const Chatbot = () => {
     };
 
     const menuItems = [
-        { 
-            id: 'search', 
-            label: 'Búsqueda Global', 
-            icon: Search, 
-            color: 'bg-slate-900', 
-            action: handleSearchClick 
+        {
+            id: 'search',
+            label: 'Búsqueda Global',
+            icon: Search,
+            color: 'bg-slate-900',
+            action: handleSearchClick
         },
-        { 
-            id: 'questions', 
-            label: 'Preguntas Estratégicas', 
-            icon: HelpCircle, 
-            color: 'bg-emerald-600', 
-            action: () => navigate('/strategic-questions') 
+        {
+            id: 'questions',
+            label: 'Preguntas Estratégicas',
+            icon: HelpCircle,
+            color: 'bg-emerald-600',
+            action: () => navigate('/strategic-questions')
         },
-        { 
-            id: 'analysis', 
-            label: 'Cruce de Variables', 
-            icon: Database, 
-            color: 'bg-brand-primary', 
-            action: () => navigate('/analisis-multidimensional') 
+        {
+            id: 'analysis',
+            label: 'Cruce de Variables',
+            icon: Database,
+            color: 'bg-brand-primary',
+            action: () => navigate('/analisis-multidimensional')
         },
+        /*
         { 
             id: 'guide', 
             label: 'Guía de esta Vista', 
@@ -105,15 +106,16 @@ export const Chatbot = () => {
                 setIsMenuOpen(false);
             } 
         },
-        { 
-            id: 'chat', 
-            label: 'Asistente IA', 
-            icon: Bot, 
-            color: 'bg-blue-600', 
+        */
+        {
+            id: 'chat',
+            label: 'Asistente IA',
+            icon: Bot,
+            color: 'bg-blue-600',
             action: () => {
                 setIsChatOpen(true);
                 setIsMenuOpen(false);
-            } 
+            }
         }
     ];
 
@@ -211,7 +213,7 @@ export const Chatbot = () => {
                                         "max-w-[80%] p-3 rounded-2xl text-sm shadow-sm",
                                         msg.sender === 'user'
                                             ? "bg-brand-primary text-white rounded-br-none"
-                                             : "bg-white text-slate-700 border border-slate-200 rounded-bl-none"
+                                            : "bg-white text-slate-700 border border-slate-200 rounded-bl-none"
                                     )}>
                                         <p dangerouslySetInnerHTML={{ __html: msg.text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') }}></p>
 
