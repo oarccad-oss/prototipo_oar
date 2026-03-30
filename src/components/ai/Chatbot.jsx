@@ -12,8 +12,8 @@ const API_URL = "https://api.z.ai/api/paas/v4/chat/completions";
 const MODEL = "GLM-4.7-Flash";
 
 const STORAGE_KEY = 'oar-chatbot-messages';
-const MAX_HISTORY_MESSAGES = 20; // Máximo de mensajes enviados a la API (últimos 10 pares user/bot)
-const API_TIMEOUT_MS = 30000; // 30 segundos de timeout
+const MAX_HISTORY_MESSAGES = 6; // Máximo de mensajes de historial para no saturar los tokens por minuto (TPM)
+const API_TIMEOUT_MS = 300000; // 30 segundos de timeout
 
 const DEFAULT_MESSAGE = { id: 1, sender: 'bot', text: 'Hola, soy el asistente IA del OAR. He procesado toda la información institucional para resolver tus dudas de forma clara y formal.' };
 
@@ -184,7 +184,7 @@ export const Chatbot = () => {
         ctx += "Cuando el usuario haga una pregunta, busca en el CATÁLOGO de abajo el documento más relevante. Extrae las CIFRAS EXACTAS (tablas, índices, porcentajes) y preséntaselas al usuario de forma clara y comparativa.\n";
         ctx += "Si la pregunta involucra una COMPARACIÓN entre países, busca la tabla de datos del documento correspondiente y extrae las filas de ambos países.\n";
         ctx += "Si la pregunta es genérica ('¿cómo están los bosques?'), da el panorama regional con las cifras clave del documento.\n\n";
-        
+
         ctx += `=== CATÁLOGO DE DOCUMENTOS CONCEPTUALES (${docs.length} documentos cargados) ===\n`;
         ctx += docs.join("");
 
