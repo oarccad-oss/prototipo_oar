@@ -102,7 +102,7 @@ export const IntroScreen = ({ showIntro, handleStartConnection, initParticles })
             className="px-8 py-4 md:px-14 md:py-5 bg-transparent hover:bg-emerald-500 text-white hover:text-[#021226] border-2 border-emerald-500 rounded-full font-black text-xs md:text-sm uppercase tracking-[0.2em] md:tracking-[0.4em] transition-all duration-500 hover:shadow-[0_0_50px_rgba(16,185,129,0.5)] shadow-emerald-500/20"
             style={{ animation: 'glow-pulse 3s infinite' }}
           >
-            Iniciar Conexión
+            Prototipo
           </motion.button>
           <motion.button
             variants={{
@@ -115,7 +115,7 @@ export const IntroScreen = ({ showIntro, handleStartConnection, initParticles })
             className="px-8 py-4 md:px-14 md:py-5 bg-transparent hover:bg-emerald-500 text-white hover:text-[#021226] border-2 border-emerald-500 rounded-full font-black text-xs md:text-sm uppercase tracking-[0.2em] md:tracking-[0.4em] transition-all duration-500 hover:shadow-[0_0_50px_rgba(16,185,129,0.5)] shadow-emerald-500/20"
             style={{ animation: 'glow-pulse 3s infinite' }}
           >
-            Ver Prototipo
+            Prueba de concepto
           </motion.button>
         </div>
       </motion.div>

@@ -25,11 +25,14 @@ import { VisorSection } from './sections/VisorSection';
 import { DocsSection } from './sections/DocsSection';
 import { AudienceSection } from './sections/AudienceSection';
 
+// Estado persistente en memoria para la sesión activa (se resetea al recargar)
+let hasShownIntroInSession = false;
+
 export const Home = () => {
   const navigate = useNavigate();
   const [activeRole, setActiveRole] = useState('decision');
   const [isActiveMap, setIsActiveMap] = useState(false);
-  const [showIntro, setShowIntro] = useState(true);
+  const [showIntro, setShowIntro] = useState(!hasShownIntroInSession);
   const [isGuideOpen, setIsGuideOpen] = useState(false);
   const [initParticles, setInitParticles] = useState(false);
   const axes = getEramAxes();
@@ -72,6 +75,7 @@ export const Home = () => {
   }, []);
 
   const handleStartConnection = () => {
+    hasShownIntroInSession = true;
     const introElem = document.getElementById('intro-screen');
     if (introElem) introElem.style.opacity = '0';
     setTimeout(() => setShowIntro(false), 1000);

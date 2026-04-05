@@ -406,6 +406,39 @@
             list-style: none;
             padding: 0;
             margin: 0;
+            max-height: 420px;
+            overflow-y: auto;
+            padding-right: 12px;
+            scroll-behavior: smooth;
+        }
+
+        /* Custom Scrollbar for Modal List */
+        .modal-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .modal-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .modal-list::-webkit-scrollbar-thumb {
+            background: rgba(46, 204, 113, 0.4);
+            border-radius: 10px;
+        }
+
+        .modal-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(46, 204, 113, 0.6);
+        }
+
+        .modal-group-title {
+            text-align: left;
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.4);
+            margin: 20px 0 10px 10px;
+            font-weight: 700;
+            text-transform: uppercase;
         }
 
         .modal-list a {
@@ -1246,21 +1279,36 @@
             };
 
             const quickLinks = [
-                { title: "PREGUNTAS FRECUENTES", url: "preguntas/" },
-                { title: "CIFRAS CLAVE", url: "/data/cifras" },
-                { title: "MONITOREO ESTRATÉGICO", url: "/monitoring?level=estrategico" },
-                { title: "MONITOREO OPERATIVO", url: "/monitoring?level=operativo" },
-                { title: "REPORTE", url: "/technical/reports/fra-2024" },
-                { title: "ANÁLISIS MULTIDIMENSIONAL", url: "/analisis-multidimensional" },
-                { title: "GEO-ANÁLISIS RÁPIDO", url: "/technical/geo-análisis" },
-                { title: "MAPAS BASE", url: "/technical/maps" },
-                { title: "DOCUMENTACIÓN TÉCNICA", url: "/technical/docs" }
+                { title: "PREGUNTAS FRECUENTES", url: "preguntas/", color: "#2ecc71", group: "Herramientas" },
+                { title: "CIFRAS CLAVE", url: "/data/cifras", color: "#2ecc71", group: "Herramientas" },
+                { title: "MONITOREO ESTRATÉGICO", url: "/monitoring?level=estrategico", color: "#2ecc71", group: "Herramientas" },
+                { title: "MONITOREO OPERATIVO", url: "/monitoring?level=operativo", color: "#2ecc71", group: "Herramientas" },
+                { title: "REPORTE FRA 2024", url: "/technical/reports/fra-2024", color: "#2ecc71", group: "Herramientas" },
+                { title: "ANÁLISIS MULTIDIMENSIONAL", url: "/analisis-multidimensional", color: "#2ecc71", group: "Herramientas" },
+                { title: "GEO-ANÁLISIS RÁPIDO", url: "/technical/geo-análisis", color: "#2ecc71", group: "Herramientas" },
+                { title: "MAPAS BASE", url: "/technical/maps", color: "#2ecc71", group: "Herramientas" },
+                { title: "DOCUMENTACIÓN TÉCNICA", url: "/technical/docs", color: "#2ecc71", group: "Herramientas" },
+                
+                // Ejes Temáticos del OAR
+                { title: "CALIDAD AMBIENTAL", url: "/strategic-axis/calidad", color: "#2563eb", group: "Ejes" },
+                { title: "MARES Y BIODIVERSIDAD", url: "/strategic-axis/mares", color: "#0891b2", group: "Ejes" },
+                { title: "GESTIÓN HÍDRICA", url: "/strategic-axis/agua", color: "#3b82f6", group: "Ejes" },
+                { title: "BOSQUES Y PAISAJES", url: "/strategic-axis/bosques", color: "#059669", group: "Ejes" },
+                { title: "CAMBIO CLIMÁTICO", url: "/strategic-axis/clima", color: "#9333ea", group: "Ejes" }
             ];
 
             const modalCont = document.getElementById('modal-list-container');
+            let lastGroup = "";
             quickLinks.forEach((link) => {
+                if(link.group !== lastGroup) {
+                    const groupHeader = document.createElement('div');
+                    groupHeader.className = 'modal-group-title';
+                    groupHeader.innerText = link.group;
+                    modalCont.appendChild(groupHeader);
+                    lastGroup = link.group;
+                }
                 const li = document.createElement('li');
-                li.innerHTML = `<a href="${link.url}"><span class="color-dot" style="background-color:var(--forest-green)"></span> ${link.title}</a>`;
+                li.innerHTML = `<a href="${link.url}"><span class="color-dot" style="background-color:${link.color}"></span> ${link.title}</a>`;
                 modalCont.appendChild(li);
             });
 
