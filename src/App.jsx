@@ -113,6 +113,7 @@ function App() {
     return saved ? JSON.parse(saved) : { name: "Invitado", role: "public" };
   });
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [hasSeenIntro, setHasSeenIntro] = useState(false);
 
   const handleLogin = (userData) => {
     setUser(userData);
@@ -131,7 +132,7 @@ function App() {
       <Routes>
         <Route element={<Layout user={user} sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} onLogout={handleLogout} />}>
           {/* Public Routes */}
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home hasSeenIntro={hasSeenIntro} onSeenIntro={() => setHasSeenIntro(true)} />} />
           <Route path="/quienes-somos" element={<QuienesSomos />} />
           <Route path="/grandes-bosques" element={<GrandesBosques />} />
           <Route path="/grandes-bosques/historias/:slug" element={<ForestStoryDetail />} />

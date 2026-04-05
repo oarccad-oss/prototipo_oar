@@ -8,6 +8,8 @@
     <!-- Importamos Three.js y Phosphor Icons para la UI -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
@@ -545,6 +547,12 @@
             min-height: 450px;
             overflow: hidden;
             position: relative;
+            background: rgba(0,0,0,0.4) !important;
+        }
+
+        .leaflet-container {
+            background: transparent !important;
+            font-family: inherit;
         }
 
         .alerts-card {
@@ -642,10 +650,8 @@
                     <div class="kpi-value" id="dash-kpi3-val">0</div>
                     <div id="dash-kpi3-sub" style="font-size:12px; opacity:0.6;">Dato</div>
                 </div>
-                <div class="glass-panel map-card" style="background:rgba(0,0,0,0.3);">
-                    <div
-                        style="display:flex; justify-content:center; align-items:center; height:100%; opacity:0.3; font-size:12px; letter-spacing:2px;">
-                        VISUALIZACIÓN ESPACIAL</div>
+                <div id="dash-map" class="glass-panel map-card">
+                    <div style="position:absolute; top:20px; right:20px; z-index:1000; font-size:9px; background:rgba(0,0,0,0.6); padding:5px 10px; border-radius:5px; letter-spacing:1px; border:1px solid rgba(255,255,255,0.1);">CAPA DINÁMICA ACTIVA</div>
                 </div>
                 <div class="glass-panel alerts-card">
                     <div style="font-size:11px; margin-bottom:15px; opacity:0.6;">EVENTOS RECIENTES</div>
@@ -663,73 +669,94 @@
             const menuData = [
                 {
                     id: 0, title: "BOSQUES", color: 0x00b894,
-                    desc: "Gestión sostenible y monitoreo de la cobertura forestal regional.",
+                    desc: "Monitoreo satelital de incendios, deforestación y estado de la salud forestal regional.",
                     kpis: [
-                        { title: "ÁREA NETA", val: "4,250", sub: "Miles ha" },
-                        { title: "COBERTURA", val: "48%", sub: "+1.2% anual" },
-                        { title: "PROTCONN", val: "42", sub: "Índice regional" }
+                        { title: "FOCOS ACTIVOS", val: "142", sub: "FIRMS NASA (Hoy)" },
+                        { title: "ALERTA GLAD", val: "Activa", sub: "Pérdida cobertura semanal" },
+                        { title: "RIESGO INCENDIO", val: "Alto", sub: "Humedad del suelo baja" }
                     ],
-                    alerts: ["Recuperación activa en 15,000 ha de pino-encino.", "Consolidación de MRV para REDD+."]
+                    alerts: [
+                        "Detección de tala ilegal en sector transfronterizo.",
+                        "Hansen/UMD reporta aumento en ganancia de cobertura en zonas de restauración."
+                    ]
                 },
                 {
                     id: 1, title: "BIODIVERSIDAD", color: 0x78e08f,
-                    desc: "Conservación de especies y ecosistemas críticos.",
+                    desc: "Seguimiento de especies, registros ciudadanos y estados de conservación global.",
                     kpis: [
-                        { title: "LISTA ROJA", val: "0.78", sub: "Índice" },
-                        { title: "ESPECIES", val: "65%", sub: "Ne > 500" },
-                        { title: "KBAs", val: "242", sub: "Sitios clave" }
+                        { title: "REGISTROS HOY", val: "1,250", sub: "iNaturalist / eBird" },
+                        { title: "NUEVAS ESPECIES", val: "2", sub: "Publicaciones taxo. mes" },
+                        { title: "ALERTA IUCN", val: "Crítica", sub: "Cambio categoría amenaza" }
                     ],
-                    alerts: ["Actualización de KBAs en el Corredor Biológico.", "Monitoreo genético de felinos en marcha."]
+                    alerts: [
+                        "Migraciones de fauna: Rutas detectadas con anomalías por clima.",
+                        "Operativo CITES: Decomiso de tráfico de fauna en aduanas."
+                    ]
                 },
                 {
                     id: 2, title: "CLIMA", color: 0xf1c40f,
-                    desc: "Mitigación y adaptación frente a la crisis climática global.",
+                    desc: "Variables climáticas globales, eventos extremos y concentraciones atmosféricas.",
                     kpis: [
-                        { title: "GEI EMISIONES", val: "8.4M", sub: "tCO2e" },
-                        { title: "NDCs", val: "Activa", sub: "Actualización 2024" },
-                        { title: "RESILIENCIA", val: "Medio", sub: "Índice regional" }
+                        { title: "TEMP. GLOBAL", val: "+1.28°", sub: "vs promedio 1850-1900" },
+                        { title: "CO2 ATM", val: "421.5", sub: "ppm (Mauna Loa - NOAA)" },
+                        { title: "HIELO ÁRTICO", val: "14.2M", sub: "km² (NSIDC Mínimo)" }
                     ],
-                    alerts: ["Actualización de NDCs regionales avanzada.", "Sistema de alerta temprana climática operativo."]
+                    alerts: [
+                        "Eventos extremos: Olas de calor y sequías detectadas en la región.",
+                        "Pronóstico estacional: Condiciones de La Niña activas."
+                    ]
                 },
                 {
                     id: 3, title: "AGUA", color: 0x00cec9,
-                    desc: "Seguridad hídrica y manejo integrado de cuencas transfronterizas.",
+                    desc: "Seguridad hídrica, niveles de embalses y monitoreo de caudales críticos.",
                     kpis: [
-                        { title: "CALIDAD", val: "82%", sub: "Índice ICA" },
-                        { title: "ESTRÉS", val: "Bajo", sub: "Sostenibilidad" },
-                        { title: "CUENCAS", val: "12", sub: "Transterritoriales" }
+                        { title: "EMBALSES", val: "68%", sub: "Capacidad hídrica nacional" },
+                        { title: "CALIDAD AGUA", val: "Buena", sub: "Oxígeno disuelto / pH" },
+                        { title: "SEQUÍA AGRÍC.", val: "-1.5", sub: "Índice PDSI (Semanal)" }
                     ],
-                    alerts: ["Control de vertidos en cuenca del Río Lempa.", "Nueva red de monitoreo piezométrico."]
+                    alerts: [
+                        "Alertas de inundación en caudales de ríos principales.",
+                        "Retroceso glaciar detectado mediante imágenes satelitales."
+                    ]
                 },
                 {
                     id: 4, title: "COSTAS", color: 0x0984e3,
                     desc: "Manejo costero integrado y protección de infraestructuras.",
                     kpis: [
-                        { title: "MANGLAR", val: "115k", sub: "Hectáreas" },
-                        { title: "RECUPERACIÓN", val: "+5%", sub: "Proyectos activos" },
-                        { title: "MIIC", val: "85", sub: "Manejo Integrado" }
+                        { title: "NIVEL MAR", val: "+3.2mm", sub: "Anomalía diaria" },
+                        { title: "TEMP. COSTERA", val: "28.5°", sub: "SST - Impacto pesca" },
+                        { title: "EROSIÓN", val: "-0.5m", sub: "Pérdida línea costa mes" }
                     ],
-                    alerts: ["Dragado sostenible en zonas de anidación.", "Plan de adaptación de municipios costeros."]
+                    alerts: [
+                        "Alerta Sanitaria: Marea roja detectada en zona norte.",
+                        "Contaminación: Presencia de plásticos y vertidos en playas."
+                    ]
                 },
                 {
                     id: 5, title: "MARES", color: 0x1e3799,
-                    desc: "Gobernanza de recursos marinos y biodiversidad oceánica.",
+                    desc: "Gobernanza oceánica, salud de arrecifes y vigilancia de pesca ilegal.",
                     kpis: [
-                        { title: "PESCA SOST.", val: "74%", sub: "Bajo RMS" },
-                        { title: "ÁREAS MARINAS", val: "12%", sub: "Protección" },
-                        { title: "VIGILANCIA", val: "100%", sub: "VMS Activo" }
+                        { title: "ACIDIFICACIÓN", val: "8.05", sub: "pH oceánico promedio" },
+                        { title: "BLANQUEAMIENTO", val: "Nivel 2", sub: "NOAA Alert coralina" },
+                        { title: "PESCA ILEGAL", val: "5", sub: "Alertas AIS detection" }
                     ],
-                    alerts: ["Veda de camarón exitosa en el Pacífico.", "Vigilancia satelital VMS activa."]
+                    alerts: [
+                        "Extensión de zonas muertas (hipoxia) en el Caribe.",
+                        "Densidad de plásticos en parches oceánicos en aumento."
+                    ]
                 },
                 {
                     id: 6, title: "AIRE", color: 0xecf0f1,
-                    desc: "Monitoreo de calidad del aire y emisiones atmosféricas.",
+                    desc: "Calidad del aire urbano y monitoreo de contaminantes regionales.",
                     kpis: [
-                        { title: "CALIDAD AIRE", val: "15", sub: "µg/m³ PM2.5" },
-                        { title: "SIST. ALERTA", val: "Regional", sub: "Satélite + Sensores" },
-                        { title: "REDUCCIÓN", val: "-10%", sub: "Quemas agrícolas" }
+                        { title: "ICA (PM2.5)", val: "45", sub: "µg/m³ - Promedio ciudades" },
+                        { title: "EMISIONES", val: "Estable", sub: "Reportes industriales RETC" },
+                        { title: "OZONO", val: "280", sub: "Unidades Dobson" }
                     ],
-                    alerts: ["Reducción de quemas agrícolas reportada.", "Integración de sensores de bajo costo."]
+                    alerts: [
+                        "Nube de polvo sahariano con trayectoria hacia la región.",
+                        "Episodios de smog: Alertas y restricciones vehiculares activas."
+                    ]
                 }
             ];
 
@@ -751,11 +778,59 @@
             const uiLayer = document.getElementById('ui-layer');
             let isDashboardOpen = false;
 
+            let currentMap = null;
+
+            function initDashboardMap(data) {
+                if (currentMap) {
+                    currentMap.remove();
+                    currentMap = null;
+                }
+
+                // Esperar a que el modal termine de animarse para evitar problemas de renderizado de Leaflet
+                setTimeout(() => {
+                    currentMap = L.map('dash-map', {
+                        center: [13.7, -86.3],
+                        zoom: 5,
+                        zoomControl: false,
+                        attributionControl: false
+                    });
+
+                    // CartoDB Dark Matter
+                    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png').addTo(currentMap);
+
+                    const colors = {
+                        0: '#00b894', 1: '#78e08f', 2: '#f1c40f', 3: '#00cec9', 4: '#0984e3', 5: '#1e3799', 6: '#ecf0f1'
+                    };
+                    const color = colors[data.id] || '#2ecc71';
+
+                    // Mock points - Centrados en Centroamérica
+                    const points = [
+                        [14.6, -90.5], [13.7, -89.2], [12.1, -86.2], [9.9, -84.0], [8.9, -79.5], 
+                        [15.5, -88.0], [17.5, -88.2], [10.5, -85.2]
+                    ];
+                    
+                    points.forEach(pos => {
+                        L.circleMarker(pos, {
+                            radius: 10 + Math.random() * 20,
+                            fillColor: color,
+                            color: color,
+                            weight: 1,
+                            opacity: 0.8,
+                            fillOpacity: 0.3
+                        }).addTo(currentMap);
+                    });
+                }, 600);
+            }
+
             function openDashboard(index) {
                 isDashboardOpen = true; playSound('tick');
                 const data = menuData[index];
-                document.getElementById('dash-title').innerText = data.title;
+                const today = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                document.getElementById('dash-title').innerText = `${data.title} • ${today}`;
                 document.getElementById('dash-desc').innerText = data.desc;
+
+                // Inicializar Mapa
+                initDashboardMap(data);
 
                 // Populating KPIs
                 data.kpis.forEach((kpi, i) => {
@@ -1308,7 +1383,7 @@
                     lastGroup = link.group;
                 }
                 const li = document.createElement('li');
-                li.innerHTML = `<a href="${link.url}"><span class="color-dot" style="background-color:${link.color}"></span> ${link.title}</a>`;
+                li.innerHTML = `<a href="${link.url}" target="_parent"><span class="color-dot" style="background-color:${link.color}"></span> ${link.title}</a>`;
                 modalCont.appendChild(li);
             });
 
