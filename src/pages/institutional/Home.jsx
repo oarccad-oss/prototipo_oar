@@ -138,7 +138,9 @@ export const Home = ({ hasSeenIntro, onSeenIntro }) => {
 
       <DocsSection documents={DOCUMENTATION_DATA.slice(0, 3)} navigate={navigate} />
 
+      {/* 
       <AudienceSection activeRole={activeRole} setActiveRole={setActiveRole} navigate={navigate} />
+      */}
 
       {/* Footer Divider / Context */}
       <div className="max-w-7xl mx-auto px-8 pb-4 mt-6 mb-4">

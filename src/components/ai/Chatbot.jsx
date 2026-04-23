@@ -360,7 +360,7 @@ export const Chatbot = () => {
         },
         {
             id: 'analysis',
-            label: 'Cruce de Variables',
+            label: 'Búsqueda',
             icon: Database,
             color: 'bg-brand-primary',
             action: () => navigate('/analisis-multidimensional')

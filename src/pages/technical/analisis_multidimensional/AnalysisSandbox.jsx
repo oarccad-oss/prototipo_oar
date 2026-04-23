@@ -106,7 +106,7 @@ const DatasetCard = ({ dataset, onSelect, isActive }) => (
 
 export const AnalysisSandbox = () => {
     const navigate = useNavigate();
-    const [selectedDataset, setSelectedDataset] = useState(null);
+    const [selectedDataset, setSelectedDataset] = useState(DATASETS_CONFIG[0]);
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -257,15 +257,21 @@ export const AnalysisSandbox = () => {
                             </div>
 
                             <div className="space-y-6">
-                                {/* Dataset Indicator */}
+                                {/* Dataset Selector */}
                                 <div>
                                     <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-2 block">Cambiando Datos</label>
-                                    <div className="p-3 bg-slate-100 rounded-xl flex items-center justify-between group">
-                                        <span className="text-xs font-bold text-slate-600 truncate">{selectedDataset.name}</span>
-                                        <button onClick={() => setSelectedDataset(null)} className="text-slate-400 hover:text-red-500 p-1">
-                                            <RefreshCw className="h-3 w-3" />
-                                        </button>
-                                    </div>
+                                    <select
+                                        value={selectedDataset.id}
+                                        onChange={(e) => {
+                                            const ds = DATASETS_CONFIG.find(d => d.id === e.target.value);
+                                            if (ds) setSelectedDataset(ds);
+                                        }}
+                                        className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-brand-primary/20 outline-none"
+                                    >
+                                        {DATASETS_CONFIG.map(ds => (
+                                            <option key={ds.id} value={ds.id}>{ds.name}</option>
+                                        ))}
+                                    </select>
                                 </div>
 
                                 {/* Variable 1 */}
