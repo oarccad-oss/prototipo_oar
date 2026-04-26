@@ -97,7 +97,7 @@
 
         #core-display {
             position: absolute;
-            top: 16%;
+            top: 22%;
             left: 50%;
             transform: translateX(-50%);
             width: 80%;
@@ -1277,7 +1277,7 @@
                     v.project(camera); const x = (v.x * .5 + .5) * window.innerWidth; const y = (v.y * -.5 + .5) * window.innerHeight;
                     if (i === getActiveIndex()) {
                         l.element.style.left = cX + 'px';
-                        l.element.style.top = (cY - (window.innerWidth > 768 ? 140 : 85)) + 'px';
+                        l.element.style.top = (cY - (window.innerWidth > 768 ? 180 : 110)) + 'px';
                         activePos.set(x, y, 0);
                     }
                     else {
