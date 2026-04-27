@@ -39,7 +39,7 @@ const parseCSV = (text) => {
         const normalize = (str) => {
             return str.normalize("NFD")
                       .replace(/[\u0300-\u036f]/g, "")
-                      .replace(/[^a-zA-Z0-9\s\(\)\/\.]/g, "")
+                      .replace(/[^a-zA-Z0-9\s\(\)\/\._]/g, "")
                       .trim();
         };
 
@@ -138,7 +138,7 @@ export const AnalysisSandbox = () => {
                 const normalize = (str) => {
                     return str.normalize("NFD")
                               .replace(/[\u0300-\u036f]/g, "")
-                              .replace(/[^a-zA-Z0-9\s\(\)\/\.]/g, "")
+                              .replace(/[^a-zA-Z0-9\s\(\)\/\._]/g, "")
                               .trim();
                 };
 

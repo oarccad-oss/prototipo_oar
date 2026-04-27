@@ -42,6 +42,22 @@ import { OperationalMonitoring } from './pages/monitoring/OperationalMonitoring'
 import { SitemapIndependent } from './pages/technical/SitemapIndependent';
 import { UserManagement } from './pages/admin/UserManagement';
 
+// Simulated Questions Q1-Q10
+import Q1RiesgoColapso from './pages/questions/answers/Q1RiesgoColapso';
+import Q2BrechaProteccion from './pages/questions/answers/Q2BrechaProteccion';
+import Q3PerdidaReciente from './pages/questions/answers/Q3PerdidaReciente';
+import Q4IntegridadAPs from './pages/questions/answers/Q4IntegridadAPs';
+import Q5TerritorioTransformado from './pages/questions/answers/Q5TerritorioTransformado';
+import Q6ConcentracionPresion from './pages/questions/answers/Q6ConcentracionPresion';
+import Q7Aceleracion from './pages/questions/answers/Q7Aceleracion';
+import Q8TendenciaHistorica from './pages/questions/answers/Q8TendenciaHistorica';
+import Q9DiversidadEcosistemica from './pages/questions/answers/Q9DiversidadEcosistemica';
+import Q10PresionNatural from './pages/questions/answers/Q10PresionNatural';
+import Q11Manglares from './pages/questions/answers/Q11Manglares';
+import Q12Emisiones from './pages/questions/answers/Q12Emisiones';
+import Q13Hotspots from './pages/questions/answers/Q13Hotspots';
+import Q14EcosistemaAmenazado from './pages/questions/answers/Q14EcosistemaAmenazado';
+
 // Component to scroll to top on route change
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -223,6 +239,22 @@ function App() {
             <Route path="/preguntas/seguridad-hidrica" element={<ProtectedRoute user={user}><AnswerWaterSecurity /></ProtectedRoute>} />
             <Route path="/preguntas/salud-oceanos" element={<ProtectedRoute user={user}><AnswerOceanHealth /></ProtectedRoute>} />
             <Route path="/preguntas/areas-protegidas" element={<ProtectedRoute user={user}><AnswerProtectedAreas /></ProtectedRoute>} />
+            
+            {/* Simulated Q1-Q10 Routes */}
+            <Route path="/preguntas/Q1" element={<ProtectedRoute user={user}><Q1RiesgoColapso /></ProtectedRoute>} />
+            <Route path="/preguntas/Q2" element={<ProtectedRoute user={user}><Q2BrechaProteccion /></ProtectedRoute>} />
+            <Route path="/preguntas/Q3" element={<ProtectedRoute user={user}><Q3PerdidaReciente /></ProtectedRoute>} />
+            <Route path="/preguntas/Q4" element={<ProtectedRoute user={user}><Q4IntegridadAPs /></ProtectedRoute>} />
+            <Route path="/preguntas/Q5" element={<ProtectedRoute user={user}><Q5TerritorioTransformado /></ProtectedRoute>} />
+            <Route path="/preguntas/Q6" element={<ProtectedRoute user={user}><Q6ConcentracionPresion /></ProtectedRoute>} />
+            <Route path="/preguntas/Q7" element={<ProtectedRoute user={user}><Q7Aceleracion /></ProtectedRoute>} />
+            <Route path="/preguntas/Q8" element={<ProtectedRoute user={user}><Q8TendenciaHistorica /></ProtectedRoute>} />
+            <Route path="/preguntas/Q9" element={<ProtectedRoute user={user}><Q9DiversidadEcosistemica /></ProtectedRoute>} />
+            <Route path="/preguntas/Q10" element={<ProtectedRoute user={user}><Q10PresionNatural /></ProtectedRoute>} />
+            <Route path="/preguntas/Q11" element={<ProtectedRoute user={user}><Q11Manglares /></ProtectedRoute>} />
+            <Route path="/preguntas/Q12" element={<ProtectedRoute user={user}><Q12Emisiones /></ProtectedRoute>} />
+            <Route path="/preguntas/Q13" element={<ProtectedRoute user={user}><Q13Hotspots /></ProtectedRoute>} />
+            <Route path="/preguntas/Q14" element={<ProtectedRoute user={user}><Q14EcosistemaAmenazado /></ProtectedRoute>} />
 
             {/* Backwards Compatibility Routes */}
             <Route path="/technical/reports/fra-2024" element={<ProtectedRoute user={user}><AnswerForestState /></ProtectedRoute>} />

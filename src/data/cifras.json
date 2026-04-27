@@ -324,6 +324,681 @@
     "pais": "Regional"
   },
   {
+    "titulo": "PÉRDIDA DE BOSQUE ACUMULADA",
+    "valor": "1675187",
+    "unidad_medida": "ha",
+    "bajada": "Superficie total de cobertura forestal perdida en la región SICA entre 2001 y 2020.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Regional"
+  },
+  {
+    "titulo": "PÉRDIDA DE BOSQUE RECIENTE",
+    "valor": "611979",
+    "unidad_medida": "ha",
+    "bajada": "Deforestación registrada en el último periodo quinquenal monitoreado (2016-2020).",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Regional"
+  },
+  {
+    "titulo": "TASA DE DEFORESTACIÓN ANUAL",
+    "valor": "122396",
+    "unidad_medida": "ha/año",
+    "bajada": "Promedio anual de pérdida de bosque durante el último quinquenio (2016-2020).",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Regional"
+  },
+  {
+    "titulo": "ACELERACIÓN HISTÓRICA DE PÉRDIDA",
+    "valor": "122.3",
+    "unidad_medida": "%",
+    "bajada": "Incremento de la tasa anual de deforestación: comparación del periodo 2016-2020 respecto a 2001-2005.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Regional"
+  },
+  {
+    "titulo": "BRECHA DE PROTECCIÓN",
+    "valor": "75.6",
+    "unidad_medida": "%",
+    "bajada": "Porcentaje del territorio regional (8 países SICA) que carece de protección legal bajo cualquier categoría de Área Protegida.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Regional"
+  },
+  {
+    "titulo": "DEFORESTACIÓN EN ÁREAS PROTEGIDAS",
+    "valor": "44.1",
+    "unidad_medida": "%",
+    "bajada": "Porcentaje de la pérdida regional total que ocurre dentro de los límites de Áreas Protegidas declaradas.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Regional"
+  },
+  {
+    "titulo": "DENSIDAD DE PÉRDIDA EN ÁREAS PROTEGIDAS",
+    "valor": "59.0",
+    "unidad_medida": "ha/1000ha protegidas",
+    "bajada": "Hectáreas de bosque perdidas por cada 1,000 ha de superficie protegida declarada a nivel regional.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Regional"
+  },
+  {
+    "titulo": "ECOSISTEMAS CON COBERTURA 30X30",
+    "valor": "195",
+    "unidad_medida": "ecosistemas",
+    "bajada": "Número de ecosistemas naturales que cumplen la meta internacional del 30% de su área bajo protección legal.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Regional"
+  },
+  {
+    "titulo": "ECOSISTEMAS SIN PROTECCIÓN LEGAL",
+    "valor": "1",
+    "unidad_medida": "ecosistemas",
+    "bajada": "Ecosistemas naturales con superficie mayor a 100 ha que no tienen ninguna representatividad en Áreas Protegidas.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Regional"
+  },
+  {
+    "titulo": "ECOSISTEMA MÁS AMENAZADO",
+    "valor": "29.3",
+    "unidad_medida": "% pérdida",
+    "bajada": "El ecosistema \"26-2  Bosque tropical siempreverde estacional latifolia\" ha perdido el 29.3% de su área original (13,396 ha) entre 2001-2020.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Regional"
+  },
+  {
+    "titulo": "BOSQUE INTACTO SIN PÉRDIDA REGISTRADA",
+    "valor": "1485484",
+    "unidad_medida": "ha",
+    "bajada": "Superficie de ecosistemas forestales que no registraron ninguna pérdida de cobertura entre 2001 y 2020 (65 tipos de ecosistema).",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Regional"
+  },
+  {
+    "titulo": "SUPERFICIE AGROPECUARIA",
+    "valor": "25459148",
+    "unidad_medida": "ha",
+    "bajada": "Extensión regional de tierras transformadas a sistemas agrícolas o ganaderos (≈49.5% del territorio SICA).",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Regional"
+  },
+  {
+    "titulo": "HOTSPOTS MUNICIPALES (50% PÉRDIDA)",
+    "valor": "17",
+    "unidad_medida": "municipios de 973",
+    "bajada": "Solo 17 municipios concentran el 50% de toda la deforestación regional, sobre un total de 973 unidades municipales.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Regional"
+  },
+  {
+    "titulo": "DIVERSIDAD DE ECOSISTEMAS NATURALES",
+    "valor": "199",
+    "unidad_medida": "ecosistemas",
+    "bajada": "Número de ecosistemas naturales distintos identificados en la región (excluye las 6 categorías antrópicas).",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Mares y Biodiversidad",
+    "pais": "Regional"
+  },
+  {
+    "titulo": "ECOSISTEMAS EXCLUSIVOS POR PAÍS",
+    "valor": "92",
+    "unidad_medida": "ecosistemas",
+    "bajada": "Ecosistemas naturales presentes únicamente en un país de la región SICA (endemismo territorial).",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Mares y Biodiversidad",
+    "pais": "Regional"
+  },
+  {
+    "titulo": "SUPERFICIE TOTAL DE MANGLARES",
+    "valor": "419174",
+    "unidad_medida": "ha",
+    "bajada": "Área total de ecosistemas de manglar (Pacífico y Caribe) presentes en los 8 países SICA.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Mares y Biodiversidad",
+    "pais": "Regional"
+  },
+  {
+    "titulo": "PÉRDIDA DE MANGLARES",
+    "valor": "3702",
+    "unidad_medida": "ha",
+    "bajada": "Deforestación acumulada en ecosistemas de manglar de la región SICA entre 2001 y 2020.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Mares y Biodiversidad",
+    "pais": "Regional"
+  },
+  {
+    "titulo": "EMISIONES CO2 POR DEFORESTACIÓN",
+    "valor": "922",
+    "unidad_medida": "Mt CO2e",
+    "bajada": "Carbono potencial emitido por la deforestación regional 2001-2020 (factor IPCC Tier 1: 550.5 tCO2e/ha para bosques tropicales húmedos).",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Cambio Climático",
+    "pais": "Regional"
+  },
+  {
+    "titulo": "TASA ANUAL DE EMISIONES POR PÉRDIDA",
+    "valor": "67.4",
+    "unidad_medida": "Mt CO2e/año",
+    "bajada": "Emisiones anuales estimadas por deforestación en el último quinquenio, usando la tasa de pérdida de 122,396 ha/año (factor IPCC Tier 1).",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Cambio Climático",
+    "pais": "Regional"
+  },
+  {
+    "titulo": "PÉRDIDA ACUMULADA",
+    "valor": "543794",
+    "unidad_medida": "ha",
+    "bajada": "Superficie de cobertura forestal perdida en Guatemala entre 2001 y 2020.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Guatemala"
+  },
+  {
+    "titulo": "PÉRDIDA RECIENTE",
+    "valor": "156591",
+    "unidad_medida": "ha",
+    "bajada": "Deforestación registrada en Guatemala durante el periodo 2016-2020.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Guatemala"
+  },
+  {
+    "titulo": "TASA ANUAL DE DEFORESTACIÓN",
+    "valor": "31318",
+    "unidad_medida": "ha/año",
+    "bajada": "Promedio anual de pérdida de bosque en Guatemala durante el último quinquenio.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Guatemala"
+  },
+  {
+    "titulo": "ACELERACIÓN DE DEFORESTACIÓN",
+    "valor": "16.5",
+    "unidad_medida": "%",
+    "bajada": "Cambio porcentual en la tasa de deforestación de Guatemala comparando 2016-2020 vs 2001-2005.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Guatemala"
+  },
+  {
+    "titulo": "PÉRDIDA DENTRO DE ÁREAS PROTEGIDAS",
+    "valor": "61.8",
+    "unidad_medida": "%",
+    "bajada": "Porcentaje de la deforestación de Guatemala que ocurre dentro de Áreas Protegidas.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Guatemala"
+  },
+  {
+    "titulo": "DENSIDAD DE PÉRDIDA EN ÁREAS PROTEGIDAS",
+    "valor": "408.6",
+    "unidad_medida": "ha/1000ha protegidas",
+    "bajada": "Eficacia de gestión: hectáreas perdidas por cada 1,000 ha de Área Protegida en Guatemala.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Guatemala"
+  },
+  {
+    "titulo": "PRESIÓN AGROPECUARIA",
+    "valor": "48.7",
+    "unidad_medida": "%",
+    "bajada": "Proporción del territorio de Guatemala que ha sido convertida a uso agropecuario.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Guatemala"
+  },
+  {
+    "titulo": "SUPERFICIE AGROPECUARIA",
+    "valor": "5270963",
+    "unidad_medida": "ha",
+    "bajada": "Extensión de tierras transformadas a uso agropecuario en Guatemala.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Guatemala"
+  },
+  {
+    "titulo": "PÉRDIDA ACUMULADA",
+    "valor": "10229",
+    "unidad_medida": "ha",
+    "bajada": "Superficie de cobertura forestal perdida en El Salvador entre 2001 y 2020.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "El Salvador"
+  },
+  {
+    "titulo": "PÉRDIDA RECIENTE",
+    "valor": "2677",
+    "unidad_medida": "ha",
+    "bajada": "Deforestación registrada en El Salvador durante el periodo 2016-2020.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "El Salvador"
+  },
+  {
+    "titulo": "TASA ANUAL DE DEFORESTACIÓN",
+    "valor": "535",
+    "unidad_medida": "ha/año",
+    "bajada": "Promedio anual de pérdida de bosque en El Salvador durante el último quinquenio.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "El Salvador"
+  },
+  {
+    "titulo": "ACELERACIÓN DE DEFORESTACIÓN",
+    "valor": "-21.2",
+    "unidad_medida": "%",
+    "bajada": "Cambio porcentual en la tasa de deforestación de El Salvador comparando 2016-2020 vs 2001-2005.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "El Salvador"
+  },
+  {
+    "titulo": "PÉRDIDA DENTRO DE ÁREAS PROTEGIDAS",
+    "valor": "2.3",
+    "unidad_medida": "%",
+    "bajada": "Porcentaje de la deforestación de El Salvador que ocurre dentro de Áreas Protegidas.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "El Salvador"
+  },
+  {
+    "titulo": "DENSIDAD DE PÉRDIDA EN ÁREAS PROTEGIDAS",
+    "valor": "1.9",
+    "unidad_medida": "ha/1000ha protegidas",
+    "bajada": "Eficacia de gestión: hectáreas perdidas por cada 1,000 ha de Área Protegida en El Salvador.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "El Salvador"
+  },
+  {
+    "titulo": "PRESIÓN AGROPECUARIA",
+    "valor": "68.4",
+    "unidad_medida": "%",
+    "bajada": "Proporción del territorio de El Salvador que ha sido convertida a uso agropecuario.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "El Salvador"
+  },
+  {
+    "titulo": "SUPERFICIE AGROPECUARIA",
+    "valor": "1400232",
+    "unidad_medida": "ha",
+    "bajada": "Extensión de tierras transformadas a uso agropecuario en El Salvador.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "El Salvador"
+  },
+  {
+    "titulo": "PÉRDIDA ACUMULADA",
+    "valor": "341448",
+    "unidad_medida": "ha",
+    "bajada": "Superficie de cobertura forestal perdida en Honduras entre 2001 y 2020.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Honduras"
+  },
+  {
+    "titulo": "PÉRDIDA RECIENTE",
+    "valor": "163690",
+    "unidad_medida": "ha",
+    "bajada": "Deforestación registrada en Honduras durante el periodo 2016-2020.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Honduras"
+  },
+  {
+    "titulo": "TASA ANUAL DE DEFORESTACIÓN",
+    "valor": "32738",
+    "unidad_medida": "ha/año",
+    "bajada": "Promedio anual de pérdida de bosque en Honduras durante el último quinquenio.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Honduras"
+  },
+  {
+    "titulo": "ACELERACIÓN DE DEFORESTACIÓN",
+    "valor": "332.8",
+    "unidad_medida": "%",
+    "bajada": "Cambio porcentual en la tasa de deforestación de Honduras comparando 2016-2020 vs 2001-2005.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Honduras"
+  },
+  {
+    "titulo": "PÉRDIDA DENTRO DE ÁREAS PROTEGIDAS",
+    "valor": "56.2",
+    "unidad_medida": "%",
+    "bajada": "Porcentaje de la deforestación de Honduras que ocurre dentro de Áreas Protegidas.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Honduras"
+  },
+  {
+    "titulo": "DENSIDAD DE PÉRDIDA EN ÁREAS PROTEGIDAS",
+    "valor": "119.0",
+    "unidad_medida": "ha/1000ha protegidas",
+    "bajada": "Eficacia de gestión: hectáreas perdidas por cada 1,000 ha de Área Protegida en Honduras.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Honduras"
+  },
+  {
+    "titulo": "PRESIÓN AGROPECUARIA",
+    "valor": "53.7",
+    "unidad_medida": "%",
+    "bajada": "Proporción del territorio de Honduras que ha sido convertida a uso agropecuario.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Honduras"
+  },
+  {
+    "titulo": "SUPERFICIE AGROPECUARIA",
+    "valor": "5982528",
+    "unidad_medida": "ha",
+    "bajada": "Extensión de tierras transformadas a uso agropecuario en Honduras.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Honduras"
+  },
+  {
+    "titulo": "PÉRDIDA ACUMULADA",
+    "valor": "541813",
+    "unidad_medida": "ha",
+    "bajada": "Superficie de cobertura forestal perdida en Nicaragua entre 2001 y 2020.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Nicaragua"
+  },
+  {
+    "titulo": "PÉRDIDA RECIENTE",
+    "valor": "210322",
+    "unidad_medida": "ha",
+    "bajada": "Deforestación registrada en Nicaragua durante el periodo 2016-2020.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Nicaragua"
+  },
+  {
+    "titulo": "TASA ANUAL DE DEFORESTACIÓN",
+    "valor": "42064",
+    "unidad_medida": "ha/año",
+    "bajada": "Promedio anual de pérdida de bosque en Nicaragua durante el último quinquenio.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Nicaragua"
+  },
+  {
+    "titulo": "ACELERACIÓN DE DEFORESTACIÓN",
+    "valor": "214.1",
+    "unidad_medida": "%",
+    "bajada": "Cambio porcentual en la tasa de deforestación de Nicaragua comparando 2016-2020 vs 2001-2005.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Nicaragua"
+  },
+  {
+    "titulo": "PÉRDIDA DENTRO DE ÁREAS PROTEGIDAS",
+    "valor": "32.5",
+    "unidad_medida": "%",
+    "bajada": "Porcentaje de la deforestación de Nicaragua que ocurre dentro de Áreas Protegidas.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Nicaragua"
+  },
+  {
+    "titulo": "DENSIDAD DE PÉRDIDA EN ÁREAS PROTEGIDAS",
+    "valor": "69.2",
+    "unidad_medida": "ha/1000ha protegidas",
+    "bajada": "Eficacia de gestión: hectáreas perdidas por cada 1,000 ha de Área Protegida en Nicaragua.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Nicaragua"
+  },
+  {
+    "titulo": "PRESIÓN AGROPECUARIA",
+    "valor": "47.3",
+    "unidad_medida": "%",
+    "bajada": "Proporción del territorio de Nicaragua que ha sido convertida a uso agropecuario.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Nicaragua"
+  },
+  {
+    "titulo": "SUPERFICIE AGROPECUARIA",
+    "valor": "6107980",
+    "unidad_medida": "ha",
+    "bajada": "Extensión de tierras transformadas a uso agropecuario en Nicaragua.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Nicaragua"
+  },
+  {
+    "titulo": "PÉRDIDA ACUMULADA",
+    "valor": "10711",
+    "unidad_medida": "ha",
+    "bajada": "Superficie de cobertura forestal perdida en Costa Rica entre 2001 y 2020.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Costa Rica"
+  },
+  {
+    "titulo": "PÉRDIDA RECIENTE",
+    "valor": "5184",
+    "unidad_medida": "ha",
+    "bajada": "Deforestación registrada en Costa Rica durante el periodo 2016-2020.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Costa Rica"
+  },
+  {
+    "titulo": "TASA ANUAL DE DEFORESTACIÓN",
+    "valor": "1037",
+    "unidad_medida": "ha/año",
+    "bajada": "Promedio anual de pérdida de bosque en Costa Rica durante el último quinquenio.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Costa Rica"
+  },
+  {
+    "titulo": "ACELERACIÓN DE DEFORESTACIÓN",
+    "valor": "231.6",
+    "unidad_medida": "%",
+    "bajada": "Cambio porcentual en la tasa de deforestación de Costa Rica comparando 2016-2020 vs 2001-2005.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Costa Rica"
+  },
+  {
+    "titulo": "PÉRDIDA DENTRO DE ÁREAS PROTEGIDAS",
+    "valor": "22.7",
+    "unidad_medida": "%",
+    "bajada": "Porcentaje de la deforestación de Costa Rica que ocurre dentro de Áreas Protegidas.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Costa Rica"
+  },
+  {
+    "titulo": "DENSIDAD DE PÉRDIDA EN ÁREAS PROTEGIDAS",
+    "valor": "1.8",
+    "unidad_medida": "ha/1000ha protegidas",
+    "bajada": "Eficacia de gestión: hectáreas perdidas por cada 1,000 ha de Área Protegida en Costa Rica.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Costa Rica"
+  },
+  {
+    "titulo": "PRESIÓN AGROPECUARIA",
+    "valor": "69.5",
+    "unidad_medida": "%",
+    "bajada": "Proporción del territorio de Costa Rica que ha sido convertida a uso agropecuario.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Costa Rica"
+  },
+  {
+    "titulo": "SUPERFICIE AGROPECUARIA",
+    "valor": "3519035",
+    "unidad_medida": "ha",
+    "bajada": "Extensión de tierras transformadas a uso agropecuario en Costa Rica.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Costa Rica"
+  },
+  {
+    "titulo": "PÉRDIDA ACUMULADA",
+    "valor": "112926",
+    "unidad_medida": "ha",
+    "bajada": "Superficie de cobertura forestal perdida en Panamá entre 2001 y 2020.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Panamá"
+  },
+  {
+    "titulo": "PÉRDIDA RECIENTE",
+    "valor": "38096",
+    "unidad_medida": "ha",
+    "bajada": "Deforestación registrada en Panamá durante el periodo 2016-2020.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Panamá"
+  },
+  {
+    "titulo": "TASA ANUAL DE DEFORESTACIÓN",
+    "valor": "7619",
+    "unidad_medida": "ha/año",
+    "bajada": "Promedio anual de pérdida de bosque en Panamá durante el último quinquenio.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Panamá"
+  },
+  {
+    "titulo": "ACELERACIÓN DE DEFORESTACIÓN",
+    "valor": "153.3",
+    "unidad_medida": "%",
+    "bajada": "Cambio porcentual en la tasa de deforestación de Panamá comparando 2016-2020 vs 2001-2005.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Panamá"
+  },
+  {
+    "titulo": "PÉRDIDA DENTRO DE ÁREAS PROTEGIDAS",
+    "valor": "18.9",
+    "unidad_medida": "%",
+    "bajada": "Porcentaje de la deforestación de Panamá que ocurre dentro de Áreas Protegidas.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Panamá"
+  },
+  {
+    "titulo": "DENSIDAD DE PÉRDIDA EN ÁREAS PROTEGIDAS",
+    "valor": "6.0",
+    "unidad_medida": "ha/1000ha protegidas",
+    "bajada": "Eficacia de gestión: hectáreas perdidas por cada 1,000 ha de Área Protegida en Panamá.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Panamá"
+  },
+  {
+    "titulo": "PRESIÓN AGROPECUARIA",
+    "valor": "38.6",
+    "unidad_medida": "%",
+    "bajada": "Proporción del territorio de Panamá que ha sido convertida a uso agropecuario.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Panamá"
+  },
+  {
+    "titulo": "SUPERFICIE AGROPECUARIA",
+    "valor": "2813148",
+    "unidad_medida": "ha",
+    "bajada": "Extensión de tierras transformadas a uso agropecuario en Panamá.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Panamá"
+  },
+  {
+    "titulo": "PÉRDIDA ACUMULADA",
+    "valor": "112381",
+    "unidad_medida": "ha",
+    "bajada": "Superficie de cobertura forestal perdida en Belice entre 2001 y 2020.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Belice"
+  },
+  {
+    "titulo": "PÉRDIDA RECIENTE",
+    "valor": "34532",
+    "unidad_medida": "ha",
+    "bajada": "Deforestación registrada en Belice durante el periodo 2016-2020.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Belice"
+  },
+  {
+    "titulo": "TASA ANUAL DE DEFORESTACIÓN",
+    "valor": "6906",
+    "unidad_medida": "ha/año",
+    "bajada": "Promedio anual de pérdida de bosque en Belice durante el último quinquenio.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Belice"
+  },
+  {
+    "titulo": "ACELERACIÓN DE DEFORESTACIÓN",
+    "valor": "117.6",
+    "unidad_medida": "%",
+    "bajada": "Cambio porcentual en la tasa de deforestación de Belice comparando 2016-2020 vs 2001-2005.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Belice"
+  },
+  {
+    "titulo": "PÉRDIDA DENTRO DE ÁREAS PROTEGIDAS",
+    "valor": "10.3",
+    "unidad_medida": "%",
+    "bajada": "Porcentaje de la deforestación de Belice que ocurre dentro de Áreas Protegidas.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Belice"
+  },
+  {
+    "titulo": "DENSIDAD DE PÉRDIDA EN ÁREAS PROTEGIDAS",
+    "valor": "10.1",
+    "unidad_medida": "ha/1000ha protegidas",
+    "bajada": "Eficacia de gestión: hectáreas perdidas por cada 1,000 ha de Área Protegida en Belice.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Belice"
+  },
+  {
+    "titulo": "PRESIÓN AGROPECUARIA",
+    "valor": "16.9",
+    "unidad_medida": "%",
+    "bajada": "Proporción del territorio de Belice que ha sido convertida a uso agropecuario.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Belice"
+  },
+  {
+    "titulo": "SUPERFICIE AGROPECUARIA",
+    "valor": "365262",
+    "unidad_medida": "ha",
+    "bajada": "Extensión de tierras transformadas a uso agropecuario en Belice.",
+    "fuente": "SICA / Geosvisor OAR",
+    "eje_tematico": "Bosques y Paisajes",
+    "pais": "Belice"
+  },
+  {
     "titulo": "SALUD OCEÁNICA",
     "valor": "81.0",
     "unidad_medida": "/100",
